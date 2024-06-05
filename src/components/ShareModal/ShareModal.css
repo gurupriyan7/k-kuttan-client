@@ -1,0 +1,19 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+}
+@media screen and (width<=480px) {
+  .pagination {
+    display: grid!important;
+    justify-content: center;
+  }
+}
+.title-summary{
+          display: none!important;
+}
+.title{
+display: block;
+}
+.summary{
+display: block;
+}
