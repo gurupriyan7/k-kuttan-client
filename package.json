@@ -38,6 +38,7 @@
     "redux": "^4.2.0",
     "redux-thunk": "^2.4.1",
     "sass": "^1.53.0",
+    "serve": "^14.2.3",
     "socket.io-client": "^4.5.1",
     "styled-components": "^5.3.5",
     "sweetalert": "^2.1.2",
