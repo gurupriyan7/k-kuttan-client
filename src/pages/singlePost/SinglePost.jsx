@@ -14,28 +14,34 @@ import Heart from '../../img/like.png'
 import NotLike from '../../img/notlike.png'
 import { PostsData } from '../../Data/PostsData'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { getPostById } from '../../actions/post.actions'
 import { appConfig } from '../../config/appConfig'
 import { useState } from 'react'
 import { likeAndCommentPost } from '../../api/postRequest'
 import CommentModel from '../../components/CommentModal/CommentModel';
+import PostShareModal from '../../components/PostShareModal/PostshareModal';
 const SinglePost = (PostsData) => {
   const dispatch = useDispatch()
   const location = useLocation()
-  const { postId } = location.state
-  console.log(postId, 'postId')
+  // const searchParams = new URLSearchParams(location.search);
+  // const postId = searchParams.get('id');
+  // const { postId } = location.state
+  const { postId } = useParams();
+  console.log(postId, 'postIdsss')
 
   const post = useSelector((state) => state.postReducer.post)
   const { user } = useSelector((state) => state.authReducer.authData)
   const [liked, setLiked] = useState(post?.isLiked)
   const [likes, setLikes] = useState(post?.likes)
   const [modalOpened, setModalOpened] = useState(false)
+  const [shareModalOpened, setShareModalOpened] = useState(false)
+
 
   useEffect(async () => {
     await dispatch(getPostById({ postId }))
   }, [dispatch, postId])
-  console.log(post, 'post post post post post')
+  console.log(post, 'post post post post post',process.env.REACT_APP_FRONTEND_URL)
 
   const handleLike = () => {
     setLiked((prev) => !prev)
@@ -88,7 +94,7 @@ const SinglePost = (PostsData) => {
                   style={{cursor:"pointer"}}
                 />
                 <img onClick={() => setModalOpened(true)}  src={Comment} alt=""  style={{cursor:"pointer"}} />
-                <img src={Share} alt="" />
+                <img src={Share} alt="" onClick={()=>setShareModalOpened(true)} style={{cursor:"pointer"}} />
               </div>
 
               <p
@@ -121,6 +127,11 @@ const SinglePost = (PostsData) => {
           modalOpened={modalOpened}
           setModalOpened={setModalOpened}
           comments={post?.comments}
+          postId={post?._id}
+        />
+          <PostShareModal
+          modalOpened={shareModalOpened}
+          setModalOpened={setShareModalOpened}
           postId={post?._id}
         />
     </div>

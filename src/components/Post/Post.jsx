@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom'
 import { path } from '../../paths/paths'
 import CommentModel from '../CommentModal/CommentModel'
 import { PaymentStatusEnum } from '../../constants/paymentEnum'
+import PostShareModal from '../PostShareModal/PostshareModal'
 
 const Post = ({ data }) => {
   const navigate = useNavigate()
@@ -20,9 +21,10 @@ const Post = ({ data }) => {
   const [liked, setLiked] = useState(data?.isLiked)
   const [likes, setLikes] = useState(data?.likes)
   const [modalOpened, setModalOpened] = useState(false)
+  const [shareModalOpened, setShareModalOpened] = useState(false)
 
   const handleSelect = async (e) => {
-    alert(data?.isPaid)
+    // alert(data?.isPaid)
     if (!data?.isFree && !data?.isPaid) {
       e.preventDefault()
       // const res = await createPayment({
@@ -46,7 +48,7 @@ const Post = ({ data }) => {
             status: PaymentStatusEnum.SUCCESS,
             postId: data?._id,
           })
-          navigate(path.singlePost, { state: { postId: data?._id } })
+          navigate(`${path.singlePost}/${data?._id}`)
           // alert(
           //   `Payment Successful! Payment ID: ${response}`,
           // )
@@ -79,7 +81,7 @@ const Post = ({ data }) => {
         // alert(`Payment Failed! Error: ${response.error.description}`)
       })
     } else {
-      navigate(path.singlePost, { state: { postId: data?._id } })
+      navigate(`${path.singlePost}/${data?._id}`)
     }
   }
 
@@ -104,7 +106,7 @@ const Post = ({ data }) => {
           onClick={handleLike}
         />
         <img onClick={() => setModalOpened(true)} src={Comment} alt="" />
-        <img src={Share} alt="" />
+        <img src={Share} alt="" onClick={()=>setShareModalOpened(true)} />
       </div>
 
       <span style={{ color: 'var(--gray)', fontSize: '12px' }}>
@@ -120,6 +122,11 @@ const Post = ({ data }) => {
           modalOpened={modalOpened}
           setModalOpened={setModalOpened}
           comments={data?.comments}
+          postId={data?._id}
+        />
+        <PostShareModal
+          modalOpened={shareModalOpened}
+          setModalOpened={setShareModalOpened}
           postId={data?._id}
         />
       </div>

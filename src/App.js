@@ -19,7 +19,7 @@ function App() {
         <Route path={path.auth} element={<Auth />} />
         <Route path={path.authorAuth} element={<AuthorAuth />} />
         <Route path={path.profile} element={<Profile />} />
-        <Route path={path.singlePost} element={<SinglePost />} />
+        <Route path={`${path.singlePost}/:postId`} element={<SinglePost />} />
       </Routes>
       {/* <ToastContainer limit={1}/> */}
     </div>
