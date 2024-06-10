@@ -68,7 +68,7 @@ const ProfileCard = () => {
             <>
               <div className="vl"></div>
               <div className="follow">
-                <span>{authData?.data?.posts?.length ?? 0}</span>
+                <span>{authData?.data?.postCount ?? 0}</span>
                 <span>Posts</span>
               </div>
             </>
