@@ -4,9 +4,12 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createPost } from '../../actions/post.actions'
 import { appConfig } from '../../config/appConfig'
+import { useNavigate } from 'react-router-dom'
+import { path } from '../../paths/paths'
 
-function PostShareModal({ modalOpened, setModalOpened }) {
+function PaymentFailModal({ modalOpened, setModalOpened }) {
   const theme = useMantineTheme()
+  const navigate = useNavigate()
 
   return (
     <Modal
@@ -19,7 +22,10 @@ function PostShareModal({ modalOpened, setModalOpened }) {
       overlayBlur={3}
       size="60%"
       opened={modalOpened}
-      onClose={() => setModalOpened(false)}
+      onClose={() => {
+        setModalOpened(false)
+        navigate(path.home)
+      }}
     >
       <div className="a-right">
         <form>
@@ -31,13 +37,12 @@ function PostShareModal({ modalOpened, setModalOpened }) {
               alignItems: 'center',
             }}
           >
-            <h3 style={{color:"red"}}>Payment Failed</h3>
+            <h3 style={{ color: 'red' }}>Payment Failed</h3>
           </div>
-
         </form>
       </div>
     </Modal>
   )
 }
 
-export default PostShareModal
+export default PaymentFailModal

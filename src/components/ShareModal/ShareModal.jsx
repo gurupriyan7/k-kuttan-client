@@ -11,12 +11,13 @@ function ShareModal({ modalOpened, setModalOpened }) {
   // const [image, setImage] = useState(null)
   const [storyPage, setStoryPage] = useState(1)
 
-  const [story, setStory] = useState('')
+  // const [story, setStory] = useState('')
 
   const [data, setData] = useState({
     title: '',
     summary: '',
-    story: [],
+    // story: [],
+    story: "",
     image: null,
   })
   const handleChange = (e) => {
@@ -32,24 +33,24 @@ function ShareModal({ modalOpened, setModalOpened }) {
     // console.log(data, 'datassss',isSuccess)
   }
 
-  const handleNext = () => {
-    const sry ={
-      page: storyPage,
-      story,
-    }
-    setData({ ...data, story: [...data.story,sry] })
-    setStoryPage((page) => page + 1)
-    setStory("")
-  }
-  const handlePrevious =async (e) => {
-    e.preventDefault()
-    setStoryPage((page) => page - 1)
-    const prevData = await data?.story?.filter((d)=>d.page === storyPage)
-    console.log(prevData,"prev"); 
-    setStory(prevData[0]?.story)
-  }
+  // const handleNext = () => {
+  //   const sry ={
+  //     page: storyPage,
+  //     story,
+  //   }
+  //   setData({ ...data, story: [...data.story,sry] })
+  //   setStoryPage((page) => page + 1)
+  //   setStory("")
+  // }
+  // const handlePrevious =async (e) => {
+  //   e.preventDefault()
+  //   setStoryPage((page) => page - 1)
+  //   const prevData = await data?.story?.filter((d)=>d.page === storyPage)
+  //   console.log(prevData,"prev"); 
+  //   setStory(prevData[0]?.story)
+  // }
 
-  console.log(story,"dataddddd");
+  // console.log(story,"dataddddd");
 
   return (
     <Modal
@@ -98,9 +99,10 @@ function ShareModal({ modalOpened, setModalOpened }) {
               name="story"
               placeholder="Story"
               required
-              value={story}
+              value={data?.story}
               style={{ height: '10rem', marginTop: '11rem' }}
-              onChange={(e) => setStory(e.target.value)}
+              // onChange={(e) => setStory(e.target.value)}
+              onChange={handleChange}
             />
           </div>
 
@@ -112,40 +114,7 @@ function ShareModal({ modalOpened, setModalOpened }) {
           >
             Share
           </button>
-          <div className="pagination">
-            {storyPage > 1 && (
-              <span
-                className="button "
-                // type="submit"
-                style={{ padding: '4px' }}
-                onClick={handlePrevious}
-              >
-                Previous Page
-              </span>
-            )}
-            <span
-              style={{
-                border: '2px solid black',
-                backgroundColor: '#e0b065',
-                borderRadius: '9px',
-                width: 'auto',
-                minWidth: '1rem',
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              {storyPage}
-            </span>
 
-            <span
-              className="button "
-              // type="submit"
-              style={{ padding: '4px' }}
-              onClick={handleNext}
-            >
-              Next Page
-            </span>
-          </div>
         </form>
       </div>
     </Modal>

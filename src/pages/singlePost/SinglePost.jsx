@@ -23,10 +23,10 @@ import CommentModel from '../../components/CommentModal/CommentModel'
 import PostShareModal from '../../components/PostShareModal/PostshareModal'
 import { PaymentStatusEnum } from '../../constants/paymentEnum'
 import { path } from '../../paths/paths'
+import PaymentFailModal from '../../components/PaymentFailedModal/PaymentFailedModal'
 const SinglePost = (PostsData) => {
   const dispatch = useDispatch()
   const location = useLocation()
-
 
   // const searchParams = new URLSearchParams(location.search);
   // const postId = searchParams.get('id');
@@ -42,10 +42,9 @@ const SinglePost = (PostsData) => {
   const [shareModalOpened, setShareModalOpened] = useState(false)
   const [paymentStatus, setPaymentStatus] = useState(
     post?.isFree || post?.isPaid,
-  ) 
+  )
 
-  const [failed,setFailed]=useState(false)
-
+  const [failed, setFailed] = useState(false)
 
   useEffect(async () => {
     await dispatch(getPostById({ postId }))
@@ -63,14 +62,15 @@ const SinglePost = (PostsData) => {
   }
 
   const handleSelect = async (e) => {
-    alert(post?.isPaid)
+    // console.log(postDetails,"postDetails");
+    // alert(post?.isPaid)
     if (!post?.isFree && !post?.isPaid) {
       // e.preventDefault()
       // const res = await createPayment({
       //   postId: post?._id,
       // })
 
-      // console.log(res, 'responseddd')
+      console.log(paymentStatus, 'responseddd',failed)
 
       const options = {
         key: appConfig.razorpayKeyId,
@@ -112,17 +112,17 @@ const SinglePost = (PostsData) => {
       // alert('need to pay')
       rzp.on('payment.failed', async function (response) {
         console.log(response, 'payment failed response')
+        setPaymentStatus(false)
         await updatePayment({
-          transactionId: response?.razorpay_payment_id,
+          transactionId: response?.error?.metadata?.payment_id ,
           amount: post?.amount,
           status: PaymentStatusEnum.FAILED,
           postId: post?._id,
         })
-        setPaymentStatus(false)
+        setFailed(true)
+        
         // alert(`Payment Failed! Error: ${response.error.description}`)
       })
-    }else{
-      setFailed(true)
     }
   }
 
@@ -132,7 +132,7 @@ const SinglePost = (PostsData) => {
 
   return (
     <>
-      {paymentStatus && (
+      {paymentStatus ? (
         <div
           className="SinglePost"
           style={{
@@ -227,7 +227,10 @@ const SinglePost = (PostsData) => {
             setModalOpened={setShareModalOpened}
             postId={post?._id}
           />
+  
         </div>
+      ):(
+        <PaymentFailModal modalOpened={failed} setModalOpened={setFailed} />
       )}
     </>
   )

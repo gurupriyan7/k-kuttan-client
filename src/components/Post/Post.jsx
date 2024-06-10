@@ -24,7 +24,7 @@ const Post = ({ data }) => {
   const [shareModalOpened, setShareModalOpened] = useState(false)
 
   const handleSelect = async (e) => {
-    alert(data?.isPaid)
+    // alert(data?.isPaid)
     if (!data?.isFree && !data?.isPaid) {
       e.preventDefault()
       // const res = await createPayment({
