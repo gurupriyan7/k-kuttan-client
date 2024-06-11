@@ -13,6 +13,7 @@ import { path } from '../../paths/paths'
 import CommentModel from '../CommentModal/CommentModel'
 import { PaymentStatusEnum } from '../../constants/paymentEnum'
 import PostShareModal from '../PostShareModal/PostshareModal'
+import postImage from '../../img/authback.png'
 
 const Post = ({ data }) => {
   const navigate = useNavigate()
@@ -94,7 +95,9 @@ const Post = ({ data }) => {
     <div className="Post">
       <img
         onClick={handleSelect}
-        src={`${appConfig.awsBucketUrl}/${data?.image}`}
+        src={
+          data?.image ? `${appConfig.awsBucketUrl}/${data?.image}` : postImage
+        }
         alt="story"
       />
 
@@ -106,7 +109,7 @@ const Post = ({ data }) => {
           onClick={handleLike}
         />
         <img onClick={() => setModalOpened(true)} src={Comment} alt="" />
-        <img src={Share} alt="" onClick={()=>setShareModalOpened(true)} />
+        <img src={Share} alt="" onClick={() => setShareModalOpened(true)} />
       </div>
 
       <span style={{ color: 'var(--gray)', fontSize: '12px' }}>

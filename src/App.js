@@ -8,6 +8,7 @@ import SinglePost from "./pages/singlePost/SinglePost";
 import { Routes, Route } from "react-router-dom";
 import { path } from "./paths/paths";
 import AuthorAuth from "./pages/AuthorAuth/AuthorAuth";
+import AddPost from "./components/AddPost/AddPost";
 function App() {
   return (
     <div className="App">
@@ -20,6 +21,7 @@ function App() {
         <Route path={path.authorAuth} element={<AuthorAuth />} />
         <Route path={path.profile} element={<Profile />} />
         <Route path={`${path.singlePost}/:postId`} element={<SinglePost />} />
+        <Route path={`${path.addPost}`} element={<AddPost />} />
       </Routes>
       {/* <ToastContainer limit={1}/> */}
     </div>

@@ -44,6 +44,8 @@ const SinglePost = (PostsData) => {
     post?.isFree || post?.isPaid,
   )
 
+  const [page, setPage] = useState(1)
+
   const [failed, setFailed] = useState(false)
 
   useEffect(async () => {
@@ -61,6 +63,15 @@ const SinglePost = (PostsData) => {
     liked ? setLikes((prev) => prev - 1) : setLikes((prev) => prev + 1)
   }
 
+  const handlePagination = (event, isNext) => {
+    event.preventDefault()
+    if (isNext) {
+      setPage(page + 1)
+    } else {
+      setPage(page - 1)
+    }
+  }
+
   const handleSelect = async (e) => {
     // console.log(postDetails,"postDetails");
     // alert(post?.isPaid)
@@ -70,7 +81,7 @@ const SinglePost = (PostsData) => {
       //   postId: post?._id,
       // })
 
-      console.log(paymentStatus, 'responseddd',failed)
+      console.log(paymentStatus, 'responseddd', failed)
 
       const options = {
         key: appConfig.razorpayKeyId,
@@ -114,13 +125,13 @@ const SinglePost = (PostsData) => {
         console.log(response, 'payment failed response')
         setPaymentStatus(false)
         await updatePayment({
-          transactionId: response?.error?.metadata?.payment_id ,
+          transactionId: response?.error?.metadata?.payment_id,
           amount: post?.amount,
           status: PaymentStatusEnum.FAILED,
           postId: post?._id,
         })
         setFailed(true)
-        
+
         // alert(`Payment Failed! Error: ${response.error.description}`)
       })
     }
@@ -206,8 +217,43 @@ const SinglePost = (PostsData) => {
                   <span>
                     <b>{post?.title}</b>
                   </span>
-                  <span> {post?.story}</span>
+                  <span> {post?.story[page - 1]?.story}</span>
                 </div>
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  gap: '1rem',
+                }}
+              >
+                {page > 1 && (
+                  <button
+                    onClick={(event) => handlePagination(event, false)}
+                    className="pagination-byn"
+                  >
+                    previous
+                  </button>
+                )}
+                <span
+                  style={{
+                    color: 'black',
+                    backgroundColor: 'white',
+                    width: '1rem',
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {page}
+                </span>
+                {page < post?.story?.length && (
+                  <button
+                    onClick={(event) => handlePagination(event, true)}
+                    className="pagination-byn"
+                  >
+                    Next
+                  </button>
+                )}
               </div>
             </div>
 
@@ -227,9 +273,8 @@ const SinglePost = (PostsData) => {
             setModalOpened={setShareModalOpened}
             postId={post?._id}
           />
-  
         </div>
-      ):(
+      ) : (
         <PaymentFailModal modalOpened={failed} setModalOpened={setFailed} />
       )}
     </>
