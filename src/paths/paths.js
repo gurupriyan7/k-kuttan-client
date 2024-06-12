@@ -4,5 +4,6 @@ export const path = {
   profile: "/profile",
   singlePost: "/singlePost",
   authorAuth:"/author-auth",
-  addPost:"/add-post"
+  addPost:"/add-post",
+  editPost:"/edit-post"
 };

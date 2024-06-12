@@ -32,6 +32,7 @@ const SinglePost = (PostsData) => {
   // const postId = searchParams.get('id');
   // const { postId } = location.state
   const { postId } = useParams()
+  const navigate = useNavigate()
   console.log(postId, 'postIdsss')
 
   const post = useSelector((state) => state.postReducer.post)
@@ -62,6 +63,11 @@ const SinglePost = (PostsData) => {
     likeAndCommentPost(post?._id, user?._id)
     liked ? setLikes((prev) => prev - 1) : setLikes((prev) => prev + 1)
   }
+  const handleEdit=(e)=>{
+    e.preventDefault();
+    navigate(`${path?.editPost}/${post?._id}`)
+
+  }
 
   const handlePagination = (event, isNext) => {
     event.preventDefault()
@@ -75,7 +81,7 @@ const SinglePost = (PostsData) => {
   const handleSelect = async (e) => {
     // console.log(postDetails,"postDetails");
     // alert(post?.isPaid)
-    if (!post?.isFree && !post?.isPaid) {
+    if (!post?.isFree && !post?.isPaid&&!post?.isDraft) {
       // e.preventDefault()
       // const res = await createPayment({
       //   postId: post?._id,
@@ -164,6 +170,7 @@ const SinglePost = (PostsData) => {
             </div>
             {/* scroll content */}
             <div className="badan">
+              
               <div
                 style={{
                   // backgroundColor: "black",
@@ -177,10 +184,11 @@ const SinglePost = (PostsData) => {
                   backgroundRepeat: 'no-repeat',
                 }}
               >
+                
                 {/* <img src={`${appConfig.awsBucketUrl}/${post?.image}`} alt="sdfs" /> */}
 
                 <div class="post-reactions">
-                  <div className="postReact-single">
+                  {!post?.isDraft&&<div className="postReact-single">
                     <img
                       src={liked ? Heart : NotLike}
                       alt=""
@@ -199,9 +207,9 @@ const SinglePost = (PostsData) => {
                       onClick={() => setShareModalOpened(true)}
                       style={{ cursor: 'pointer' }}
                     />
-                  </div>
+                  </div>}
 
-                  <p
+                  {!post?.isDraft&&<p
                     style={{
                       color: 'var(--gray)',
                       fontSize: '12px',
@@ -209,8 +217,8 @@ const SinglePost = (PostsData) => {
                       // display:"none"
                     }}
                   >
-                    {likes} likes
-                  </p>
+                    {likes} likes  
+                  </p>}
                 </div>
 
                 <div className="singlepost-detail">
@@ -259,6 +267,7 @@ const SinglePost = (PostsData) => {
 
             {/* soldier image right */}
             <div style={{ backgroundColor: '' }} className="soldier-2">
+            <div onClick={handleEdit} className='editBtn' style={{zIndex:"2rem"}}>Edit</div>
               <img src={right} style={{ width: '20rem' }} alt="" />
             </div>
           </div>

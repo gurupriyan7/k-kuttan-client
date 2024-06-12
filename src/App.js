@@ -9,6 +9,7 @@ import { Routes, Route } from "react-router-dom";
 import { path } from "./paths/paths";
 import AuthorAuth from "./pages/AuthorAuth/AuthorAuth";
 import AddPost from "./components/AddPost/AddPost";
+import EditPost from "./components/EditPost/EditPost";
 function App() {
   return (
     <div className="App">
@@ -22,6 +23,7 @@ function App() {
         <Route path={path.profile} element={<Profile />} />
         <Route path={`${path.singlePost}/:postId`} element={<SinglePost />} />
         <Route path={`${path.addPost}`} element={<AddPost />} />
+        <Route path={`${path.editPost}/:postId`} element={<EditPost />} />
       </Routes>
       {/* <ToastContainer limit={1}/> */}
     </div>

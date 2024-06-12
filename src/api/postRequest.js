@@ -26,11 +26,11 @@ export const getAllPosts = async () => {
     console.log(error);
   }
 };
-export const getPostsByUser = async () => {
+export const getPostsByUser = async (isDraft) => {
   try {
     const token = getLocalStorageItem("token");
     // const token = userData?.data?.token;
-    return await API.get("/post/user", {
+    return await API.get(`/post/user?isDraft=${isDraft}`, {
       headers: {
         Authorization: `Bearer ${token}` // Include the Bearer token in the Authorization header
       }
@@ -123,6 +123,27 @@ export const updatePayment = async (paymentData) => {
       `webHook`,
       {
         ...paymentData
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}` // Include the Bearer token in the Authorization header
+        }
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updatePost = async (id, userData) => {
+  try {
+    const token = getLocalStorageItem("token");
+    // const token = userData?.data?.token;
+
+    return await API.patch(
+      `post/${id}`,
+      {
+        ...userData
       },
       {
         headers: {

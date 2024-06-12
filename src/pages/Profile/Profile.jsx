@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import PostSide from '../../components/PostSide/PostSide'
 import ProfileCard from '../../components/ProfileCard.jsx/ProfileCard'
 import ProfileLeft from '../../components/ProfileLeft/ProfileLeft'
@@ -14,13 +14,15 @@ const Profile = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  const [isDraft,setIsDraft]=useState(false)
+
   const postData = useSelector((state) => state.postReducer.posts)
   const authData = useSelector((state) => state.authReducer.authData)
 
   useEffect(() => {
-    dispatch(getPostsByUser())
+    dispatch(getPostsByUser(isDraft))
     dispatch(findUserProfile())
-  }, [dispatch])
+  }, [dispatch,isDraft])
 
 
   return (
@@ -29,18 +31,18 @@ const Profile = () => {
       <div className="Profile-center">
         <ProfileCard />
         <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <button className="button ps-button" style={{ marginLeft: '1rem' }}>
+          {/* <button className="button ps-button" style={{ marginLeft: '1rem' }}>
             Saved
-          </button>
-          <button className="button ps-button" style={{ marginLeft: '1rem' }}>
+          </button> */}
+          <button onClick={()=>setIsDraft(true)} className={`button ps-button ${isDraft&&"active"}`} style={{ marginLeft: '1rem', }}>
             Draft
           </button>
-          <button className="button ps-button" style={{ marginLeft: '1rem' }}>
+          <button onClick={()=>setIsDraft(false)}  className={`button ps-button ${!isDraft&&"active"}`} style={{ marginLeft: '1rem' }}>
             Publised
           </button>
-          <button className="button ps-button" style={{ marginLeft: '1rem' }}>
+          {/* <button className="button ps-button" style={{ marginLeft: '1rem' }}>
             Edited
-          </button>
+          </button> */}
         </div>
         <PostSide postData={postData} />
       </div>

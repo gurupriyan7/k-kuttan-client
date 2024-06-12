@@ -1,33 +1,50 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-expressions */
-import React, { useRef, useState } from 'react'
-import './AddPost.css'
-import { Center } from '@mantine/core'
+import React, { useEffect, useRef, useState } from 'react'
+import './EditPost.css'
 import { UilTimes } from '@iconscout/react-unicons'
 import { UilScenery } from '@iconscout/react-unicons'
-import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 import { getPreSignedUrlUtill } from '../../utils/s3.utils'
 import back from '../../img/wp4082523.webp'
-import { createPost } from '../../actions/post.actions'
-import { path } from '../../paths/paths';
+import { createPost, getPostById } from '../../actions/post.actions'
+import { path } from '../../paths/paths'
+import { appConfig } from '../../config/appConfig'
+import { updatePost } from '../../api/postRequest'
 
-const AddPost = () => {
+const EditPost = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  const { postId } = useParams()
+
+  const post = useSelector((state) => state.postReducer.post)
+
+  useEffect(() => {
+    dispatch(getPostById({ postId }))
+  }, [dispatch, postId])
+
+  useEffect(() => {
+    if (post?.story) {
+      setStories(post.story)
+      setStoryCount(post.story.length)
+    }
+    setFormData({
+      title: post?.title || '',
+      summary: post?.summary || '',
+      image: post?.image || '',
+    })
+  }, [post])
+
   const [storyCount, setStoryCount] = useState(1)
-  const [stories, setStories] = useState([
-    {
-      page: 1,
-      story: '',
-    },
-  ])
+  const [stories, setStories] = useState([{ story: '' }])
   const [image, setImage] = useState(null)
   const imageRef = useRef()
   const [formData, setFormData] = useState({
     title: '',
     summary: '',
-    image: null,
+    image: '',
   })
 
   const onImageChange = async (event) => {
@@ -52,6 +69,7 @@ const AddPost = () => {
       [name]: value,
     })
   }
+
   const addStory = () => {
     setStories([...stories, { page: stories.length + 1, story: '' }])
     setStoryCount(storyCount + 1)
@@ -70,19 +88,16 @@ const AddPost = () => {
     setStories(newStories)
   }
 
-  const handleSubmit = (e,isDraft) => {
+  const handleSubmit = (e, isDraft) => {
     e.preventDefault()
     // Handle form submission logic here
-    dispatch(
-      createPost({
-        ...formData,
-        story: stories,
-        ...(isDraft&&{
-          isDraft:isDraft
-        })
-      }),
-    )
-    navigate(path.home)
+
+    updatePost(post?._id, {
+      ...formData,
+      story: stories,
+      isDraft: isDraft,
+    }),
+      navigate(path.profile)
     console.log(stories, 'Form submitted:', formData)
   }
 
@@ -90,25 +105,11 @@ const AddPost = () => {
     <div className="main" style={{ backgroundImage: `URL(${back})` }}>
       <div className="container">
         <div className="form-container">
-          {/* <div className="left-container">
-          <div className="left-inner-container">
-            <h2>Let's Chat</h2>
-            <p>Whether you have a question, want to start a project or simply want to connect.</p>
-            <br />
-            <p>Feel free to send me a message in the contact form</p>
-          </div>
-        </div> */}
           <div className="right-container">
             <div className="right-inner-container">
               <form action="#">
-                <h2 className="lg-view">Add Post</h2>
-                <h2 className="sm-view">Add Post</h2>
-                {/* <p>* Required</p> */}
-                {/* <div className="social-container">
-                <a href="#" className="social"><i className="fab fa-facebook-f"></i></a>
-                <a href="#" className="social"><i className="fab fa-google-plus-g"></i></a>
-                <a href="#" className="social"><i className="fab fa-linkedin-in"></i></a>
-              </div> */}
+                <h2 className="lg-view">Edit Post</h2>
+                <h2 className="sm-view">Edit Post</h2>
                 <input
                   type="text"
                   placeholder="Title *"
@@ -136,12 +137,12 @@ const AddPost = () => {
                     style={{
                       cursor: 'pointer',
                       color: 'var(--photo)',
-                      width: '100%', // Ensure the input takes the full width
-                      opacity: 0, // Hide the input
-                      position: 'absolute', // Overlay the input on top of the button
+                      width: '100%',
+                      opacity: 0,
+                      position: 'absolute',
                       left: 0,
                       top: 0,
-                      height: '100%', // Ensure the input takes the full height of the container
+                      height: '100%',
                     }}
                   />
                   <span
@@ -153,26 +154,30 @@ const AddPost = () => {
                       alignItems: 'center',
                     }}
                   >
-                    <UilScenery /> Photo 
+                    <UilScenery /> Photo
                   </span>
                 </div>
-                {image && (
+                {(image || post?.image) && (
                   <div className="previewImage">
                     <UilTimes
                       onClick={() => {
-                        setImage(null),
-                          setFormData({ ...formData, image: null })
+                        setImage(null)
+                        setFormData({ ...formData, image: null })
                       }}
                     />
-                    <img src={image} alt="sdfsf" />
+                    <img
+                      src={image ?? `${appConfig.awsBucketUrl}/${post?.image}`}
+                      alt="preview"
+                    />
                   </div>
                 )}
-                {Array.from({ length: storyCount }).map((_, index) => (
+                {stories.map((story, index) => (
                   <textarea
+                    key={index}
                     rows="8"
                     placeholder={`Page ${index + 1}`}
                     name="story"
-                    value={formData.story}
+                    value={story?.story}
                     onChange={(e) => handleInputChange(index, e.target.value)}
                     className="input"
                   ></textarea>
@@ -202,9 +207,11 @@ const AddPost = () => {
                     gap: '1rem',
                   }}
                 >
-                  <span onClick={(e)=>handleSubmit(e,true)} className="btn">Save Draft</span>
-                  <span onClick={(e)=>handleSubmit(e,false)} className="btn">
-                    Add Post
+                  <span onClick={(e) => handleSubmit(e, true)} className={`btn ${post?.isDraft ? " ":"diActivate"}`} >
+                    Save Draft
+                  </span>
+                  <span onClick={(e) => handleSubmit(e, false)} className="btn">
+                    Publish
                   </span>
                 </div>
               </form>
@@ -216,4 +223,4 @@ const AddPost = () => {
   )
 }
 
-export default AddPost
+export default EditPost
