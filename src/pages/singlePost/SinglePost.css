@@ -99,7 +99,28 @@
   width: 1.5rem;
   height: 1.5rem;
 }
+.pagination-byn{
+  background-color: orange;
+  border: 2px solid white ;
+  border-radius: 5px;
+}
 
+.editBtn{
+  z-index: 2rem;
+  background-color: orange;
+  min-width: 2rem;
+  min-height: 2rem;
+  width: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 9px;
+  /* font-weight: 600; */
+  cursor: pointer;
+}
+.editBtn:hover{
+  border: 2px solid white;
+}
 
 
 

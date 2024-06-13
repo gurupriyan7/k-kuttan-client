@@ -19,3 +19,9 @@
   flex-direction: column;
   gap: 1rem;
 }
+.active {
+  cursor: pointer;
+  color: var(--orange);
+  background: transparent;
+  border: 2px solid var(--orange);
+}

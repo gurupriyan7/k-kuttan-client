@@ -6,5 +6,7 @@ export const path = {
   authorAuth:"/author-auth",
   chat:"chat",
   room:"room",
-  explore:"explore"
+  explore:"explore",
+  addPost:"/add-post",
+  editPost:"/edit-post"
 };

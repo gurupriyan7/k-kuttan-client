@@ -12,10 +12,10 @@ export const getAllPosts = () => async (dispatch) => {
     dispatch({ type: "FETCH_FAILED",data:error?.response?.data });
   }
 };
-export const getPostsByUser = () => async (dispatch) => {
+export const getPostsByUser = (isDraft) => async (dispatch) => {
   dispatch({ type: "FETCH_START" });
   try {
-    const { data } = await PostApi.getPostsByUser();
+    const { data } = await PostApi.getPostsByUser(isDraft);
     dispatch({ type: "FETCH_SUCCESS", data: data?.data });
   } catch (error) {
     console.log(error, "errorrorrosss");

@@ -13,6 +13,8 @@ import { path } from '../../paths/paths'
 import CommentModel from '../CommentModal/CommentModel'
 import { PaymentStatusEnum } from '../../constants/paymentEnum'
 import PostShareModal from '../PostShareModal/PostshareModal'
+import postImage from '../../img/authback.png'
+import { PostApprovalStatus } from '../../constants/PostEnum'
 
 const Post = ({ data }) => {
   const navigate = useNavigate()
@@ -24,66 +26,70 @@ const Post = ({ data }) => {
   const [shareModalOpened, setShareModalOpened] = useState(false)
 
   const handleSelect = async (e) => {
-    // alert(data?.isPaid)
-    if (!data?.isFree && !data?.isPaid) {
-      e.preventDefault()
-      // const res = await createPayment({
-      //   postId: data?._id,const
-      // })
+    if (data?.isDraft) {
+      navigate(`${path.editPost}/${data?._id}`)
+    } else {
+      if (!data?.isFree && !data?.isPaid) {
+        e.preventDefault()
+        // const res = await createPayment({
+        //   postId: data?._id,const
+        // })
 
-      // console.log(res, 'responseddd')
+        // console.log(res, 'responseddd')
 
-      const options = {
-        key: appConfig.razorpayKeyId,
-        key_secret: appConfig.razorpayKeySecret,
-        amount: data?.amount * 100,
-        currency: 'INR',
-        name: data?.title,
-        description: 'Test Transaction',
-        handler: async function async(response) {
-          console.log(response, 'response')
+        const options = {
+          key: appConfig.razorpayKeyId,
+          key_secret: appConfig.razorpayKeySecret,
+          amount: data?.amount * 100,
+          currency: 'INR',
+          name: data?.title,
+          description: 'Test Transaction',
+          handler: async function async(response) {
+            console.log(response, 'response')
+            await updatePayment({
+              transactionId: response?.razorpay_payment_id,
+              amount: data?.amount,
+              status: PaymentStatusEnum.SUCCESS,
+              postId: data?._id,
+            })
+            navigate(`${path.singlePost}/${data?._id}`)
+            // alert(
+            //   `Payment Successful! Payment ID: ${response}`,
+            // )
+          },
+          prefill: {
+            name: 'Your Name',
+            email: 'your.email@example.com',
+            contact: '9999999999',
+          },
+          notes: {
+            address: 'Your Address',
+          },
+          theme: {
+            color: '#3399cc',
+          },
+        }
+
+        const rzp = new window.Razorpay(options)
+        rzp.open()
+
+        // alert('need to pay')
+        rzp.on('payment.failed', async function (response) {
+          console.log(response, 'payment failed response')
           await updatePayment({
             transactionId: response?.razorpay_payment_id,
             amount: data?.amount,
-            status: PaymentStatusEnum.SUCCESS,
+            status: PaymentStatusEnum.FAILED,
             postId: data?._id,
           })
-          navigate(`${path.singlePost}/${data?._id}`)
-          // alert(
-          //   `Payment Successful! Payment ID: ${response}`,
-          // )
-        },
-        prefill: {
-          name: 'Your Name',
-          email: 'your.email@example.com',
-          contact: '9999999999',
-        },
-        notes: {
-          address: 'Your Address',
-        },
-        theme: {
-          color: '#3399cc',
-        },
-      }
-
-      const rzp = new window.Razorpay(options)
-      rzp.open()
-
-      // alert('need to pay')
-      rzp.on('payment.failed', async function (response) {
-        console.log(response, 'payment failed response')
-        await updatePayment({
-          transactionId: response?.razorpay_payment_id,
-          amount: data?.amount,
-          status: PaymentStatusEnum.FAILED,
-          postId: data?._id,
+          // alert(`Payment Failed! Error: ${response.error.description}`)
         })
-        // alert(`Payment Failed! Error: ${response.error.description}`)
-      })
-    } else {
-      navigate(`${path.singlePost}/${data?._id}`)
+      } else {
+        navigate(`${path.singlePost}/${data?._id}`)
+      }
     }
   }
+  // alert(data?.isPaid)
 
   const handleLike = () => {
     setLiked((prev) => !prev)
@@ -94,24 +100,46 @@ const Post = ({ data }) => {
     <div className="Post">
       <img
         onClick={handleSelect}
-        src={`${appConfig.awsBucketUrl}/${data?.image}`}
+        src={
+          data?.image ? `${appConfig.awsBucketUrl}/${data?.image}` : postImage
+        }
         alt="story"
       />
 
-      <div className="postReact">
-        <img
-          src={liked ? Heart : NotLike}
-          className="likeImg"
-          alt=""
-          onClick={handleLike}
-        />
-        <img onClick={() => setModalOpened(true)} src={Comment} alt="" />
-        <img src={Share} alt="" onClick={()=>setShareModalOpened(true)} />
-      </div>
+      {!data?.isDraft && data?.approvalStatus === PostApprovalStatus.APPROVED && (
+        <div className="postReact">
+          <img
+            src={liked ? Heart : NotLike}
+            className="likeImg"
+            alt=""
+            onClick={handleLike}
+          />
+          <img onClick={() => setModalOpened(true)} src={Comment} alt="" />
+          <img src={Share} alt="" onClick={() => setShareModalOpened(true)} />
+        </div>
+      )}
+      {data?.approvalStatus !== PostApprovalStatus.APPROVED && !data?.isDraft && (
+        <div className="postReact">
+          <span style={{ fontWeight: '600' }}>Approval Status:</span>
+          <span
+            style={{
+              color:
+                data?.PostApprovalStatus === PostApprovalStatus.REJECTED
+                  ? 'red'
+                  : '#ffc300',
+            }}
+          >
+            {data?.approvalStatus}
+          </span>
+        </div>
+      )}
 
-      <span style={{ color: 'var(--gray)', fontSize: '12px' }}>
-        {likes} likes
-      </span>
+      {!data?.isDraft &&
+        data?.approvalStatus === PostApprovalStatus.APPROVED && (
+          <span style={{ color: 'var(--gray)', fontSize: '12px' }}>
+            {likes} likes
+          </span>
+        )}
 
       <div className="detail">
         <p className="truncate">

@@ -8,9 +8,12 @@ import TrendCard from '../TrendCard/TrendCard'
 import ShareModal from '../ShareModal/ShareModal'
 import { useSelector } from 'react-redux'
 import { UserRole } from '../../config/enums'
+import { path } from '../../paths/paths';
+import { useNavigate } from 'react-router-dom';
 
 const RightSide = () => {
   const [modalOpened, setModalOpened] = useState(false)
+  const navigate= useNavigate()
   const authData = useSelector((state) => state.authReducer.authData)
   const isUploaded = useSelector((state)=>state.postReducer.isUploaded)
 
@@ -32,7 +35,10 @@ const RightSide = () => {
       <button
         style={{ color: 'black', display: `${isAuthor ? 'block' : 'none'}` }}
         className="button r-button"
-        onClick={() => setModalOpened(true)}
+        onClick={(e) => {
+e.preventDefault()
+navigate(path.addPost)
+        }}
       >
         Share
       </button>

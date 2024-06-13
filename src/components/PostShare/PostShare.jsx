@@ -96,7 +96,11 @@ const PostShare = ({ data, setData }) => {
           <UilSchedule />
           Shedule
         </div>
-        <button style={{ color: 'black' }} className="button ps-button">
+        <button onClick={(e)=>{
+          e.preventDefault()
+          navigate(path.addPost)
+
+        }} style={{ color: 'black' }} className="button ps-button">
           Share
         </button>
         <div style={{ display: 'none' }}>
@@ -108,7 +112,7 @@ const PostShare = ({ data, setData }) => {
           />
         </div>
       </div>
-      {data?.image && (
+      {/* {data?.image && (
         <div className="previewImage">
           <UilTimes
             onClick={() => {
@@ -117,7 +121,7 @@ const PostShare = ({ data, setData }) => {
           />
           <img src={image} alt="sdfsf" />
         </div>
-      )}
+      )} */}
     </div>
   )
 }

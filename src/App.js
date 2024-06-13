@@ -11,6 +11,8 @@ import AuthorAuth from "./pages/AuthorAuth/AuthorAuth";
 import Chat from "./pages/Chat/Chat";
 import Explore from "./pages/Explore/Explore";
 import Room from "./pages/Room/Room";
+import AddPost from "./components/AddPost/AddPost";
+import EditPost from "./components/EditPost/EditPost";
 function App() {
   return (
     <div className="App">
@@ -26,6 +28,8 @@ function App() {
         <Route path={path.explore} element ={<Explore/>}/>
         <Route path={path.room} element ={<Room/>}/>
         <Route path={`${path.singlePost}/:postId`} element={<SinglePost />} />
+        <Route path={`${path.addPost}`} element={<AddPost />} />
+        <Route path={`${path.editPost}/:postId`} element={<EditPost />} />
       </Routes>
       {/* <ToastContainer limit={1}/> */}
     </div>
