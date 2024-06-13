@@ -3,5 +3,8 @@ export const path = {
   auth: "/auth",
   profile: "/profile",
   singlePost: "/singlePost",
-  authorAuth:"/author-auth"
+  authorAuth:"/author-auth",
+  chat:"chat",
+  room:"room",
+  explore:"explore"
 };
