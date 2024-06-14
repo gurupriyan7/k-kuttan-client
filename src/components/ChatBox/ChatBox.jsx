@@ -5,8 +5,9 @@ import './ChatBox.css'
 import { format } from 'timeago.js'
 import InputEmoji from 'react-input-emoji'
 import { useRef } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { appConfig } from '../../config/appConfig'
+import { createMessage, findUserMessages } from '../../actions/chat.actions'
 const ChatBox = ({
   chat,
   currentUser,
@@ -14,20 +15,26 @@ const ChatBox = ({
   recieveMessage,
   room,
 }) => {
-
-
   const authData = useSelector((state) => state.authReducer.authData)
+  const messageDatas = useSelector((state) => state.chatReducer.messages)
   const [userData, setUserData] = useState(null)
   const [messages, setMessages] = useState([])
   const [newMessage, setNewMessage] = useState('')
+  const [chatUser, setChatUser] = useState(null)
   const scroll = useRef()
+  const dispatch = useDispatch()
   const handleChange = (newMessage) => {
     setNewMessage(newMessage)
   }
   //fetching data for header of chat box
   useEffect(() => {
-  // const chatMember = chat.members.find((member) => member !== authData?.data?._id)
-  const chatMember = chat.members.find((member) => member !== authData?.data?._id)
+    const chatMember = chat?.members?.find(
+      (member) => member?._id !== authData?.data?._id,
+    )
+    setChatUser(chatMember, 'chatMemger????????????')
+    // const chatMember = chat?.members?.find(
+    //   (member) => member !== authData?.data?._id,
+    // )
     const getUserData = async () => {
       try {
         const { data } = {}
@@ -40,16 +47,21 @@ const ChatBox = ({
     if (chat !== null) {
       getUserData()
     }
-  }, [chat, currentUser])
+  }, [authData?.data, chat, currentUser])
+
+  useEffect(() => {
+    console.log(messageDatas, '....data')
+    setMessages(messageDatas)
+  }, [messageDatas])
 
   //fetching data for messages
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const { data } = ''
+        dispatch(findUserMessages(chat?._id))
         //   await getMessages(chat._id)
-        setMessages(data)
-        console.log(data)
+        setMessages(messageDatas)
+        // console.log(data)
       } catch (error) {
         console.log(error)
       }
@@ -58,9 +70,10 @@ const ChatBox = ({
       fetchMessages()
     }
   }, [chat])
-  const { user } = useSelector((state) => state.authReducer.authData)
+  // const { user } = useSelector((state) => state.authReducer.authData)
   useEffect(() => {
     scroll.current?.scrollIntoView({ behavior: 'smooth' })
+    console.log(messages, 'messages', messageDatas)
   }, [messages])
 
   const handleSend = async (e) => {
@@ -69,24 +82,26 @@ const ChatBox = ({
       senderId: currentUser,
       text: newMessage,
       chatId: chat?._id,
-      name: user?.firstName,
     }
 
     //send message to data base
     try {
+      dispatch(createMessage(message))
       const { data } = ''
       // await addMessage(message)
-      setMessages([...messages, data])
+      // setMessages([...messages, data])
       setNewMessage('')
     } catch (error) {
       console.log(error)
     }
 
     //set msg to socket server
-    const recieverId = chat?.members.filter((id) => id !== currentUser)
-    setSendMessage({ ...message, recieverId })
+    const recieverId = chat?.members.find((id) => id?._id !== currentUser)
+    console.log(recieverId,"receiverIdddddd");
+    setSendMessage({ ...message, recieverId:recieverId?._id })
   }
   useEffect(() => {
+    console.log(recieveMessage, 'receiveMessage')
     if (recieveMessage !== null && recieveMessage?.chatId === chat?._id) {
       setMessages([...messages, recieveMessage])
     }
@@ -104,7 +119,7 @@ const ChatBox = ({
                 <div>
                   {!room && (
                     <img
-                      src={`${appConfig.awsBucketUrl}/${userData?.profileImage}`}
+                      src={`${appConfig.awsBucketUrl}/${chatUser?.profileImage}`}
                       alt=""
                       className="followerImage"
                       style={{
@@ -116,8 +131,8 @@ const ChatBox = ({
                   )}
                   <div className="name" style={{ fontSize: '0.8rem' }}>
                     <span>
-                      {room ? chat.name : userData?.firstName}
-                      {/* {userData?.lastname} */}
+                      {room ? chat.name : chatUser?.firstName}
+                      {/* {chatUser?.lastname} */}
                     </span>
                   </div>
                 </div>

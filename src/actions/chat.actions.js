@@ -21,3 +21,24 @@ export const createUserChat = (chatData) => async (dispatch) => {
     dispatch({ type: "CHAT_CREATE_FAILED", data: error?.response?.data });
   }
 };
+export const createMessage = (messageData) => async (dispatch) => {
+  dispatch({ type: "MESSAGES_START" });
+  try {
+    const { data } = await ChatApi.createMessage(messageData);
+    dispatch({ type: "MESSAGES_SUCCESS", data: data?.data });
+  } catch (error) {
+    console.log(error?.message, "errorrorro");
+    dispatch({ type: "MESSAGES_FAILED", data: error?.response?.data });
+  }
+};
+
+export const findUserMessages = (chatId) => async (dispatch) => {
+  dispatch({ type: "CHAT_START" });
+  try {
+    const { data } = await ChatApi.getUserMessages(chatId);
+    dispatch({ type: "CHAT_SUCCESS", data: data?.data });
+  } catch (error) {
+    console.log(error?.message, "chats fetching fail");
+    dispatch({ type: "CHAT_FAIL", data: error?.response?.data });
+  }
+};

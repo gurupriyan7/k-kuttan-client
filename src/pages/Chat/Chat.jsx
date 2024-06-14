@@ -31,7 +31,7 @@ const Chat = () => {
   const socket = useRef()
 
   useEffect(() => {
-    socket.current = io('https://k-kuttan-socket-5c70463a5ea1.herokuapp.com')
+    socket.current = io('https://k-kuttan-socket-5c70463a5ea1.herokuapp.com/')
     socket.current.emit('new-user-add', authData?.data?._id)
     socket.current.on('get-users', (users) => {
       setOnlineUsers(users)
@@ -47,10 +47,16 @@ const Chat = () => {
   //recieve message
 
   useEffect(() => {
-    socket.current.on('recieve-message', (data) => {
-      setRecieveMessage(data)
-    })
-  }, [])
+    socket.current.on('receive-message', (data) => {
+      console.log(data, "receive message");
+      setRecieveMessage(data);
+    });
+
+    // Clean up listener on unmount
+    return () => {
+      socket.current.off('recieve-message');
+    };
+  }, []);
 
   const getChats = async () => {
     try {
@@ -68,9 +74,10 @@ const Chat = () => {
   }, [authData?.data])
 
   const checkOnlineStatus = (chat) => {
-    const chatMember = chat.members.find((member) => member !== authData?.data?._id)
+    const chatMember = chat?.members?.find((member) => member?._id !== authData?.data?._id)
+    // console.log(chatMember,"chatMember",authData?.data,"MEMBER",chat);
 
-    const online = onlineUsers.find((user) => user?.userId === chatMember)
+    const online = onlineUsers?.find((user) => user?.userId === chatMember?._id)
     return online ? true : false
   }
   return (

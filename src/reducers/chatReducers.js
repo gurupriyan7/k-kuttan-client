@@ -4,6 +4,7 @@ const chatReducer = (
   state = {
     chat: null,
     chats: [],
+    messages: [],
     loading: false,
     error: null,
     isError: false
@@ -41,6 +42,48 @@ const chatReducer = (
       };
 
     case "CHAT_CREATE_FAILED":
+      // console.log(action?.data, "fail");
+      // toast.error(action?.data?.message);
+      return { ...state, loading: false, isError: true, error: action?.data };
+
+    case "CHAT_START":
+      return { ...state, loading: true, isError: false };
+
+    case "CHAT_SUCCESS":
+      return {
+        ...state,
+        messages: action.data,
+        loading: false,
+        isError: false,
+        error: null
+      };
+
+    case "CHAT_FAIL":
+      // console.log(action?.data, "fail");
+      // toast.error(action?.data?.message);
+      return { ...state, loading: false, isError: true, error: action?.data };
+    case "MESSAGES_START":
+      return { ...state, loading: true, isError: false };
+
+    case "MESSAGES_SUCCESS":
+      console.log(
+        action?.data,
+        "action data message",
+        Array.isArray(state.messages),
+        "state mess",
+        state.messages
+      );
+      return {
+        ...state,
+        messages: Array.isArray(state.messages)
+          ? [...state.messages, action.data]
+          : [action.data],
+        loading: false,
+        isError: false,
+        error: null
+      };
+
+    case "MESSAGES_FAIL":
       // console.log(action?.data, "fail");
       // toast.error(action?.data?.message);
       return { ...state, loading: false, isError: true, error: action?.data };
