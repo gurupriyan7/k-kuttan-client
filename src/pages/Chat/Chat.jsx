@@ -19,7 +19,7 @@ const Chat = () => {
   const authData = useSelector((state) => state.authReducer.authData)
   const chatDatas = useSelector((state) => state.chatReducer.chats)
 
-console.log(chatDatas,"chats");
+// console.log(chatDatas,"chats");
 
   const dispatch = useDispatch()
 
@@ -58,7 +58,7 @@ console.log(chatDatas,"chats");
 
       console.log()
       setChats(chatDatas?.data)
-      console.log(chatDatas, 'gurururu')
+      // console.log(chatDatas, 'gurururu')
     } catch (error) {
       console.log(error)
     }
