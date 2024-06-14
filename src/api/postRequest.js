@@ -9,7 +9,6 @@ export const getAllPosts = async () => {
   try {
     const token = getLocalStorageItem("token");
     const userData = getLocalStorageItem("profile");
-
     // const token = userData?.data?.token;
     // alert("calling")
     console.log(token, "tokensssss");

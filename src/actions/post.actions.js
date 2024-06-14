@@ -1,7 +1,6 @@
 import * as PostApi from "../api/postRequest";
 
 export const getAllPosts = () => async (dispatch) => {
-
   console.log("calling");
   dispatch({ type: "FETCH_START" });
   try {
@@ -9,7 +8,7 @@ export const getAllPosts = () => async (dispatch) => {
     dispatch({ type: "FETCH_SUCCESS", data: data?.data });
   } catch (error) {
     console.log(error, "errorrorrosss");
-    dispatch({ type: "FETCH_FAILED",data:error?.response?.data });
+    dispatch({ type: "FETCH_FAILED", data: error?.response?.data });
   }
 };
 export const getPostsByUser = (isDraft) => async (dispatch) => {
@@ -19,7 +18,7 @@ export const getPostsByUser = (isDraft) => async (dispatch) => {
     dispatch({ type: "FETCH_SUCCESS", data: data?.data });
   } catch (error) {
     console.log(error, "errorrorrosss");
-    dispatch({ type: "FETCH_FAILED",data:error?.response?.data });
+    dispatch({ type: "FETCH_FAILED", data: error?.response?.data });
   }
 };
 export const getPostById = (postId) => async (dispatch) => {
@@ -29,7 +28,7 @@ export const getPostById = (postId) => async (dispatch) => {
     dispatch({ type: "FETCH_POST_SUCCESS", data: data?.data });
   } catch (error) {
     console.log(error, "errorrorrosss");
-    dispatch({ type: "FETCH_POST_FAILED",data:error?.response?.data });
+    dispatch({ type: "FETCH_POST_FAILED", data: error?.response?.data });
   }
 };
 
@@ -40,6 +39,6 @@ export const createPost = (postData) => async (dispatch) => {
     dispatch({ type: "UPLOAD_SUCCESS", data: data?.data });
   } catch (error) {
     console.log(error?.message, "errorrorro");
-    dispatch({ type: "UPLOAD_FAILED",data:error?.response?.data });
+    dispatch({ type: "UPLOAD_FAILED", data: error?.response?.data });
   }
 };

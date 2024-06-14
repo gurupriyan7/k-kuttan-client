@@ -8,17 +8,16 @@ import TrendCard from '../TrendCard/TrendCard'
 import ShareModal from '../ShareModal/ShareModal'
 import { useSelector } from 'react-redux'
 import { UserRole } from '../../config/enums'
-import { path } from '../../paths/paths';
-import { useNavigate } from 'react-router-dom';
+import { path } from '../../paths/paths'
+import { useNavigate } from 'react-router-dom'
 
 const RightSide = () => {
   const [modalOpened, setModalOpened] = useState(false)
-  const navigate= useNavigate()
+  const navigate = useNavigate()
   const authData = useSelector((state) => state.authReducer.authData)
-  const isUploaded = useSelector((state)=>state.postReducer.isUploaded)
+  const isUploaded = useSelector((state) => state.postReducer.isUploaded)
 
   const isAuthor = authData?.data?.role === UserRole.AUTHOR
-
 
   return (
     <div className="RightSide">
@@ -27,7 +26,7 @@ const RightSide = () => {
         {/* <UilSetting /> */}
 
         <img src={Noti} style={{ color: 'white' }} alt="" />
-        <img src={Comment} alt="" />
+        <img onClick={()=>navigate(path.chat)} style={{ cursor: 'pointer' }} src={Comment} alt="" />
       </div>
 
       <TrendCard />
@@ -36,8 +35,8 @@ const RightSide = () => {
         style={{ color: 'black', display: `${isAuthor ? 'block' : 'none'}` }}
         className="button r-button"
         onClick={(e) => {
-e.preventDefault()
-navigate(path.addPost)
+          e.preventDefault()
+          navigate(path.addPost)
         }}
       >
         Share
