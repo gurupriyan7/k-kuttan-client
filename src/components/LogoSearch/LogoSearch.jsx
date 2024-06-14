@@ -31,10 +31,12 @@ const LogoSearch = () => {
   }
   const followers = userData?.data?.followers ?? []
   const followings = userData?.data?.followings ?? []
+  const followersArray = Array.isArray(followers) ? followers : []
+  const followingsArray = Array.isArray(followings) ? followings : []
 
   useEffect(() => {
     const fetchPersons = async () => {
-      const combined = [...followers, ...followings]
+      const combined = [...followersArray, ...followingsArray]
 
       // Use a Set to filter out duplicates based on the 'id' property
       const unique = [...new Set(combined)]

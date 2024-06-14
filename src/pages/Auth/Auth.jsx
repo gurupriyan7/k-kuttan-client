@@ -7,6 +7,7 @@ import authback from '../../img/authback.png'
 import { useNavigate } from 'react-router-dom'
 import { path } from '../../paths/paths'
 import { logIn,signUp } from '../../actions/auth.actions'
+import { getLocalStorageItem } from '../../utils/appUtils';
 // import { toast } from 'react-toastify'
 // import 'react-toastify/dist/ReactToastify.css'
 // import { NavLink } from 'react-router-dom'
@@ -15,6 +16,14 @@ import { logIn,signUp } from '../../actions/auth.actions'
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true)
   const [errorMessage, setErrorMessage] = useState('')
+  const navigate = useNavigate()
+  const userData = getLocalStorageItem('profile')
+
+  useEffect(()=>{
+if(userData){
+  navigate(path.home)
+}
+  },[ userData])
   return (
     <div
       className="Auth"
