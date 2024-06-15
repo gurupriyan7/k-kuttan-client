@@ -5,20 +5,22 @@ import { Modal, useMantineTheme } from '@mantine/core';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { ClickAwayListener } from '@mui/material';
+import { createRoom } from '../../api/RoomRequest';
 import { useNavigate } from 'react-router-dom';
 const RoomModal = ({modalOpened2,setModalOpened2,data}) => {
-    const { user } = useSelector((state) => state.authReducer.authData);
+    const authData = useSelector((state) => state.authReducer.authData);
     const [roomName,setRoomName]=useState("")
     const navigte=useNavigate()
     const handleSubmit=async(e)=>{
       e.preventDefault()
       const room={
         name:roomName,
-        userId:user._id
+        userId:authData?.data?._id
       }
+      console.log(room,"ROOM DATA")
       try {
-         const {data}=await axios.post("http://localhost:5000/room",room)
-         console.log(data);
+         const data =await createRoom(room)
+         console.log(data,"room Model data");
          alert("Room created successfully");
    
       } catch (error) {

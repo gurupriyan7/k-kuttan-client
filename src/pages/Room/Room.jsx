@@ -1,164 +1,263 @@
-
 import React, { useRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import Home from "../../img/home.png";
-import {io} from "socket.io-client"
+import { io } from "socket.io-client";
 import Comment from "../../img/comment.png";
 import { UilSetting } from "@iconscout/react-unicons";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
-import "./Room.css"
+import "./Room.css";
 import ChatBox from "../../components/ChatBox/ChatBox";
 import axios from "axios";
 import RoomModal from "../../components/RoomModal/RoomModal";
+import {
+  findUserRooms,
+  joinRoomAction,
+  findAllRooms,
+} from "../../actions/room.actions";
+import { findUserChats } from "../../actions/chat.actions";
+import { getAllRooms, joinRoom } from "../../api/RoomRequest";
+import Conversations from "../../components/Conversations/Conversations";
 // import { ToastContainer, toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 // import { getRoomChats, getRooms, joinRoom } from "../../api/RoomRequest";
+
 const Room = () => {
-      
-  const { user } = useSelector((state) => state.authReducer.authData);
- 
-  
-  
-  const [rooms,setRooms]=useState([])
-  const [userChats, setUserChats] = useState([]);
-  const [currentChat,setCurrentChat]=useState(null)
-  const [roomId,setRoomid]=useState("")
-  const [onlineUsers,setOnlineUsers]=useState([])
-  const [sendMessage,setSendMessage]=useState(null)
-  const [recieveMessage,setRecieveMessage]=useState(null)
-  const [modalOpened2,setModalOpened2]=useState(false);
-  const [join,setJoin]=useState(false)
-  const socket=useRef()
+  const dispatch = useDispatch();
+  const authData = useSelector((state) => state.authReducer.authData);
+  const roomDatas = useSelector((state) => state.roomReducer.rooms);
+  const chatDatas = useSelector((state) => state.chatReducer.chats);
+
+  // console.log(roomDatas, "DATA#")
+
+  const [rooms, setRooms] = useState([]);
+  const [chats, setChats] = useState([]);
+  const [joinedList, setJoinedList] = useState([]);
+  // console.log(chats,"CHATS")
+  const [currentChat, setCurrentChat] = useState(null);
+  const [roomId, setRoomId] = useState("");
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const [sendMessage, setSendMessage] = useState(null);
+  const [recieveMessage, setRecieveMessage] = useState(null);
+  const [modalOpened2, setModalOpened2] = useState(false);
+  const socket = useRef();
+  console.log(sendMessage, "SEND");
+  console.log(recieveMessage, "RECIEVE");
 
   useEffect(() => {
-    socket.current = io("http://localhost:8800");
-    socket.current.emit("new-user-add", user._id);
+    socket.current = io("https://k-kuttan-socket-5c70463a5ea1.herokuapp.com/");
+    socket.current.emit("new-user-add", authData?.data?._id);
     socket.current.on("get-users", (users) => {
       setOnlineUsers(users);
-     
+    });
+  }, [authData]);
+
+  useEffect(() => {
+    if (sendMessage !== null) {
+      socket.current.emit("send-message", sendMessage);
+    }
+  }, [sendMessage]);
+
+  useEffect(() => {
+    socket.current.on("receive-message", (data) => {
+      console.log(data, "receive message");
+      setRecieveMessage(data);
     });
   }, []);
-//send message
-useEffect(()=>{
-  if(sendMessage!==null){
-     socket.current.emit('send-message',sendMessage)
-  }
-},[sendMessage])
 
-//recieve message
-useEffect(async()=>{
-  try {
-    const {data}= []
-    // await getRooms()
-    console.log(data)
-    setRooms(data)
-  } catch (error) {
-    console.log(error);
-  }
-},[modalOpened2])
-useEffect(()=>{
-   socket.current.on("recieve-message",(data)=>{
-    setRecieveMessage(data)
-   })
-},[])
-const handleJoin=async ()=>{
-    setJoin(true)
-    const userId=user._id
+  const handleJoin = async () => {
+    const userId = authData?.data?._id;
+    if (!roomId) return;
     try {
-       const {data}=""
-    //    await joinRoom(roomId , userId)
-       console.log(data);
-       alert("Joined     successfully");
-       setJoin(false)
+      await dispatch(joinRoomAction(roomId));
+      alert("Joined successfully");
     } catch (error) {
-       console.log(error) 
+      console.error("Error config:", error.config);
     }
-}
-const getChats = async () => {
-  try {
-    const { data } =[]
-    // await getRoomChats(user._id)
-    setUserChats(data);
-    console.log(data);
-  } catch (error) {
-    console.log(error);
-  }
-};
-  useEffect(() => {
-   
-    getChats();
-  }, [join,rooms]);
-  const checkOnlineStatus=(chat)=>{
-    const chatMember=chat.members.find((member)=>member!==user._id)
+  };
 
-    const online=onlineUsers.find((user)=>user.userId===chatMember)
-    return online?true:false
- }
+  const fetchRoomListJoined = async (roomId) => {
+    await dispatch(joinRoomAction(roomId));
+    // console.log(roomDatas.data,"LIST")
+    setJoinedList(roomDatas.data);
+  };
+
+  useEffect(() => {
+    fetchRoomListJoined(roomId);
+  }, []);
+
+  const getRooms = async () => {
+    try {
+      await dispatch(findAllRooms());
+      // const response = await getUserRooms()
+      console.log(roomDatas.data, "TEST D");
+      setRooms(roomDatas.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getChats = async () => {
+    try {
+      await dispatch(findUserChats());
+
+      // console.log()
+      setChats(chatDatas?.data);
+      // console.log(chatDatas, 'gurururu')
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getChats();
+  }, [authData?.data]);
+
+  useEffect(() => {
+    getAllRooms();
+    getRooms();
+
+    // joinRoom()
+  }, [authData]);
+
+  console.log(currentChat, "CURRENT CHAT");
+
+  const checkOnlineStatus = (chat) => {
+    const chatMember = chat?.members?.find(
+      (member) => member?._id !== authData?.data?._id
+    );
+    // console.log(chatMember,"chatMember",authData?.data,"MEMBER",chat);
+
+    const online = onlineUsers?.find(
+      (user) => user?.userId === chatMember?._id
+    );
+    return online ? true : false;
+  };
 
   return (
     <>
-    <div className="Chat">
-      {/* left side */}
-
-      <div className="Left-side-chat">
-        <select name="" id=""  onClick={(e)=>setRoomid(e.target.value)} className="infoInput">
-           {rooms &&  rooms.map((room,id)=>{
-            return <option    value={room._id}>{room.name}</option>
-           }) }
-        
-        </select>
-        <button className="button" onClick={handleJoin} style={{height:"2rem"}}>Join</button>
-       
-        <div className="Chat-container">
-          <h2>Rooms</h2>
-          <div className="Chat-list">
-            {userChats.map((chat) => (
-              <div onClick={()=>setCurrentChat(chat)}>
-                {/* <Conversations data={chat} currentUserId={user._id}  /> */}
-                <span >{chat.name} </span>
-
-              </div>
+      <div className="Chat">
+        {/* Left side */}
+        <div className="Left-side-chat">
+          <select
+            onChange={(e) => setRoomId(e.target.value)}
+            className="infoInput"
+          >
+            <option value="" disabled selected>
+              Select a room
+            </option>
+            {rooms?.map((room) => (
+              <option key={room._id} value={room._id}>
+                {room.name}
+              </option>
             ))}
+          </select>
+          <button
+            className="button"
+            onClick={handleJoin}
+            style={{ height: "2rem" }}
+          >
+            Join
+          </button>
+
+          <div className="Chat-container">
+            <h2>Rooms</h2>
+            <div className="Chat-list">
+              {joinedList &&
+                joinedList?.map((list) => (
+                  <div key={list?._id} onClick={() => setCurrentChat(list)}>
+                    <span>{list?.name}</span>
+                  </div>
+                ))}
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* right side */}
-      <div className="Right-side-chat">
-    
-
-        <div style={{ width: "20rem", alignSelf: "flex-end" }}>
-          <div className="navIcons">
-          <button className="button" style={{width:"5rem",height:"2rem"}} onClick={()=>setModalOpened2(true)}>Create Room</button>
-          <RoomModal modalOpened2={modalOpened2} setModalOpened2={setModalOpened2} />
-            <Link to="../home">
-              {" "}
-              <img src={Home} alt="" />
-            </Link>
-
-            <Link to="../trending">
-              {" "}
-              <WhatshotIcon />
-            </Link>
-
-            <Link to="../chat">
-              <img src={Comment} alt="" />
-            </Link>
-            <UilSetting />
+        {/* Right side */}
+        {/* <div className="Right-side-chat">
+          <div style={{ width: "20rem", alignSelf: "flex-end" }}>
+            <div className="navIcons">
+              <button
+                className="button"
+                style={{ width: "5rem", height: "2rem" }}
+                onClick={() => setModalOpened(true)}
+              >
+                Create Room
+              </button>
+              <RoomModal
+                modalOpened={modalOpened}
+                setModalOpened={setModalOpened}
+              />
+              <Link to="../home">
+                <img src={Home} alt="Home" />
+              </Link>
+              <Link to="../trending">
+                <WhatshotIcon />
+              </Link>
+              <Link to="../chat">
+                <img src={Comment} alt="Chat" />
+              </Link>
+              <UilSetting />
+            </div>
           </div>
-          
-        </div>
-        <ChatBox chat={currentChat} currentUser={user._id} room={true} setSendMessage={setSendMessage} 
-        recieveMessage={recieveMessage}
-        />
-      </div>
-      {/* <ToastContainer /> */}
-    </div>
-  </>
-  )
-}
+          {currentChat && (
+            <ChatBox
+              chat={currentChat}
+              currentUser={authData?.data?._id}
+              room={true}
+              setSendMessage={setSendMessage}
+              receiveMessage={receiveMessage}
+            />
+          )}
+        </div> */}
 
-export default Room
+        <div className="Right-side-chat">
+          <div style={{ width: "20rem", alignSelf: "flex-end" }}>
+            <div className="navIcons">
+              <button
+                className="button"
+                style={{ width: "5rem", height: "2rem" }}
+                onClick={() => setModalOpened2(true)}
+              >
+                Create Room
+              </button>
+              <RoomModal
+                modalOpened2={modalOpened2}
+                setModalOpened2={setModalOpened2}
+              />
+              <Link to="../home">
+                {" "}
+                <img src={Home} alt="" />
+              </Link>
+
+              <Link to="../trending">
+                {" "}
+                <WhatshotIcon />
+              </Link>
+
+              <Link to="../chat">
+                <img src={Comment} alt="" />
+              </Link>
+              <UilSetting />
+            </div>
+          </div>
+          {/* <ChatBox chat={currentChat} currentUser={authData?.data?._id} room={true} setSendMessage={setSendMessage} 
+    recieveMessage={recieveMessage}
+    /> */}
+          {currentChat && (
+            <ChatBox
+              chat={currentChat}
+              currentUser={authData?.data?._id}
+              room={true}
+              setSendMessage={setSendMessage}
+              receiveMessage={recieveMessage}
+            />
+          )}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Room;

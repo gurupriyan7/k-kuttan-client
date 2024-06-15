@@ -19,7 +19,7 @@ const Chat = () => {
   const authData = useSelector((state) => state.authReducer.authData)
   const chatDatas = useSelector((state) => state.chatReducer.chats)
 
-// console.log(chatDatas,"chats");
+console.log(chatDatas,"chats");
 
   const dispatch = useDispatch()
 
@@ -73,6 +73,8 @@ const Chat = () => {
     getChats()
   }, [authData?.data])
 
+  console.log(currentChat,"NEW CHAT")
+
   const checkOnlineStatus = (chat) => {
     const chatMember = chat?.members?.find((member) => member?._id !== authData?.data?._id)
     // console.log(chatMember,"chatMember",authData?.data,"MEMBER",chat);
@@ -125,6 +127,7 @@ const Chat = () => {
               <UilSetting />
             </div>
           </div>
+          {console.log(currentChat,"CURRENT")}
           <ChatBox
             chat={currentChat}
             currentUser={authData?.data?._id}
