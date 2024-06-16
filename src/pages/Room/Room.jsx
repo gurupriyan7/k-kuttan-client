@@ -1,139 +1,150 @@
-import React, { useRef } from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Link, useParams } from "react-router-dom";
-import Home from "../../img/home.png";
-import { io } from "socket.io-client";
-import Comment from "../../img/comment.png";
-import { UilSetting } from "@iconscout/react-unicons";
-import WhatshotIcon from "@mui/icons-material/Whatshot";
-import "./Room.css";
-import ChatBox from "../../components/ChatBox/ChatBox";
-import axios from "axios";
-import RoomModal from "../../components/RoomModal/RoomModal";
+import React, { useRef } from 'react'
+import { useEffect } from 'react'
+import { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { Link, useParams } from 'react-router-dom'
+import Home from '../../img/home.png'
+import { io } from 'socket.io-client'
+import Comment from '../../img/comment.png'
+import { UilSetting } from '@iconscout/react-unicons'
+import WhatshotIcon from '@mui/icons-material/Whatshot'
+import './Room.css'
+import ChatBox from '../../components/ChatBox/ChatBox'
+import axios from 'axios'
+import RoomModal from '../../components/RoomModal/RoomModal'
 import {
   findUserRooms,
   joinRoomAction,
   findAllRooms,
-} from "../../actions/room.actions";
-import { findUserChats } from "../../actions/chat.actions";
-import { getAllRooms, joinRoom } from "../../api/RoomRequest";
-import Conversations from "../../components/Conversations/Conversations";
+} from '../../actions/room.actions'
+import { findUserChats } from '../../actions/chat.actions'
+import { getAllRooms, joinRoom } from '../../api/RoomRequest'
+import Conversations from '../../components/Conversations/Conversations'
 // import { ToastContainer, toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 // import { getRoomChats, getRooms, joinRoom } from "../../api/RoomRequest";
 
 const Room = () => {
-  const dispatch = useDispatch();
-  const authData = useSelector((state) => state.authReducer.authData);
-  const roomDatas = useSelector((state) => state.roomReducer.rooms);
-  const chatDatas = useSelector((state) => state.chatReducer.chats);
+  const dispatch = useDispatch()
+  const authData = useSelector((state) => state.authReducer.authData)
+  const roomDatas = useSelector((state) => state.roomReducer.rooms)
+  const userRoomDatas = useSelector((state) => state.roomReducer.userRooms)
+  const chatDatas = useSelector((state) => state.chatReducer.chats)
 
   // console.log(roomDatas, "DATA#")
 
-  const [rooms, setRooms] = useState([]);
-  const [chats, setChats] = useState([]);
-  const [joinedList, setJoinedList] = useState([]);
+  const [rooms, setRooms] = useState([])
+  const [chats, setChats] = useState([])
+  const [joinedList, setJoinedList] = useState([])
   // console.log(chats,"CHATS")
-  const [currentChat, setCurrentChat] = useState(null);
-  const [roomId, setRoomId] = useState("");
-  const [onlineUsers, setOnlineUsers] = useState([]);
-  const [sendMessage, setSendMessage] = useState(null);
-  const [recieveMessage, setRecieveMessage] = useState(null);
-  const [modalOpened2, setModalOpened2] = useState(false);
-  const socket = useRef();
-  console.log(sendMessage, "SEND");
-  console.log(recieveMessage, "RECIEVE");
+  const [currentChat, setCurrentChat] = useState(null)
+  const [roomId, setRoomId] = useState('')
+  const [chatRoomId, setChatRoomId] = useState('')
+  const [onlineUsers, setOnlineUsers] = useState([])
+  const [sendMessage, setSendMessage] = useState(null)
+  const [recieveMessage, setRecieveMessage] = useState(null)
+  const [modalOpened2, setModalOpened2] = useState(false)
+  const socket = useRef()
+  console.log(sendMessage, 'SEND')
+  console.log(recieveMessage, 'RECIEVE')
+  console.log(currentChat, 'currentChat')
 
   useEffect(() => {
-    socket.current = io("https://k-kuttan-socket-5c70463a5ea1.herokuapp.com/");
-    socket.current.emit("new-user-add", authData?.data?._id);
-    socket.current.on("get-users", (users) => {
-      setOnlineUsers(users);
-    });
-  }, [authData]);
+    socket.current = io('https://k-kuttan-socket-5c70463a5ea1.herokuapp.com/')
+    socket.current.emit('new-user-add', authData?.data?._id)
+    socket.current.on('get-users', (users) => {
+      setOnlineUsers(users)
+    })
+  }, [authData])
 
   useEffect(() => {
     if (sendMessage !== null) {
-      socket.current.emit("send-message", sendMessage);
+      socket.current.emit('send-message', sendMessage)
     }
-  }, [sendMessage]);
+  }, [sendMessage])
 
   useEffect(() => {
-    socket.current.on("receive-message", (data) => {
-      console.log(data, "receive message");
-      setRecieveMessage(data);
-    });
-  }, []);
+    socket.current.on('receive-message', (data) => {
+      console.log(data, 'receive message')
+      setRecieveMessage(data)
+    })
+    // Clean up listener on unmount
+    return () => {
+      socket.current.off('recieve-message')
+    }
+  }, [])
 
   const handleJoin = async () => {
-    const userId = authData?.data?._id;
-    if (!roomId) return;
+    const userId = authData?.data?._id
+    if (!roomId) return
     try {
-      await dispatch(joinRoomAction(roomId));
-      alert("Joined successfully");
+      await dispatch(joinRoomAction(roomId))
+      alert('Joined successfully')
     } catch (error) {
-      console.error("Error config:", error.config);
+      console.error('Error config:', error.config)
     }
-  };
+  }
 
-  const fetchRoomListJoined = async (roomId) => {
-    await dispatch(joinRoomAction(roomId));
-    // console.log(roomDatas.data,"LIST")
-    setJoinedList(roomDatas.data);
-  };
+  console.log(roomDatas, 'room data s')
+
+  const fetchRoomListJoined = async () => {
+    await dispatch(findUserRooms())
+    console.log(roomDatas, 'LIST')
+    setJoinedList(userRoomDatas)
+  }
 
   useEffect(() => {
-    fetchRoomListJoined(roomId);
-  }, []);
+    fetchRoomListJoined()
+  }, [])
+  useEffect(() => {
+    setJoinedList(userRoomDatas)
+    console.log(userRoomDatas, 'roomDatazzzzzzzzzzzzzzzzzz')
+  }, [userRoomDatas])
 
   const getRooms = async () => {
     try {
-      await dispatch(findAllRooms());
+      await dispatch(findAllRooms())
       // const response = await getUserRooms()
-      console.log(roomDatas.data, "TEST D");
-      setRooms(roomDatas.data);
+      console.log(roomDatas.data, 'TEST D')
+      setRooms(roomDatas)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   const getChats = async () => {
     try {
-      await dispatch(findUserChats());
+      await dispatch(findUserChats())
 
       // console.log()
-      setChats(chatDatas?.data);
+      setChats(chatDatas?.data)
       // console.log(chatDatas, 'gurururu')
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
   useEffect(() => {
-    getChats();
-  }, [authData?.data]);
+    getChats()
+  }, [authData?.data])
 
   useEffect(() => {
-    getAllRooms();
-    getRooms();
+    getAllRooms()
+    getRooms()
 
     // joinRoom()
-  }, [authData]);
+  }, [authData])
 
-  console.log(currentChat, "CURRENT CHAT");
+  console.log(currentChat, 'CURRENT CHAT')
 
   const checkOnlineStatus = (chat) => {
     const chatMember = chat?.members?.find(
-      (member) => member?._id !== authData?.data?._id
-    );
+      (member) => member?._id !== authData?.data?._id,
+    )
     // console.log(chatMember,"chatMember",authData?.data,"MEMBER",chat);
 
-    const online = onlineUsers?.find(
-      (user) => user?.userId === chatMember?._id
-    );
-    return online ? true : false;
-  };
+    const online = onlineUsers?.find((user) => user?.userId === chatMember?._id)
+    return online ? true : false
+  }
 
   return (
     <>
@@ -156,7 +167,7 @@ const Room = () => {
           <button
             className="button"
             onClick={handleJoin}
-            style={{ height: "2rem" }}
+            style={{ height: '2rem' }}
           >
             Join
           </button>
@@ -166,7 +177,13 @@ const Room = () => {
             <div className="Chat-list">
               {joinedList &&
                 joinedList?.map((list) => (
-                  <div key={list?._id} onClick={() => setCurrentChat(list)}>
+                  <div
+                    key={list?._id}
+                    onClick={() => {
+                      setCurrentChat(list?.chatId)
+                      setChatRoomId(list?._id)
+                    }}
+                  >
                     <span>{list?.name}</span>
                   </div>
                 ))}
@@ -213,11 +230,11 @@ const Room = () => {
         </div> */}
 
         <div className="Right-side-chat">
-          <div style={{ width: "20rem", alignSelf: "flex-end" }}>
+          <div style={{ width: '20rem', alignSelf: 'flex-end' }}>
             <div className="navIcons">
               <button
                 className="button"
-                style={{ width: "5rem", height: "2rem" }}
+                style={{ width: '5rem', height: '2rem' }}
                 onClick={() => setModalOpened2(true)}
               >
                 Create Room
@@ -227,12 +244,12 @@ const Room = () => {
                 setModalOpened2={setModalOpened2}
               />
               <Link to="../home">
-                {" "}
+                {' '}
                 <img src={Home} alt="" />
               </Link>
 
               <Link to="../trending">
-                {" "}
+                {' '}
                 <WhatshotIcon />
               </Link>
 
@@ -247,17 +264,18 @@ const Room = () => {
     /> */}
           {currentChat && (
             <ChatBox
-              chat={currentChat}
+              chatId={currentChat}
               currentUser={authData?.data?._id}
               room={true}
               setSendMessage={setSendMessage}
               receiveMessage={recieveMessage}
+              roomId={chatRoomId}
             />
           )}
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Room;
+export default Room

@@ -18,7 +18,7 @@ export const getAllRooms = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data.data;
+    return response.data;
   } catch (error) {
     console.error("Error fetching all rooms:", error);
     throw error;

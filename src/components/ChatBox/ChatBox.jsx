@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 // import { addMessage, getMessages } from '../../api/MessageRequest'
 // import { getUser } from '../../api/UserRequest'
@@ -8,30 +9,47 @@ import { useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { appConfig } from '../../config/appConfig'
 import { createMessage, findUserMessages } from '../../actions/chat.actions'
+import { findChatById } from '../../api/chatRequest'
 const ChatBox = ({
-  chat,
+  chatId,
   currentUser,
   setSendMessage,
   recieveMessage,
   room,
+  roomId,
 }) => {
+  const isRoom = room ? true : false
   const authData = useSelector((state) => state.authReducer.authData)
   const messageDatas = useSelector((state) => state.chatReducer.messages)
   const [userData, setUserData] = useState(null)
   const [messages, setMessages] = useState([])
   const [newMessage, setNewMessage] = useState('')
   const [chatUser, setChatUser] = useState(null)
+  const [chat, setChat] = useState(null)
   const scroll = useRef()
   const dispatch = useDispatch()
   const handleChange = (newMessage) => {
     setNewMessage(newMessage)
   }
   //fetching data for header of chat box
+
+  useEffect(async () => {
+    console.log(chatId, 'chatId chatId-----------------------------')
+    const chatData = await findChatById(chatId, isRoom)
+    console.log(chatData, 'chatData, chatDat')
+    setChat(chatData?.data)
+  }, [chatId])
+
   useEffect(() => {
-    const chatMember = chat?.members?.find(
-      (member) => member?._id !== authData?.data?._id,
-    )
-    setChatUser(chatMember, 'chatMemger????????????')
+    if (!room) {
+      const chatMember = chat?.members?.find(
+        (member) => member?._id !== authData?.data?._id,
+      )
+      setChatUser(chatMember, 'chatMemger????????????')
+    } else {
+    }
+  }, [chat])
+  useEffect(() => {
     // const chatMember = chat?.members?.find(
     //   (member) => member !== authData?.data?._id,
     // )
@@ -50,15 +68,16 @@ const ChatBox = ({
   }, [authData?.data, chat, currentUser])
 
   useEffect(() => {
-    console.log(messageDatas, '....data')
+    console.log(messageDatas, '.-----------------------...data')
     setMessages(messageDatas)
   }, [messageDatas])
 
   //fetching data for messages
   useEffect(() => {
     const fetchMessages = async () => {
+      console.log(chat, 'chatdddddd')
       try {
-        dispatch(findUserMessages(chat?._id))
+        dispatch(findUserMessages(chatId, isRoom))
         //   await getMessages(chat._id)
         setMessages(messageDatas)
         // console.log(data)
@@ -66,10 +85,10 @@ const ChatBox = ({
         console.log(error)
       }
     }
-    if (chat !== null) {
+    if (chatId !== null) {
       fetchMessages()
     }
-  }, [chat])
+  }, [chatId])
   // const { user } = useSelector((state) => state.authReducer.authData)
   useEffect(() => {
     scroll.current?.scrollIntoView({ behavior: 'smooth' })
@@ -81,7 +100,7 @@ const ChatBox = ({
     const message = {
       senderId: currentUser,
       text: newMessage,
-      chatId: chat?._id,
+      chatId: chatId,
     }
 
     //send message to data base
@@ -96,9 +115,15 @@ const ChatBox = ({
     }
 
     //set msg to socket server
-    const recieverId = chat?.members.find((id) => id?._id !== currentUser)
-    console.log(recieverId,"receiverIdddddd");
-    setSendMessage({ ...message, recieverId:recieverId?._id })
+    let recieverId = ''
+    if (isRoom) {
+      recieverId = roomId
+      setSendMessage({ ...message, recieverId: recieverId })
+    } else {
+      recieverId = chat?.members?.find((id) => id?._id !== currentUser)
+      console.log(recieverId, 'receiverIdddddd', chat)
+      setSendMessage({ ...message, recieverId: recieverId?._id })
+    }
   }
   useEffect(() => {
     console.log(recieveMessage, 'receiveMessage')
@@ -151,10 +176,10 @@ const ChatBox = ({
                         : 'message'
                     }
                   >
-                    <span>{message.text}</span>
-                    <span>{format(message.createdAt)}</span>
+                    <span>{message?.text}</span>
+                    <span>{format(message?.createdAt)}</span>
 
-                    {room && message.name}
+                    {room && message?.name}
                   </div>
                 </>
               ))}

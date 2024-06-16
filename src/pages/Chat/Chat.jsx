@@ -19,7 +19,7 @@ const Chat = () => {
   const authData = useSelector((state) => state.authReducer.authData)
   const chatDatas = useSelector((state) => state.chatReducer.chats)
 
-console.log(chatDatas,"chats");
+  console.log(chatDatas, 'chats')
 
   const dispatch = useDispatch()
 
@@ -39,6 +39,7 @@ console.log(chatDatas,"chats");
   }, [])
   //send message
   useEffect(() => {
+    alert(sendMessage)
     if (sendMessage !== null) {
       socket.current.emit('send-message', sendMessage)
     }
@@ -48,15 +49,15 @@ console.log(chatDatas,"chats");
 
   useEffect(() => {
     socket.current.on('receive-message', (data) => {
-      console.log(data, "receive message");
-      setRecieveMessage(data);
-    });
+      console.log(data, 'receive message')
+      setRecieveMessage(data)
+    })
 
     // Clean up listener on unmount
     return () => {
-      socket.current.off('recieve-message');
-    };
-  }, []);
+      socket.current.off('recieve-message')
+    }
+  }, [])
 
   const getChats = async () => {
     try {
@@ -73,10 +74,12 @@ console.log(chatDatas,"chats");
     getChats()
   }, [authData?.data])
 
-  console.log(currentChat,"NEW CHAT")
+  console.log(currentChat, 'NEW CHAT')
 
   const checkOnlineStatus = (chat) => {
-    const chatMember = chat?.members?.find((member) => member?._id !== authData?.data?._id)
+    const chatMember = chat?.members?.find(
+      (member) => member?._id !== authData?.data?._id,
+    )
     // console.log(chatMember,"chatMember",authData?.data,"MEMBER",chat);
 
     const online = onlineUsers?.find((user) => user?.userId === chatMember?._id)
@@ -127,13 +130,17 @@ console.log(chatDatas,"chats");
               <UilSetting />
             </div>
           </div>
-          {console.log(currentChat,"CURRENT")}
-          <ChatBox
-            chat={currentChat}
-            currentUser={authData?.data?._id}
-            setSendMessage={setSendMessage}
-            recieveMessage={recieveMessage}
-          />
+          {console.log(currentChat?._id, 'CURRENT')}
+          {currentChat && (
+            <ChatBox
+              chatId={currentChat?._id}
+              currentUser={authData?.data?._id}
+              setSendMessage={setSendMessage}
+              recieveMessage={recieveMessage}
+              room={false}
+             
+            />
+          )}
         </div>
       </div>
     </>

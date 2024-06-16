@@ -32,7 +32,17 @@ export const createMessage = (messageData) => async (dispatch) => {
   }
 };
 
-export const findUserMessages = (chatId) => async (dispatch) => {
+export const findUserMessages = (chatId,isRoom) => async (dispatch) => {
+  dispatch({ type: "CHAT_START" });
+  try {
+    const { data } = await ChatApi.getUserMessages(chatId,isRoom);
+    dispatch({ type: "CHAT_SUCCESS", data: data?.data });
+  } catch (error) {
+    console.log(error?.message, "chats fetching fail");
+    dispatch({ type: "CHAT_FAIL", data: error?.response?.data });
+  }
+};
+export const findRoomMessages = (chatId) => async (dispatch) => {
   dispatch({ type: "CHAT_START" });
   try {
     const { data } = await ChatApi.getUserMessages(chatId);

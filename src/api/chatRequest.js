@@ -28,7 +28,51 @@ export const getUserChats = async () => {
     console.log(error);
   }
 };
-export const getUserMessages = async (chatId) => {
+export const findChatById = async (chatId) => {
+  alert(chatId  )
+  try {
+    const token = getLocalStorageItem("token");
+    const userData = getLocalStorageItem("profile");
+
+    // const token = userData?.data?.token;
+    // alert("calling")
+    console.log(token, "tokensssss");
+
+    if (!userData) {
+      window.location.href = path.auth;
+    }
+    const data = await API.get(`/chat/user/${chatId}`, {
+      headers: {
+        Authorization: `Bearer ${token}` // Include the Bearer token in the Authorization header
+      }
+    });
+    return data?.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getUserMessages = async (chatId, isRoom) => {
+  try {
+    const token = getLocalStorageItem("token");
+    const userData = getLocalStorageItem("profile");
+
+    // const token = userData?.data?.token;
+    // alert("calling")
+    console.log(token, "tokensssss");
+
+    if (!userData) {
+      window.location.href = path.auth;
+    }
+    return await API.get(`/message/${chatId}?isRoom=${isRoom}`, {
+      headers: {
+        Authorization: `Bearer ${token}` // Include the Bearer token in the Authorization header
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const findRoomMessages = async (chatId) => {
   try {
     const token = getLocalStorageItem("token");
     const userData = getLocalStorageItem("profile");

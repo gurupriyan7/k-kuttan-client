@@ -1,11 +1,8 @@
-
-
-
 const initialState = {
   rooms: [],
   userRooms: [],
   loading: false,
-  error: null,
+  error: null
 };
 
 const roomReducer = (state = initialState, action) => {
@@ -25,27 +22,44 @@ const roomReducer = (state = initialState, action) => {
       return { ...state, userRooms: action.data, loading: false };
 
     case "CREATE_ROOM_SUCCESS":
-      return { ...state, rooms: [...state.rooms, action.data], loading: false };
-
-    case "JOIN_ROOM_SUCCESS":
+      console.log(Array.isArray(state.rooms),"apple",state);
       return {
         ...state,
-        userRooms: [...state.userRooms, action.data],
+        rooms: Array.isArray(state.rooms)
+          ? [...state.rooms, action.data]
+          : [action.data],
         loading: false,
+        isError: false,
+        error: null
+      };
+      // return { ...state, rooms: [...state.rooms, action.data], loading: false };
+
+    case "JOIN_ROOM_SUCCESS":
+      console.log(action.data,"room log success");
+      return {
+        ...state,
+        userRooms: Array.isArray(state.userRooms)
+          ? [...state.userRooms, action.data]
+          : [action.data],
+        loading: false,
+        isError: false,
+        error: null
       };
 
     case "LEAVE_ROOM_SUCCESS":
       return {
         ...state,
-        userRooms: state.userRooms.filter((room) => room._id !== action.data._id),
-        loading: false,
+        userRooms: state.userRooms.filter(
+          (room) => room._id !== action.data._id
+        ),
+        loading: false
       };
 
     case "DELETE_ROOM_SUCCESS":
       return {
         ...state,
         rooms: state.rooms.filter((room) => room._id !== action.data._id),
-        loading: false,
+        loading: false
       };
 
     case "ALL_ROOMS_FAIL":
