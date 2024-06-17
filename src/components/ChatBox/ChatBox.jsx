@@ -16,7 +16,7 @@ const ChatBox = ({
   setSendMessage,
   recieveMessage,
   room,
-  roomId,
+  chatRoomName,
 }) => {
   const isRoom = room ? true : false
   const authData = useSelector((state) => state.authReducer.authData)
@@ -34,9 +34,7 @@ const ChatBox = ({
   //fetching data for header of chat box
 
   useEffect(async () => {
-    console.log(chatId, 'chatId chatId-----------------------------')
     const chatData = await findChatById(chatId, isRoom)
-    console.log(chatData, 'chatData, chatDat')
     setChat(chatData?.data)
   }, [chatId])
 
@@ -68,14 +66,12 @@ const ChatBox = ({
   }, [authData?.data, chat, currentUser])
 
   useEffect(() => {
-    console.log(messageDatas, '.-----------------------...data')
     setMessages(messageDatas)
   }, [messageDatas])
 
   //fetching data for messages
   useEffect(() => {
     const fetchMessages = async () => {
-      console.log(chat, 'chatdddddd')
       try {
         dispatch(findUserMessages(chatId, isRoom))
         //   await getMessages(chat._id)
@@ -92,7 +88,6 @@ const ChatBox = ({
   // const { user } = useSelector((state) => state.authReducer.authData)
   useEffect(() => {
     scroll.current?.scrollIntoView({ behavior: 'smooth' })
-    console.log(messages, 'messages', messageDatas)
   }, [messages])
 
   const handleSend = async (e) => {
@@ -117,16 +112,14 @@ const ChatBox = ({
     //set msg to socket server
     let recieverId = ''
     if (isRoom) {
-      recieverId = roomId
-      setSendMessage({ ...message, recieverId: recieverId })
+      recieverId = chat?.members?.find((id) => id?._id !== currentUser)
+      setSendMessage({ ...message, recieverId: recieverId?._id })
     } else {
       recieverId = chat?.members?.find((id) => id?._id !== currentUser)
-      console.log(recieverId, 'receiverIdddddd', chat)
       setSendMessage({ ...message, recieverId: recieverId?._id })
     }
   }
   useEffect(() => {
-    console.log(recieveMessage, 'receiveMessage')
     if (recieveMessage !== null && recieveMessage?.chatId === chat?._id) {
       setMessages([...messages, recieveMessage])
     }
@@ -156,7 +149,7 @@ const ChatBox = ({
                   )}
                   <div className="name" style={{ fontSize: '0.8rem' }}>
                     <span>
-                      {room ? chat.name : chatUser?.firstName}
+                      {room ? chatRoomName : chatUser?.firstName}
                       {/* {chatUser?.lastname} */}
                     </span>
                   </div>

@@ -39,15 +39,13 @@ const Room = () => {
   // console.log(chats,"CHATS")
   const [currentChat, setCurrentChat] = useState(null)
   const [roomId, setRoomId] = useState('')
-  const [chatRoomId, setChatRoomId] = useState('')
+  const [chatRoomName, setChatRoomName] = useState('')
   const [onlineUsers, setOnlineUsers] = useState([])
   const [sendMessage, setSendMessage] = useState(null)
   const [recieveMessage, setRecieveMessage] = useState(null)
   const [modalOpened2, setModalOpened2] = useState(false)
   const socket = useRef()
-  console.log(sendMessage, 'SEND')
-  console.log(recieveMessage, 'RECIEVE')
-  console.log(currentChat, 'currentChat')
+
 
   useEffect(() => {
     socket.current = io('https://k-kuttan-socket-5c70463a5ea1.herokuapp.com/')
@@ -65,7 +63,6 @@ const Room = () => {
 
   useEffect(() => {
     socket.current.on('receive-message', (data) => {
-      console.log(data, 'receive message')
       setRecieveMessage(data)
     })
     // Clean up listener on unmount
@@ -85,11 +82,9 @@ const Room = () => {
     }
   }
 
-  console.log(roomDatas, 'room data s')
 
   const fetchRoomListJoined = async () => {
     await dispatch(findUserRooms())
-    console.log(roomDatas, 'LIST')
     setJoinedList(userRoomDatas)
   }
 
@@ -98,14 +93,12 @@ const Room = () => {
   }, [])
   useEffect(() => {
     setJoinedList(userRoomDatas)
-    console.log(userRoomDatas, 'roomDatazzzzzzzzzzzzzzzzzz')
   }, [userRoomDatas])
 
   const getRooms = async () => {
     try {
       await dispatch(findAllRooms())
       // const response = await getUserRooms()
-      console.log(roomDatas.data, 'TEST D')
       setRooms(roomDatas)
     } catch (error) {
       console.error(error)
@@ -134,7 +127,6 @@ const Room = () => {
     // joinRoom()
   }, [authData])
 
-  console.log(currentChat, 'CURRENT CHAT')
 
   const checkOnlineStatus = (chat) => {
     const chatMember = chat?.members?.find(
@@ -178,10 +170,11 @@ const Room = () => {
               {joinedList &&
                 joinedList?.map((list) => (
                   <div
+                    style={{ cursor: 'pointer' }}
                     key={list?._id}
                     onClick={() => {
                       setCurrentChat(list?.chatId)
-                      setChatRoomId(list?._id)
+                      setChatRoomName(list?.name)
                     }}
                   >
                     <span>{list?.name}</span>
@@ -268,8 +261,8 @@ const Room = () => {
               currentUser={authData?.data?._id}
               room={true}
               setSendMessage={setSendMessage}
-              receiveMessage={recieveMessage}
-              roomId={chatRoomId}
+              recieveMessage={recieveMessage}
+              chatRoomName={chatRoomName}
             />
           )}
         </div>
