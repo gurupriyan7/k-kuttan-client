@@ -44,6 +44,21 @@ const authReducer = (
 
     case "UPDATING_FAIL":
       return { ...state, updateLoading: false, isError: true };
+    case "FOLLOW_UNFOLLOW_START":
+      return { ...state, updateLoading: true, isError: false };
+
+    case "FOLLOW_UNFOLLOW_SUCCESS":
+      localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
+      // localStorage.setItem("token", action?.data?.data?.token);
+      return {
+        ...state,
+        updateLoading: false,
+        isError: false,
+        authData: action.data
+      };
+
+    case "FOLLOW_UNFOLLOW_FAIL":
+      return { ...state, updateLoading: false, isError: true };
 
     case "FOLLOW_USER":
       return {

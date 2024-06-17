@@ -236,7 +236,7 @@ const Room = () => {
                 modalOpened2={modalOpened2}
                 setModalOpened2={setModalOpened2}
               />
-              <Link to="../home">
+              <Link to="../">
                 {' '}
                 <img src={Home} alt="" />
               </Link>

@@ -7,7 +7,7 @@ const API = axios.create({ baseURL: appConfig.apiUrl });
 export const getUserProfile = async () => {
   try {
     const token = getLocalStorageItem("token");
-    console.log(token,"token");
+    console.log(token, "token");
     return await API.get(`/user`, {
       headers: {
         Authorization: `Bearer ${token}` // Include the Bearer token in the Authorization header
@@ -26,6 +26,25 @@ export const updateUser = async (userData) => {
       `user`,
       {
         ...userData
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}` // Include the Bearer token in the Authorization header
+        }
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const followUnFollowUser = async (userId) => {
+  try {
+    const token = getLocalStorageItem("token");
+
+    return await API.patch(
+      `user/${userId}`,
+      {
+        following: userId
       },
       {
         headers: {
