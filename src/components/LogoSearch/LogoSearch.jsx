@@ -22,9 +22,9 @@ const LogoSearch = () => {
   const userData = useSelector((state) => state.authReducer.authData)
   const chatDatas = useSelector((state) => state.chatReducer.chats)
 
-  useEffect(() => {
-    dispatch(findUserProfile())
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(findUserProfile())
+  // }, [dispatch])
 
   if (!userData?.data) {
     navigate(path.auth)
