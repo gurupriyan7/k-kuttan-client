@@ -1,9 +1,9 @@
 import * as ChatApi from "../api/chatRequest";
 
-export const findUserChats = () => async (dispatch) => {
+export const findUserChats = (isRoom) => async (dispatch) => {
   dispatch({ type: "CHATS_START" });
   try {
-    const { data } = await ChatApi.getUserChats();
+    const { data } = await ChatApi.getUserChats(isRoom);
     dispatch({ type: "CHATS_SUCCESS", data: data });
   } catch (error) {
     console.log(error?.message, "chats fetching fail");

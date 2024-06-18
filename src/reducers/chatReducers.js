@@ -75,9 +75,9 @@ const chatReducer = (
       );
       return {
         ...state,
-        messages: Array.isArray(state.messages)
-          ? [...state.messages, action.data]
-          : [action.data],
+        // messages: Array.isArray(state.messages)
+        //   ? [...state.messages, action.data]
+        //   : [action.data],
         isLoading: false,
         isError: false,
         error: null

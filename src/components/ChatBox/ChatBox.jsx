@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { appConfig } from '../../config/appConfig'
 import { createMessage, findUserMessages } from '../../actions/chat.actions'
 import { findChatById } from '../../api/chatRequest'
+import Profile from '../../img/profileImg.jpg'
 const ChatBox = ({
   chatId,
   currentUser,
@@ -101,9 +102,11 @@ const ChatBox = ({
     //send message to data base
     try {
       dispatch(createMessage(message))
-      const { data } = ''
+      // setChat([...chat, message])
+
+      // const { data } = ''
       // await addMessage(message)
-      // setMessages([...messages, data])
+      setMessages([...messages, message])
       setNewMessage('')
     } catch (error) {
       console.log(error)
@@ -126,6 +129,7 @@ const ChatBox = ({
   }, [recieveMessage])
 
   //always scroll to top
+  console.log(userData, 'user----data')
 
   return (
     <>
@@ -164,15 +168,40 @@ const ChatBox = ({
                   <div
                     ref={scroll}
                     className={
+                      message?.senderId?._id === currentUser ||
                       message?.senderId === currentUser
                         ? 'message own'
                         : 'message'
                     }
                   >
-                    <span>{message?.text}</span>
-                    <span>{format(message?.createdAt)}</span>
-
-                    {room && message?.name}
+                    <div className="profile-chat">
+                      {/* {room && (
+                        <img
+                          src={
+                            message?.senderId && message?.senderId?.profileImage
+                              ? `${appConfig?.awsBucketUrl}/${message?.senderId?.profileImage}`
+                              : userData?.profileImage
+                              ? `${appConfig?.awsBucketUrl}/${userData?.profileImage}`
+                              : Profile
+                          }
+                          alt=""
+                          className="followerImage"
+                        />
+                      )} */}
+                      <span className="chat-name">
+                        
+                        {  (message?.senderId && message?.senderId?.userName
+                            ? message?.senderId?.userName
+                            : userData?.userName)}
+                      </span>
+                    </div>
+                    <span>
+                      {message?.text}
+                      {room}
+                    </span>
+                    <span className="chat-time">
+                      {format(message?.createdAt)}
+                    </span>
                   </div>
                 </>
               ))}

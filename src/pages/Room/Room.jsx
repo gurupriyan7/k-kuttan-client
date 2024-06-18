@@ -84,7 +84,7 @@ const Room = () => {
 
 
   const fetchRoomListJoined = async () => {
-    await dispatch(findUserRooms())
+    await dispatch(findUserRooms(true))
     setJoinedList(userRoomDatas)
   }
 
@@ -107,7 +107,7 @@ const Room = () => {
 
   const getChats = async () => {
     try {
-      await dispatch(findUserChats())
+      await dispatch(findUserChats(true))
 
       // console.log()
       setChats(chatDatas?.data)

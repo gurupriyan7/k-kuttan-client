@@ -17,14 +17,10 @@ import './Chat.css'
 import ChatBox from '../../components/ChatBox/ChatBox'
 import { findUserChats } from '../../actions/chat.actions'
 const Chat = () => {
-
-  const [isLoading,setIsLoading]=useState(false)
   const authData = useSelector((state) => state.authReducer.authData)
-  const authLoading = useSelector((state) => state.authReducer.isLoading)
   const chatDatas = useSelector((state) => state.chatReducer.chats)
-  const chatLoading = useSelector((state) => state.chatReducer.isLoading)
 
-  console.log(chatDatas, 'chats')
+  console.log(chatDatas, 'chats-----------------------')
 
   const dispatch = useDispatch()
 
@@ -50,15 +46,6 @@ const Chat = () => {
     }
   }, [sendMessage])
 
-  useEffect(()=>{
-    if(chatLoading||authLoading){
-      setIsLoading(true)
-    }else{
-      setIsLoading(false)
-    }
-
-  },[chatLoading,authLoading])
-
   //recieve message
 
   useEffect(() => {
@@ -72,11 +59,10 @@ const Chat = () => {
       socket.current.off('recieve-message')
     }
   }, [])
-  console.log(chatLoading,"caht",authLoading,"authe",isLoading);
 
   const getChats = async () => {
     try {
-      await dispatch(findUserChats())
+      await dispatch(findUserChats(false))
 
       console.log()
       setChats(chatDatas?.data)
@@ -100,18 +86,11 @@ const Chat = () => {
     const online = onlineUsers?.find((user) => user?.userId === chatMember?._id)
     return online ? true : false
   }
-if(isLoading){
-  return(
-    <Preloader/>
-  )
-}
 
   return (
     <>
-
       <div className="Chat">
         {/* left side */}
-       
 
         <div className="Left-side-chat">
           <LogoSearch />
@@ -161,7 +140,6 @@ if(isLoading){
               setSendMessage={setSendMessage}
               recieveMessage={recieveMessage}
               room={false}
-             
             />
           )}
         </div>

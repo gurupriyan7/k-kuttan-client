@@ -30,12 +30,14 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  min-width: 9rem;
 }
 
 .message>span:nth-child(2){
-    font-size: 0.7rem;
+    font-size: 1.15rem;
     color: var(--textColor);
-    align-self: end;
+    align-self: flex-start;
+    font-weight: 600;
    
 }
 
@@ -43,6 +45,7 @@
   align-self: flex-end;
   border-radius: 1rem 1rem 0 1rem;
   background: var(--hrColor);
+  
 }
 
 
@@ -81,4 +84,23 @@
 .chat-sender>div{
     height: 70%;
     padding: 0px 15px 0px 15px;
+}
+.chat-time{
+    font-size:10px;
+    align-self: flex-end;
+}
+.chat-name{
+    font-size: 14px;
+    color: white;
+    align-self: center;
+}
+.followerImage{
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+}
+.profile-chat{
+    display: flex;
+    justify-content: flex-start;
+    gap: 0.3rem;
 }

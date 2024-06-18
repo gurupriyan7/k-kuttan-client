@@ -7,7 +7,7 @@ const API = axios.create({ baseURL: appConfig.apiUrl });
 
 // export const userChats=(id)=>API.
 
-export const getUserChats = async () => {
+export const getUserChats = async (isRoom) => {
   try {
     const token = getLocalStorageItem("token");
     const userData = getLocalStorageItem("profile");
@@ -19,7 +19,7 @@ export const getUserChats = async () => {
     if (!userData) {
       window.location.href = path.auth;
     }
-    return await API.get("/chat", {
+    return await API.get(`/chat?isRoom=${isRoom}`, {
       headers: {
         Authorization: `Bearer ${token}` // Include the Bearer token in the Authorization header
       }
@@ -28,7 +28,7 @@ export const getUserChats = async () => {
     console.log(error);
   }
 };
-export const findChatById = async (chatId) => {
+export const findChatById = async (chatId,isRoom) => {
   // alert(chatId  )
   try {
     const token = getLocalStorageItem("token");
@@ -41,7 +41,7 @@ export const findChatById = async (chatId) => {
     if (!userData) {
       window.location.href = path.auth;
     }
-    const data = await API.get(`/chat/user/${chatId}`, {
+    const data = await API.get(`/chat/user/${chatId}?isRoom=${isRoom}`, {
       headers: {
         Authorization: `Bearer ${token}` // Include the Bearer token in the Authorization header
       }
