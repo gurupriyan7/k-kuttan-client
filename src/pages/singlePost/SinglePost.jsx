@@ -1,7 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react'
 import './SinglePost.css'
+import { Link } from 'react-router-dom'
 import Post from '../../components/Post/Post'
+import Home from '../../img/home.png'
 import Posts from '../../components/Posts/Posts'
 import RightSide from '../../components/RightSide/RightSide'
 import back from '../../img/wp4082523.webp'
@@ -12,6 +14,7 @@ import Comment from '../../img/comment.png'
 import Share from '../../img/share.png'
 import Heart from '../../img/like.png'
 import NotLike from '../../img/notlike.png'
+import Preloader from '../../components/Preloader/Preloader'
 import { PostsData } from '../../Data/PostsData'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
@@ -27,16 +30,19 @@ import PaymentFailModal from '../../components/PaymentFailedModal/PaymentFailedM
 const SinglePost = (PostsData) => {
   const dispatch = useDispatch()
   const location = useLocation()
-
+ 
   // const searchParams = new URLSearchParams(location.search);
   // const postId = searchParams.get('id');
   // const { postId } = location.state
   const { postId } = useParams()
   const navigate = useNavigate()
   console.log(postId, 'postIdsss')
-
+   const [load,setLoad]=useState(false)
   const post = useSelector((state) => state.postReducer.post)
+  const postLoading= useSelector((state) => state.postReducer.loading)
+  console.log("postLoading",postLoading);
   const { user } = useSelector((state) => state.authReducer.authData)
+
   const [liked, setLiked] = useState(post?.isLiked)
   const [likes, setLikes] = useState(post?.likes)
   const [modalOpened, setModalOpened] = useState(false)
@@ -44,6 +50,14 @@ const SinglePost = (PostsData) => {
   const [paymentStatus, setPaymentStatus] = useState(
     post?.isFree || post?.isPaid,
   )
+
+  useEffect(()=>{
+    if(postLoading){
+      setLoad(true)
+    }else{
+      setLoad(false)
+    }
+  },[postLoading])
 
   const [page, setPage] = useState(1)
 
@@ -148,7 +162,8 @@ const SinglePost = (PostsData) => {
   }, [])
 
   return (
-    <>
+    <> 
+     {load && <Preloader/>}
       {paymentStatus ? (
         <div
           className="SinglePost"
@@ -159,8 +174,13 @@ const SinglePost = (PostsData) => {
           }}
         >
           <div className="single-post-container" style={{ color: 'black' }}>
+           
             {/* soldier image left */}
             <div style={{ backgroundColor: '' }}>
+            <Link to="../">
+                {' '}
+                <img src={Home} style={{width:"1.5rem"}} alt="" />
+              </Link>
               <img
                 src={left}
                 style={{ width: '20rem', marginTop: '1rem' }}

@@ -10,13 +10,17 @@ import { getPostsByUser } from '../../actions/post.actions'
 import { useNavigate } from 'react-router-dom'
 import { path } from '../../paths/paths'
 import { findUserProfile } from '../../actions/user.actions';
+import Preloader from '../../components/Preloader/Preloader'
 const Profile = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const [isDraft,setIsDraft]=useState(false)
 
-  const postData = useSelector((state) => state.postReducer.posts)
+  const [load,setLoad]=useState(false)
+  const postData = useSelector((state) => state.postReducer.post)
+  const postLoading= useSelector((state) => state.postReducer.loading)
+  
   const authData = useSelector((state) => state.authReducer.authData)
 
   useEffect(() => {
@@ -24,12 +28,21 @@ const Profile = () => {
     dispatch(findUserProfile())
   }, [dispatch,isDraft])
 
-
+  useEffect(()=>{
+    if(postLoading){
+      setLoad(true)
+    }else{
+      setLoad(false)
+    }
+  },[postLoading])
   return (
+
+   <>
+        {load && <Preloader/>}
     <div className="Profile" style={{ backgroundImage: `URL(${back})` }}>
       <ProfileLeft />
       <div className="Profile-center">
-        <ProfileCard />
+        <ProfileCard isProfile={true} />
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           {/* <button className="button ps-button" style={{ marginLeft: '1rem' }}>
             Saved
@@ -49,6 +62,7 @@ const Profile = () => {
 
       <RightSide />
     </div>
+   </>
   )
 }
 

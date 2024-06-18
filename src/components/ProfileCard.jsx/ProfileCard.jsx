@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { path } from '../../paths/paths'
 import { appConfig } from '../../config/appConfig'
 
-const ProfileCard = () => {
+const ProfileCard = ({isProfile=false}) => {
   const navigate = useNavigate()
   const authData = useSelector((state) => state.authReducer.authData)
   const ProfilePage = true
@@ -25,7 +25,7 @@ const ProfileCard = () => {
     <div
       onClick={handleClick}
       className="ProfileCard"
-      style={{ color: 'black', cursor: 'pointer' }}
+      style={{ color: 'black', cursor: 'pointer', maxWidth: isProfile ? "none" : "20rem" }}
     >
       <div className="ProfileImages">
         <img

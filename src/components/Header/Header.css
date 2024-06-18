@@ -5,15 +5,16 @@
 
 .Header{
     width: 100%;
+   
     cursor: pointer;
     position: fixed;
     display: flex;
     justify-content: center;
     text-transform: uppercase;
-    background-color: var(--orange);
+   
     font-size: 3.5vh;
     padding-bottom: 10px;
-    box-shadow: 0px 1px 5px black;
+   
     color: white;
     z-index: 100;
     

@@ -11,13 +11,19 @@ import { useNavigate } from 'react-router-dom'
 import { path } from '../../paths/paths'
 import { getLocalStorageItem } from '../../utils/appUtils'
 import { findUserProfile } from '../../actions/user.actions';
+import Preloader from '../../components/Preloader/Preloader'
+
 const Home = () => {
   const userData = getLocalStorageItem('profile')
+  const [isLoading,setIsLoading]=useState(false)
   const postData = useSelector((state) => state.postReducer.posts)
+
+  const postDataLoading = useSelector((state) => state.postReducer.loading)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
   useEffect(async () => {
+    setIsLoading(true)
     const fetchData = async () => {
       console.log("hello");
       try {
@@ -25,8 +31,10 @@ const Home = () => {
           navigate(path.auth)
         } else {
           console.log(userData,"userDatasssss");
+
           await dispatch(getAllPosts())
           await dispatch(findUserProfile())
+          setIsLoading(false)
         }
       } catch (error) {
         console.error('Error fetching posts:', error)
@@ -36,12 +44,18 @@ const Home = () => {
     fetchData()
   }, [])
 
+  
+
   return (
+    <>
+       {isLoading && <Preloader/>}
     <div className="Home" style={{ backgroundImage: `URL(${back})` }}>
+  
       <ProfileSide />
       <PostSide postData={postData} />
       <RightSide />
     </div>
+    </>
   )
 }
 

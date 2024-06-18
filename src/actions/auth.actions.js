@@ -53,7 +53,7 @@ export const updateUser = (formData) => async (dispatch) => {
     dispatch({ type: "UPDATING_SUCCESS", data: data });
     window.location.reload()
   } catch (error) {
-    console.log(error);
+    console.log(error); 
     dispatch({ type: "UPDATING_FAIL", data: error });
   }
 };

@@ -41,24 +41,16 @@ export default function SimpleBottomNavigation() {
             
         }
         else if(newValue===4){
-            navigate("../post")
+            navigate("../")
             
-        }else if(newValue===5){
-          navigate("../tickets")
         }
-        else if(newValue===6){
-          navigate("../home")
-          
-      }
         }}
       >
          
         <BottomNavigationAction label="Trending" icon={<WhatshotIcon/>} />
-        <BottomNavigationAction label="Movies" icon={<MovieIcon />} />
-        <BottomNavigationAction label="TV series" icon={<TvIcon />} />
-        <BottomNavigationAction label="Search" icon={<SearchIcon />} />
-        <BottomNavigationAction label="Posts" icon={<AllOutIcon />} />
-        <BottomNavigationAction label="Tickets" icon={<ConfirmationNumberIcon />} />
+        <BottomNavigationAction label="Recent" icon={<MovieIcon />} />
+        <BottomNavigationAction label="Most liked" icon={<TvIcon />} />
+        <BottomNavigationAction label="Suggested" icon={<SearchIcon />} />
         <BottomNavigationAction label="home" icon={<HomeIcon />} />
 
       </BottomNavigation>
