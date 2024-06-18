@@ -78,7 +78,7 @@ const LogoSearch = () => {
   }
 
   const handleChat = async (senderId) => {
-    alert(senderId)
+    // alert(senderId)
     await dispatch(createUserChat({ receiverId: senderId }))
     try {
       if (data) {

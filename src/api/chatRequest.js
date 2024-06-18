@@ -29,7 +29,7 @@ export const getUserChats = async () => {
   }
 };
 export const findChatById = async (chatId) => {
-  alert(chatId  )
+  // alert(chatId  )
   try {
     const token = getLocalStorageItem("token");
     const userData = getLocalStorageItem("profile");

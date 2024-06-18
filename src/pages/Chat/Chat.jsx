@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 // import { userChats } from "../../api/ChatRequest";
+import Preloader from '../../components/Preloader/Preloader'
 import Conversations from '../../components/Conversations/Conversations'
 import LogoSearch from '../../components/LogoSearch/LogoSearch'
 import Home from '../../img/home.png'
@@ -16,8 +17,12 @@ import './Chat.css'
 import ChatBox from '../../components/ChatBox/ChatBox'
 import { findUserChats } from '../../actions/chat.actions'
 const Chat = () => {
+
+  const [isLoading,setIsLoading]=useState(false)
   const authData = useSelector((state) => state.authReducer.authData)
+  const authLoading = useSelector((state) => state.authReducer.isLoading)
   const chatDatas = useSelector((state) => state.chatReducer.chats)
+  const chatLoading = useSelector((state) => state.chatReducer.isLoading)
 
   console.log(chatDatas, 'chats')
 
@@ -39,11 +44,20 @@ const Chat = () => {
   }, [])
   //send message
   useEffect(() => {
-    alert(sendMessage)
+    // alert(sendMessage)
     if (sendMessage !== null) {
       socket.current.emit('send-message', sendMessage)
     }
   }, [sendMessage])
+
+  useEffect(()=>{
+    if(chatLoading||authLoading){
+      setIsLoading(true)
+    }else{
+      setIsLoading(false)
+    }
+
+  },[chatLoading,authLoading])
 
   //recieve message
 
@@ -58,6 +72,7 @@ const Chat = () => {
       socket.current.off('recieve-message')
     }
   }, [])
+  console.log(chatLoading,"caht",authLoading,"authe",isLoading);
 
   const getChats = async () => {
     try {
@@ -85,10 +100,18 @@ const Chat = () => {
     const online = onlineUsers?.find((user) => user?.userId === chatMember?._id)
     return online ? true : false
   }
+if(isLoading){
+  return(
+    <Preloader/>
+  )
+}
+
   return (
     <>
+
       <div className="Chat">
         {/* left side */}
+       
 
         <div className="Left-side-chat">
           <LogoSearch />

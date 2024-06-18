@@ -5,7 +5,7 @@ const chatReducer = (
     chat: null,
     chats: [],
     messages: [],
-    loading: false,
+    isLoading: false,
     error: null,
     isError: false
   },
@@ -13,13 +13,13 @@ const chatReducer = (
 ) => {
   switch (action.type) {
     case "CHATS_START":
-      return { ...state, loading: true, isError: false };
+      return { ...state, isLoading: true, isError: false };
 
     case "CHATS_SUCCESS":
       return {
         ...state,
         chats: action.data,
-        loading: false,
+        isLoading: false,
         isError: false,
         error: null
       };
@@ -27,16 +27,16 @@ const chatReducer = (
     case "CHATS_FAIL":
       // console.log(action?.data, "fail");
       // toast.error(action?.data?.message);
-      return { ...state, loading: false, isError: true, error: action?.data };
+      return { ...state, isLoading: false, isError: true, error: action?.data };
 
     case "CHAT_CREATE_START":
-      return { ...state, loading: true, isError: false };
+      return { ...state, isLoading: true, isError: false };
 
     case "CHAT_CREATE_SUCCESS":
       return {
         ...state,
         chats: [...state.chats, action.data],
-        loading: false,
+        isLoading: false,
         isError: false,
         error: null
       };
@@ -44,16 +44,16 @@ const chatReducer = (
     case "CHAT_CREATE_FAILED":
       // console.log(action?.data, "fail");
       // toast.error(action?.data?.message);
-      return { ...state, loading: false, isError: true, error: action?.data };
+      return { ...state, isLoading: false, isError: true, error: action?.data };
 
     case "CHAT_START":
-      return { ...state, loading: true, isError: false };
+      return { ...state, isLoading: true, isError: false };
 
     case "CHAT_SUCCESS":
       return {
         ...state,
         messages: action.data,
-        loading: false,
+        isLoading: false,
         isError: false,
         error: null
       };
@@ -61,9 +61,9 @@ const chatReducer = (
     case "CHAT_FAIL":
       // console.log(action?.data, "fail");
       // toast.error(action?.data?.message);
-      return { ...state, loading: false, isError: true, error: action?.data };
+      return { ...state, isLoading: false, isError: true, error: action?.data };
     case "MESSAGES_START":
-      return { ...state, loading: true, isError: false };
+      return { ...state, isLoading: true, isError: false };
 
     case "MESSAGES_SUCCESS":
       console.log(
@@ -78,7 +78,7 @@ const chatReducer = (
         messages: Array.isArray(state.messages)
           ? [...state.messages, action.data]
           : [action.data],
-        loading: false,
+        isLoading: false,
         isError: false,
         error: null
       };
@@ -86,7 +86,7 @@ const chatReducer = (
     case "MESSAGES_FAIL":
       // console.log(action?.data, "fail");
       // toast.error(action?.data?.message);
-      return { ...state, loading: false, isError: true, error: action?.data };
+      return { ...state, isLoading: false, isError: true, error: action?.data };
 
     default:
       return state;

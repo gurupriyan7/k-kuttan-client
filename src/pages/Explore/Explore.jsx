@@ -42,7 +42,7 @@ const Explore = () => {
         try {
           if (!userData) {
             //  navigate(path.auth)
-            alert("no user data")
+            // alert("no user data")
           } else {
             console.log(userData,"userDatasssss");
             await dispatch(getAllPosts())

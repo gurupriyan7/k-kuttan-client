@@ -25,7 +25,7 @@ function App() {
         <Route path={path.authorAuth} element={<AuthorAuth />} />
         <Route path={path.profile} element={<Profile />} />
         <Route path={path.chat} element ={<Chat/>}/>
-        <Route path={path.explore} element ={<Explore/>}/>
+        {/* <Route path={path.explore} element ={<Explore/>}/> */}
         <Route path={path.room} element ={<Room/>}/>
         <Route path={`${path.singlePost}/:postId`} element={<SinglePost />} />
         <Route path={`${path.addPost}`} element={<AddPost />} />

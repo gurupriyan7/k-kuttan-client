@@ -1,12 +1,12 @@
 // import { toast } from "react-toastify";
 
 const authReducer = (
-  state = { authData: null, loading: false, error: null, isError: false },
+  state = { authData: null, isLoading: false, error: null, isError: false },
   action
 ) => {
   switch (action.type) {
     case "AUTH_START":
-      return { ...state, loading: true, isError: false };
+      return { ...state, isLoading: true, isError: false };
 
     case "AUTH_SUCCESS":
       // console.log(action?.data,"action.data");
@@ -19,7 +19,7 @@ const authReducer = (
       return {
         ...state,
         authData: action.data,
-        loading: false,
+        isLoading: false,
         isError: false,
         error: null
       };
@@ -27,38 +27,38 @@ const authReducer = (
     case "AUTH_FAIL":
       // console.log(action?.data, "fail");
       // toast.error(action?.data?.message);
-      return { ...state, loading: false, isError: true, error: action?.data };
+      return { ...state, isLoading: false, isError: true, error: action?.data };
 
     case "UPDATING_START":
-      return { ...state, updateLoading: true, isError: false };
+      return { ...state, isLoading: true, isError: false };
 
     case "UPDATING_SUCCESS":
       localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
       localStorage.setItem("token", action?.data?.data?.token);
       return {
         ...state,
-        updateLoading: false,
+        isLoading: false,
         isError: false,
         authData: action.data
       };
 
     case "UPDATING_FAIL":
-      return { ...state, updateLoading: false, isError: true };
+      return { ...state, isLoading: false, isError: true };
     case "FOLLOW_UNFOLLOW_START":
-      return { ...state, updateLoading: true, isError: false };
+      return { ...state, isLoading: true, isError: false };
 
     case "FOLLOW_UNFOLLOW_SUCCESS":
       localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
       // localStorage.setItem("token", action?.data?.data?.token);
       return {
         ...state,
-        updateLoading: false,
+        isLoading: false,
         isError: false,
         authData: action.data
       };
 
     case "FOLLOW_UNFOLLOW_FAIL":
-      return { ...state, updateLoading: false, isError: true };
+      return { ...state, isLoading: false, isError: true };
 
     case "FOLLOW_USER":
       return {
@@ -88,7 +88,7 @@ const authReducer = (
         }
       };
     case "PROFILE_START":
-      return { ...state, updateLoading: true, isError: false };
+      return { ...state, isLoading: true, isError: false };
 
     case "PROFILE_SUCCESS":
       localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
@@ -96,7 +96,7 @@ const authReducer = (
       // console.log(action?.data,"actionDAta");
       return {
         ...state,
-        updateLoading: false,
+        isLoading: false,
         isError: false,
         authData: action.data,
         error: null
@@ -104,7 +104,7 @@ const authReducer = (
     case "PROFILE_FAIL":
       return {
         ...state,
-        updateLoading: false,
+        isLoading: false,
         isError: true,
         error: action?.data
       };
@@ -112,7 +112,7 @@ const authReducer = (
       localStorage.removeItem("profile");
       localStorage.removeItem("token");
 
-      return { ...state, authData: null, loading: false, isError: false };
+      return { ...state, authData: null, isLoading: false, isError: false };
 
     default:
       return state;
