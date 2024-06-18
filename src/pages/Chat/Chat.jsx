@@ -16,6 +16,7 @@ import WhatshotIcon from '@mui/icons-material/Whatshot'
 import './Chat.css'
 import ChatBox from '../../components/ChatBox/ChatBox'
 import { findUserChats } from '../../actions/chat.actions'
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 const Chat = () => {
 
   const [isLoading,setIsLoading]=useState(false)
@@ -100,14 +101,11 @@ const Chat = () => {
     const online = onlineUsers?.find((user) => user?.userId === chatMember?._id)
     return online ? true : false
   }
-if(isLoading){
-  return(
-    <Preloader/>
-  )
-}
+
 
   return (
     <>
+      {isLoading && <Preloader/>}
 
       <div className="Chat">
         {/* left side */}
@@ -137,12 +135,12 @@ if(isLoading){
         <div className="Right-side-chat">
           <div style={{ width: '20rem', alignSelf: 'flex-end' }}>
             <div className="navIcons">
-              <Link to="../home">
+            <Link to="../">
                 {' '}
-                <img src={Home} alt="" />
+                <img src={Home} style={{width:"1.5rem"}} alt="" />
               </Link>
 
-              <Link to="../trending">
+              <Link to="../explore">
                 {' '}
                 <WhatshotIcon />
               </Link>
@@ -150,7 +148,9 @@ if(isLoading){
               <Link to="../chat">
                 <img src={Comment} alt="" />
               </Link>
-              <UilSetting />
+             <Link to="../room" >
+             <MeetingRoomIcon/>
+             </Link>
             </div>
           </div>
           {console.log(currentChat?._id, 'CURRENT')}

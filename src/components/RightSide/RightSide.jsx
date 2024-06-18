@@ -2,15 +2,18 @@ import React, { useEffect, useState } from 'react'
 import './RightSide.css'
 import Home from '../../img/home.png'
 import Noti from '../../img/notifi.avif'
-import Comment from '../../img/chat.png'
-import { UilSetting } from '@iconscout/react-unicons'
+import { Link, useParams } from 'react-router-dom'
 import TrendCard from '../TrendCard/TrendCard'
 import ShareModal from '../ShareModal/ShareModal'
 import { useSelector } from 'react-redux'
 import { UserRole } from '../../config/enums'
 import { path } from '../../paths/paths'
 import { useNavigate } from 'react-router-dom'
-
+// import home from '../../img/home.png'
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
+import Comment from '../../img/comment.png'
+import { UilSetting } from '@iconscout/react-unicons'
+import WhatshotIcon from '@mui/icons-material/Whatshot'
 const RightSide = () => {
   const [modalOpened, setModalOpened] = useState(false)
   const navigate = useNavigate()
@@ -21,13 +24,24 @@ const RightSide = () => {
 
   return (
     <div className="RightSide">
-      <div className="navIcons">
-        <img src={Home} color="white" alt="" />
-        {/* <UilSetting /> */}
+      <div className="navIcons" style={{backgroundColor:" var(--cardColor)",padding:"1rem",borderRadius:"20px"}}>
+              <Link to="../">
+                {' '}
+                <img src={Home} style={{width:"1.5rem"}} alt="" />
+              </Link>
 
-        <img src={Noti} style={{ color: 'white' }} alt="" />
-        <img onClick={()=>navigate(path.chat)} style={{ cursor: 'pointer' }} src={Comment} alt="" />
-      </div>
+              <Link  to="../explore">
+                {' '}
+                <WhatshotIcon />
+              </Link>
+
+              <Link to="../chat">
+                <img src={Comment} alt="" />
+              </Link>
+             <Link to="../room" >
+             <MeetingRoomIcon/>
+             </Link>
+            </div>
 
       <TrendCard />
 

@@ -7,7 +7,9 @@ import Home from '../../img/home.png'
 import { io } from 'socket.io-client'
 import Comment from '../../img/comment.png'
 import { UilSetting } from '@iconscout/react-unicons'
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import WhatshotIcon from '@mui/icons-material/Whatshot'
+import Preloader from '../../components/Preloader/Preloader'
 import './Room.css'
 import ChatBox from '../../components/ChatBox/ChatBox'
 import axios from 'axios'
@@ -26,10 +28,19 @@ import Conversations from '../../components/Conversations/Conversations'
 
 const Room = () => {
   const dispatch = useDispatch()
+  const [isLoading,setIsLoading]=useState(false)
   const authData = useSelector((state) => state.authReducer.authData)
+  const authDataLoading = useSelector((state) => state.authReducer.isLoading)
+ 
   const roomDatas = useSelector((state) => state.roomReducer.rooms)
+  const roomDatasLoading = useSelector((state) => state.roomReducer.isLoading)
+  
   const userRoomDatas = useSelector((state) => state.roomReducer.userRooms)
-  const chatDatas = useSelector((state) => state.chatReducer.chats)
+  
+  const userRoomDatasLoading = useSelector((state) => state.roomReducer.isLoading)
+ const chatDatas = useSelector((state) => state.chatReducer.chats)
+
+ const chatDatasLoading = useSelector((state) => state.chatReducer.isLoading)
 
   // console.log(roomDatas, "DATA#")
 
@@ -70,7 +81,14 @@ const Room = () => {
       socket.current.off('recieve-message')
     }
   }, [])
+  useEffect(()=>{
+    if(authDataLoading||roomDatasLoading||userRoomDatasLoading||chatDatasLoading){
+      setIsLoading(true)
+    }else{
+      setIsLoading(false)
+    }
 
+  },[authDataLoading,roomDatasLoading,userRoomDatasLoading,chatDatasLoading])
   const handleJoin = async () => {
     const userId = authData?.data?._id
     if (!roomId) return
@@ -137,9 +155,10 @@ const Room = () => {
     const online = onlineUsers?.find((user) => user?.userId === chatMember?._id)
     return online ? true : false
   }
-
+ 
   return (
     <>
+    {isLoading && <Preloader/>}
       <div className="Chat">
         {/* Left side */}
         <div className="Left-side-chat">
@@ -236,12 +255,12 @@ const Room = () => {
                 modalOpened2={modalOpened2}
                 setModalOpened2={setModalOpened2}
               />
-              <Link to="../">
+            <Link to="../">
                 {' '}
-                <img src={Home} alt="" />
+                <img src={Home} style={{width:"1.5rem"}} alt="" />
               </Link>
 
-              <Link to="../trending">
+              <Link to="../explore">
                 {' '}
                 <WhatshotIcon />
               </Link>
@@ -249,7 +268,9 @@ const Room = () => {
               <Link to="../chat">
                 <img src={Comment} alt="" />
               </Link>
-              <UilSetting />
+             <Link to="../room" >
+             <MeetingRoomIcon/>
+             </Link>
             </div>
           </div>
           {/* <ChatBox chat={currentChat} currentUser={authData?.data?._id} room={true} setSendMessage={setSendMessage} 

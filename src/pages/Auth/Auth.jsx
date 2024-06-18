@@ -38,10 +38,10 @@ if(userData){
       }}
     >
       <div className="a-left">
-        <img src={Logo} alt="" />
+        <img src={Logo} alt=""  style={{width:"10rem",height:"10rem"}}/>
         <div className="Webname">
           <h1>KAMBI KUTTAPAN</h1>
-          <h6>Explore the ideas throughout the worlds</h6>
+          <h6>Explore The World Of Stories</h6>
         </div>
       </div>
 
@@ -63,7 +63,7 @@ function LogIn({ setIsLogin ,errorMessage, setErrorMessage }) {
   })
 
 
-  const { authData, error, isError } = useSelector((state) => state.authReducer)
+  const { authData, error, isError,isLoading } = useSelector((state) => state.authReducer)
 
   const loginSubmit = async (e) => {
     e.preventDefault()
@@ -154,7 +154,7 @@ function LogIn({ setIsLogin ,errorMessage, setErrorMessage }) {
               SignUp
             </span>
           </span>
-          <button className="button infoButton">Login</button>
+          <button className="button infoButton">{isLoading?"Loading":"Login"}</button>
         </div>
         <div>
           <span style={{ fontSize: '12px' }}>

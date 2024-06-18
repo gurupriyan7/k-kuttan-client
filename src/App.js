@@ -16,8 +16,8 @@ import EditPost from "./components/EditPost/EditPost";
 function App() {
   return (
     <div className="App">
-      <div className="blur" style={{ top: "-18%", right: "0" }}></div>
-      <div className="blur" style={{ top: "36%", left: "-8rem" }}></div>
+      {/* <div className="blur" style={{ top: "-18%", right: "0" }}></div>
+      <div className="blur" style={{ top: "36%", left: "-8rem" }}></div> */}
 
       <Routes>
         <Route path={path.home} element={<Home />} />
@@ -25,7 +25,7 @@ function App() {
         <Route path={path.authorAuth} element={<AuthorAuth />} />
         <Route path={path.profile} element={<Profile />} />
         <Route path={path.chat} element ={<Chat/>}/>
-        {/* <Route path={path.explore} element ={<Explore/>}/> */}
+        <Route path={path.explore} element ={<Explore/>}/>
         <Route path={path.room} element ={<Room/>}/>
         <Route path={`${path.singlePost}/:postId`} element={<SinglePost />} />
         <Route path={`${path.addPost}`} element={<AddPost />} />

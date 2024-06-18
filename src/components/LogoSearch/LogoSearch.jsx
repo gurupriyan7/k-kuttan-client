@@ -92,7 +92,7 @@ const LogoSearch = () => {
   return (
     <>
       <div className="LogoSearch">
-        <img src={Logo} style={{ width: '2rem' }} />
+        <img src={Logo} style={{ width: '4rem' }} />
         <div className="Search">
           <input
             type="text"

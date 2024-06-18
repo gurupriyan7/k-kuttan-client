@@ -1,0 +1,25 @@
+.Movies{
+    margin: -16px;
+    padding: 0;
+    
+    background-color: var(--cardColor);
+    color: var(--hr);
+}
+
+.Movie{
+    padding-top: 120px;
+    padding-bottom: 70px;
+    min-height: 100vh;
+}
+
+@media (max-width:700px){
+    .Movie{
+        padding-top: 70px;
+    }
+}
+.trending{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
+}
