@@ -16,8 +16,8 @@ export default function SimpleBottomNavigation() {
   const navigate=useNavigate()
 
   return (
-    <div >
-        <Box  sx={{ width: "100%" ,position:"fixed", bottom:0, zIndex:100,backgroundColor:`red`}}>
+    <div className='w-full' >
+        <Box className="" sx={{ width: "100%" ,position:"fixed", bottom:0,left:0, right:0, zIndex:100,backgroundColor:`red`}}>
       <BottomNavigation
         showLabels
         value={value}

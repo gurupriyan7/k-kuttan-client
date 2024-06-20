@@ -53,18 +53,20 @@ const Explore = () => {
   return (
     <>
         {isLoading && <Preloader/>}
-    <div className='Movies'  style={{ backgroundImage: `URL(${back})` }}>
+    <div className='Movies '  style={{ backgroundImage: `URL(${back})` }}>
    <Header/> 
    
-    <div className='Movie'>
-        <Container>
+    <div className='Movie w-full md:h-[80vh] ]'>
+        <Container className='overflow-hidden mt-[40px] md:mt-0'>
           <div className="trending">
           <ExploreSingle postData={postData} />
           </div>
 
            {/* <CustomPagination setPage={setPage} noOfPages={10}/> */}
         </Container>
+          <div className='w-full'>
           <SimpleBottomNavigation/>
+          </div>
     </div>
   
    </div>
