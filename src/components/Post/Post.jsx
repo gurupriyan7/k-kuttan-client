@@ -29,64 +29,64 @@ const Post = ({ data }) => {
     if (data?.isDraft) {
       navigate(`${path.editPost}/${data?._id}`)
     } else {
-      if ((!data?.isFree && !data?.isPaid) && data?.amount > 0) {
+      if (!data?.isFree && !data?.isPaid && data?.amount > 0) {
         e.preventDefault()
-        if (userData?.data) {
+        if (!userData?.data) {
           navigate(path.auth)
+        } else {
+          const options = {
+            key: appConfig.razorpayKeyId,
+            key_secret: appConfig.razorpayKeySecret,
+            amount: data?.amount * 100,
+            currency: 'INR',
+            name: data?.title,
+            description: 'Test Transaction',
+            handler: async function async(response) {
+              console.log(response, 'response')
+              await updatePayment({
+                transactionId: response?.razorpay_payment_id,
+                amount: data?.amount,
+                status: PaymentStatusEnum.SUCCESS,
+                postId: data?._id,
+              })
+              navigate(`${path.singlePost}/${data?._id}`)
+              // alert(
+              //   `Payment Successful! Payment ID: ${response}`,
+              // )
+            },
+            prefill: {
+              name: 'Your Name',
+              email: 'your.email@example.com',
+              contact: '9999999999',
+            },
+            notes: {
+              address: 'Your Address',
+            },
+            theme: {
+              color: '#3399cc',
+            },
+          }
+
+          const rzp = new window.Razorpay(options)
+          rzp.open()
+
+          // alert('need to pay')
+          rzp.on('payment.failed', async function (response) {
+            console.log(response, 'payment failed response')
+            await updatePayment({
+              transactionId: response?.razorpay_payment_id,
+              amount: data?.amount,
+              status: PaymentStatusEnum.FAILED,
+              postId: data?._id,
+            })
+            // alert(`Payment Failed! Error: ${response.error.description}`)
+          })
         }
         // const res = await createPayment({
         //   postId: data?._id,const
         // })
 
         // console.log(res, 'responseddd')
-
-        const options = {
-          key: appConfig.razorpayKeyId,
-          key_secret: appConfig.razorpayKeySecret,
-          amount: data?.amount * 100,
-          currency: 'INR',
-          name: data?.title,
-          description: 'Test Transaction',
-          handler: async function async(response) {
-            console.log(response, 'response')
-            await updatePayment({
-              transactionId: response?.razorpay_payment_id,
-              amount: data?.amount,
-              status: PaymentStatusEnum.SUCCESS,
-              postId: data?._id,
-            })
-            navigate(`${path.singlePost}/${data?._id}`)
-            // alert(
-            //   `Payment Successful! Payment ID: ${response}`,
-            // )
-          },
-          prefill: {
-            name: 'Your Name',
-            email: 'your.email@example.com',
-            contact: '9999999999',
-          },
-          notes: {
-            address: 'Your Address',
-          },
-          theme: {
-            color: '#3399cc',
-          },
-        }
-
-        const rzp = new window.Razorpay(options)
-        rzp.open()
-
-        // alert('need to pay')
-        rzp.on('payment.failed', async function (response) {
-          console.log(response, 'payment failed response')
-          await updatePayment({
-            transactionId: response?.razorpay_payment_id,
-            amount: data?.amount,
-            status: PaymentStatusEnum.FAILED,
-            postId: data?._id,
-          })
-          // alert(`Payment Failed! Error: ${response.error.description}`)
-        })
       } else {
         navigate(`${path.singlePost}/${data?._id}`)
       }
