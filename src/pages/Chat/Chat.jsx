@@ -106,13 +106,13 @@ const Chat = () => {
     <>
       {isLoading && <Preloader/>}
  
-      <div className="Chat">
+      <div className=" grid md:grid-cols-[22%_auto] gap-4  relative overflow-hidden">
         {/* left side */}
 
-        <div className="Left-side-chat">
+        <div className="Left-side-chat w-full   min-w-[300px] z-100 mt-2 px-1 overflow-hidden" >
           <LogoSearch />
 
-          <div className="Chat-container">
+          <div className="Chat-container overflow-hidden">
             <h2>Chats</h2>
             <div className="Chat-list">
               {chats?.map((chat) => (
@@ -130,9 +130,9 @@ const Chat = () => {
 
         {/* right side */}
 
-        <div className="Right-side-chat">
-          <div style={{ width: '20rem', alignSelf: 'flex-end' }}>
-            <div className="navIcons">
+        <div className="Right-side-chat overflow-hidden">
+          <div style={{ width: '20rem', alignSelf: 'flex-end' }} className=' fixed md:static bottom-10  mx-auto md:mx-0 left-0 right-0 md:pr-2'>
+            <div className="navIcons ">
             <Link to="../">
                 {' '}
                 <img src={Home} style={{width:"1.5rem"}} alt="" />
@@ -153,13 +153,15 @@ const Chat = () => {
           </div>
           {console.log(currentChat?._id, 'CURRENT')}
           {currentChat && (
-            <ChatBox
+            <div className='absolute md:static rounded-[12px] left-0 right-0 bottom-0 w-full h-[95vh] bg-white'>
+              <ChatBox
               chatId={currentChat?._id}
               currentUser={authData?.data?._id}
               setSendMessage={setSendMessage}
               recieveMessage={recieveMessage}
               room={false}
             />
+            </div>
           )}
         </div>
       </div>

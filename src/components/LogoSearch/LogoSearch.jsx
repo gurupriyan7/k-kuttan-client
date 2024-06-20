@@ -132,9 +132,9 @@ const LogoSearch = () => {
         ))}
 
       {connection ? (
-        <span>Start converstion via chat box</span>
+        <span className=''>Start converstion via chat box</span>
       ) : (
-        <span>Create connection</span>
+        <span className=''>Create connection</span>
       )}
     </>
   )

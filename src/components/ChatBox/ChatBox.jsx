@@ -11,6 +11,8 @@ import { appConfig } from '../../config/appConfig'
 import { createMessage, findUserMessages } from '../../actions/chat.actions'
 import { findChatById } from '../../api/chatRequest'
 import Profile from '../../img/profileImg.jpg'
+import { UilArrowLeft } from '@iconscout/react-unicons'
+import { useNavigate  } from 'react-router-dom' 
 const ChatBox = ({
   chatId,
   currentUser,
@@ -29,6 +31,7 @@ const ChatBox = ({
   const [chat, setChat] = useState(null)
   const scroll = useRef()
   const dispatch = useDispatch()
+  const navigate = useNavigate() 
   const handleChange = (newMessage) => {
     setNewMessage(newMessage)
   }
@@ -138,12 +141,18 @@ const ChatBox = ({
 
   return (
     <>
-      <div className="ChatBox-container">
+      <div className="ChatBox-container w-full">
         {chat ? (
           <>
             <div className="chat-header">
               <div className="follower">
                 <div>
+                <button
+                onClick={() => navigate(0)}
+                className="mr-2 p-1 rounded-full hover:bg-gray-200"
+              >
+                <UilArrowLeft size="24" />
+              </button>
                   {!room && (
                     <img
                       src={`${appConfig.awsBucketUrl}/${chatUser?.profileImage}`}
