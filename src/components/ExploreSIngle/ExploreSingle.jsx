@@ -11,7 +11,7 @@ const ExploreSingle = ({postData}) => {
   console.log(postData,"postDataaaa");
   // const postData = useSelector((state) => state.postReducer.posts)
   return (
-    <div className="PostSide">
+    <div className="PostSide overflow-y-hidden">
       
       <Posts post={postData} />
     </div>

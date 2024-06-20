@@ -14,7 +14,7 @@
 .singlepost-detail {
   max-height: 75vh;
   overflow-y: scroll;
-  padding: 0 5rem;
+  /* padding: 0 5rem; */
 }
 
 .post-reactions{
@@ -54,7 +54,7 @@
   .singlepost-detail {
     max-height: 56vh;
     overflow-y: scroll;
-    padding: 0 14rem;
+    /* padding: 0 14rem; */
   }
 
   .postReact-single {

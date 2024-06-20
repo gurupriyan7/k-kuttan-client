@@ -6,7 +6,7 @@ const Header = () => {
     <>
    
   
-    <span onClick={()=>window.scroll(0,0)} className='Header'> <img src={Logo} alt="" style={{width:"4rem",height:"4rem"}} /> <h6 style={{marginLeft:"-1rem"}}>AMBIKUTTAPAN </h6> </span>
+    <span onClick={()=>window.scroll(0,0)} className='Header w-full py-[20px]'> <img src={Logo} alt="" style={{width:"4rem",height:"4rem"}} /> <h6 className='mt-4' style={{marginLeft:"-1rem"}}>AMBIKUTTAPAN </h6> </span>
     </>
   )
 }
