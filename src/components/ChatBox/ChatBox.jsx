@@ -116,7 +116,12 @@ const ChatBox = ({
     let recieverId = ''
     if (isRoom) {
       recieverId = chat?.members?.find((id) => id?._id !== currentUser)
-      setSendMessage({ ...message, recieverId: recieverId?._id })
+      setSendMessage({
+        ...message,
+        recieverId: recieverId?._id,
+        senderId: currentUser,
+        isRoom: true,
+      })
     } else {
       recieverId = chat?.members?.find((id) => id?._id !== currentUser)
       setSendMessage({ ...message, recieverId: recieverId?._id })
@@ -189,10 +194,9 @@ const ChatBox = ({
                         />
                       )} */}
                       <span className="chat-name">
-                        
-                        {  (message?.senderId && message?.senderId?.userName
-                            ? message?.senderId?.userName
-                            : userData?.userName)}
+                        {message?.senderId && message?.senderId?.userName
+                          ? message?.senderId?.userName
+                          : userData?.userName}
                       </span>
                     </div>
                     <span>

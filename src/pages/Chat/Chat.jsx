@@ -42,6 +42,7 @@ const Chat = () => {
       setOnlineUsers(users)
     })
   }, [])
+  
   //send message
   useEffect(() => {
     // alert(sendMessage)
@@ -67,10 +68,10 @@ const Chat = () => {
       setRecieveMessage(data)
     })
 
-    // Clean up listener on unmount
-    return () => {
-      socket.current.off('recieve-message')
-    }
+    // // Clean up listener on unmount
+    // return () => {
+    //   socket.current.off('recieve-message')
+    // }
   }, [])
 
   const getChats = async () => {
@@ -104,7 +105,7 @@ const Chat = () => {
   return (
     <>
       {isLoading && <Preloader/>}
-
+ 
       <div className="Chat">
         {/* left side */}
 

@@ -52,7 +52,7 @@ const PostShare = ({ data, setData }) => {
       console.log(imageData, 'image-image')
     }
   }
-  console.log(data,"dataaaa ");
+  console.log(data,"dataaaa ",authData);
 
   return (
     <div className="PostShare">

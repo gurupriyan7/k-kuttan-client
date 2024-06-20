@@ -10,13 +10,14 @@ import { getAllPosts } from '../../actions/post.actions'
 import { useNavigate } from 'react-router-dom'
 import { path } from '../../paths/paths'
 import { getLocalStorageItem } from '../../utils/appUtils'
-import { findUserProfile } from '../../actions/user.actions';
+import { findUserProfile } from '../../actions/user.actions'
 import Preloader from '../../components/Preloader/Preloader'
 
 const Home = () => {
-  const userData = getLocalStorageItem('profile')
-  const [isLoading,setIsLoading]=useState(false)
+  // const userData = getLocalStorageItem('profile')
+  const [isLoading, setIsLoading] = useState(false)
   const postData = useSelector((state) => state.postReducer.posts)
+  const authData = useSelector((state) => state.authReducer.authData)
 
   const postDataLoading = useSelector((state) => state.postReducer.loading)
 
@@ -25,12 +26,12 @@ const Home = () => {
   useEffect(async () => {
     setIsLoading(true)
     const fetchData = async () => {
-      console.log("hello");
+      console.log('hello')
       try {
-        if (!userData) {
+        if (!authData?.data) {
           navigate(path.auth)
         } else {
-          console.log(userData,"userDatasssss");
+          console.log(authData?.data, 'userDatasssss')
 
           await dispatch(getAllPosts())
           await dispatch(findUserProfile())
@@ -44,17 +45,14 @@ const Home = () => {
     fetchData()
   }, [])
 
-  
-
   return (
     <>
-       {isLoading && <Preloader/>}
-    <div className="Home" style={{ backgroundImage: `URL(${back})` }}>
-  
-      <ProfileSide />
-      <PostSide postData={postData} />
-      <RightSide />
-    </div>
+      {isLoading && <Preloader />}
+      <div className="Home" style={{ backgroundImage: `URL(${back})` }}>
+        <ProfileSide />
+        <PostSide postData={postData} />
+        <RightSide />
+      </div>
     </>
   )
 }

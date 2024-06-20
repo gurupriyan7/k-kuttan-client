@@ -7,7 +7,12 @@ import axios from 'axios'
 import { ClickAwayListener } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { createRoomAction } from '../../actions/room.actions'
-const RoomModal = ({ modalOpened2, setModalOpened2, data }) => {
+const RoomModal = ({
+  modalOpened2,
+  setModalOpened2,
+  joinedList,
+  setJoinedList,
+}) => {
   const authData = useSelector((state) => state.authReducer.authData)
   const [roomName, setRoomName] = useState('')
   const navigte = useNavigate()
@@ -20,9 +25,10 @@ const RoomModal = ({ modalOpened2, setModalOpened2, data }) => {
     }
     console.log(room, 'ROOM DATA')
     try {
-      const data =await dispatch(createRoomAction(room))
+      const data = await dispatch(createRoomAction(room))
+      // setJoinedList([...joinedList, room])
       console.log(data, 'room Model data')
-      alert('Room created successfully')
+      // alert('Room created successfully')
       setModalOpened2(false)
       // window.location.reload()
     } catch (error) {

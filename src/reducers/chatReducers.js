@@ -3,6 +3,7 @@
 const chatReducer = (
   state = {
     chat: null,
+
     chats: [],
     messages: [],
     isLoading: false,

@@ -34,9 +34,9 @@ const FollowersCard = () => {
 
   useEffect(() => {
     const followings = authData?.data?.followings ?? []
-    const followerss = authData?.data?.followers ?? []
+    // const followerss = authData?.data?.followers ?? []
 
-    const filterFollowers = followerss?.map((follower) => {
+    const filterFollowers = authData?.data?.followers?.map((follower) => {
       if (
         Array.isArray(followings) &&
         followings.some((following) => following._id === follower._id)
@@ -49,8 +49,8 @@ const FollowersCard = () => {
     setFollowers(filterFollowers)
   }, [authData])
 
-  const handleFollowUnFollow = async(userId)=>{
-dispatch(followUnFollowUser(userId))
+  const handleFollowUnFollow = async (userId) => {
+    dispatch(followUnFollowUser(userId))
   }
 
   console.log(followers, 'foloowerj')
@@ -73,7 +73,11 @@ dispatch(followUnFollowUser(userId))
                 <span>@{follower?.userName}</span>
               </div>
             </div>
-            <button onClick={()=>handleFollowUnFollow(follower?._id)} className="button fc-button" style={{ color: 'black' }}>
+            <button
+              onClick={() => handleFollowUnFollow(follower?._id)}
+              className="button fc-button"
+              style={{ color: 'black' }}
+            >
               {follower?.isFollowing ? 'UnFollow' : 'Follow'}
             </button>
           </div>

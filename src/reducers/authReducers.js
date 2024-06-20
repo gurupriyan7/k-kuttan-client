@@ -34,7 +34,7 @@ const authReducer = (
 
     case "UPDATING_SUCCESS":
       localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
-      localStorage.setItem("token", action?.data?.token);
+      // localStorage.setItem("token", action?.data?.token);
       return {
         ...state,
         isLoading: false,

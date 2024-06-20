@@ -1,5 +1,6 @@
 const initialState = {
   rooms: [],
+  room:{},
   userRooms: [],
   loading: false,
   error: null
@@ -22,11 +23,11 @@ const roomReducer = (state = initialState, action) => {
       return { ...state, userRooms: action.data, loading: false };
 
     case "CREATE_ROOM_SUCCESS":
-      console.log(Array.isArray(state.rooms),"apple",state);
+      console.log(Array.isArray(state.userRooms),"apple",state);
       return {
         ...state,
-        rooms: Array.isArray(state.rooms)
-          ? [...state.rooms, action.data]
+        userRooms: Array.isArray(state.userRooms)
+          ? [...state.userRooms, action.data]
           : [action.data],
         loading: false,
         isError: false,
