@@ -207,14 +207,26 @@ const SinglePost = (PostsData) => {
                 
                 {/* <img src={`${appConfig.awsBucketUrl}/${post?.image}`} alt="sdfs" /> */}
 
-                <div class="post-reactions">
+                <div class="post-reactions flex flex-col items-center justify-center mr-2 md:mr-2 lg:-ml-16 ">
                   {!post?.isDraft&&<div className="postReact-single">
+                    <div>
                     <img
                       src={liked ? Heart : NotLike}
                       alt=""
                       onClick={handleLike}
                       style={{ cursor: 'pointer' }}
                     />
+                     {!post?.isDraft&&<p className='w-full item-center flex justify-center'
+                    style={{
+                      color: 'var(--gray)',
+                      fontSize: '12px',
+                      display: 'flex',
+                      // display:"none"
+                    }}
+                  >
+                    {likes} likes  
+                  </p>}
+                    </div>
                     <img
                       onClick={() => setModalOpened(true)}
                       src={Comment}
@@ -229,7 +241,7 @@ const SinglePost = (PostsData) => {
                     />
                   </div>}
 
-                  {!post?.isDraft&&<p
+                  {/* {!post?.isDraft&&<p className='w-full item-center flex justify-center'
                     style={{
                       color: 'var(--gray)',
                       fontSize: '12px',
@@ -238,7 +250,7 @@ const SinglePost = (PostsData) => {
                     }}
                   >
                     {likes} likes  
-                  </p>}
+                  </p>} */}
                 </div>
 
                 {/* <div className="singlepost-detail w-full md:w-[60vw] mx-auto">
