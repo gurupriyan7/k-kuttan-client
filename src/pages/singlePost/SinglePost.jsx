@@ -73,12 +73,13 @@ const SinglePost = (PostsData) => {
   )
 
   const handleLike = () => {
-    if (userData?.data) {
+    if(userData?.data){
+
       setLiked((prev) => !prev)
       likeAndCommentPost(post?._id, userData?.data?._id)
       liked ? setLikes((prev) => prev - 1) : setLikes((prev) => prev + 1)
-    } else {
-      alert('please login to like')
+    }else{
+      alert("please login to like")
     }
   }
   const handleEdit = (e) => {
@@ -98,7 +99,7 @@ const SinglePost = (PostsData) => {
   const handleSelect = async (e) => {
     // console.log(postDetails,"postDetails");
     // alert(post?.isPaid)
-    if (!post?.isFree && !post?.isPaid && !post?.isDraft && post?.amount > 0) {
+    if (!post?.isFree && !post?.isPaid && !post?.isDraft ) {
       // e.preventDefault()
       // const res = await createPayment({
       //   postId: post?._id,
@@ -192,8 +193,8 @@ const SinglePost = (PostsData) => {
             </div>
             {/* scroll content */}
             <div className=" mx-auto w-full md:w-[100vw]">
-              <div
-                className="h-full"
+              
+              <div className='h-full'
                 style={{
                   // backgroundColor: "black",
                   height: '100vh',
@@ -209,43 +210,38 @@ const SinglePost = (PostsData) => {
                 {/* <img src={`${appConfig.awsBucketUrl}/${post?.image}`} alt="sdfs" /> */}
 
                 <div class="post-reactions flex flex-col items-center justify-center mr-2 md:mr-2 lg:-ml-16 ">
-                  {!post?.isDraft && (
-                    <div className="postReact-single">
-                      <div>
-                        <img
-                          src={liked ? Heart : NotLike}
-                          alt=""
-                          onClick={handleLike}
-                          style={{ cursor: 'pointer' }}
-                        />
-                        {!post?.isDraft && (
-                          <p
-                            className="w-full item-center flex justify-center"
-                            style={{
-                              color: 'var(--gray)',
-                              fontSize: '12px',
-                              display: 'flex',
-                              // display:"none"
-                            }}
-                          >
-                            {likes} likes
-                          </p>
-                        )}
-                      </div>
-                      <img
-                        onClick={() => setModalOpened(true)}
-                        src={Comment}
-                        alt=""
-                        style={{ cursor: 'pointer' }}
-                      />
-                      <img
-                        src={Share}
-                        alt=""
-                        onClick={() => setShareModalOpened(true)}
-                        style={{ cursor: 'pointer' }}
-                      />
+                  {!post?.isDraft&&<div className="postReact-single">
+                    <div>
+                    <img
+                      src={liked ? Heart : NotLike}
+                      alt=""
+                      onClick={handleLike}
+                      style={{ cursor: 'pointer' }}
+                    />
+                     {!post?.isDraft&&<p className='w-full item-center flex justify-center'
+                    style={{
+                      color: 'var(--gray)',
+                      fontSize: '12px',
+                      display: 'flex',
+                      // display:"none"
+                    }}
+                  >
+                    {likes} likes  
+                  </p>}
                     </div>
-                  )}
+                    <img
+                      onClick={() => setModalOpened(true)}
+                      src={Comment}
+                      alt=""
+                      style={{ cursor: 'pointer' }}
+                    />
+                    <img
+                      src={Share}
+                      alt=""
+                      onClick={() => setShareModalOpened(true)}
+                      style={{ cursor: 'pointer' }}
+                    />
+                  </div>}
 
                   {/* {!post?.isDraft&&<p className='w-full item-center flex justify-center'
                     style={{
@@ -265,15 +261,16 @@ const SinglePost = (PostsData) => {
                   </span>
                   <div className='w-[70vw] sm:w-[69vw] md:max-w-[700px] mx-auto'> {post?.story[page - 1]?.story}</div>
                 </div> */}
-
-                <div className="max-h-[75vh] overflow-y-scroll  w-full mx-auto">
-                  <div className="mx-auto w-full flex items-center justify-center">
-                    <b className="mx-auto ">{post?.title}</b>
+                
+                 <div className="max-h-[75vh] overflow-y-scroll  w-full mx-auto">
+                  <div className='mx-auto w-full flex items-center justify-center'>
+                    <b className='mx-auto '>{post?.title}</b>
                   </div>
                   <div className="  h-[250px] md:h-[350px] lg-h-[60vh] lg:px-[6vw] xl:px-0 xl:h-[80vh] w-[250px] my-auto   md:px-[7vw] md:max-w-[450px] md:w-full mx-auto">
                     {post?.story[page - 1]?.story}
                   </div>
                 </div>
+                
               </div>
               <div
                 style={{
