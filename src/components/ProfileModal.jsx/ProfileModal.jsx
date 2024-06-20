@@ -82,6 +82,16 @@ function ProfileModal({ modalOpened, setModalOpened, authData }) {
     }
   }
 
+  const modalStyles = {
+    width: '100%',
+    maxWidth: '100%',
+    '@media(min-width: 900px)': {
+      width: '60%',
+      maxWidth: '60%',
+      
+    }
+  }
+
   return (
     <Modal
       overlayColor={
@@ -91,15 +101,16 @@ function ProfileModal({ modalOpened, setModalOpened, authData }) {
       }
       overlayOpacity={0.55}
       overlayBlur={3}
-      size="55%"
+      // size="55%"
+      styles={{ modal: modalStyles }}
       opened={modalOpened}
       onClose={() => setModalOpened(false)}
     >
-      <form className="infoForm">
+     <form className="w-full">
         <h3>Your info </h3>
 
-        <div style={{ marginTop: '20px', height: '4rem' }}>
-          <div style={{ display: 'grid', width: '100%' }}>
+        <div className="mt-5 grid gap-4 md:flex">
+          <div className="flex flex-col w-full">
             <label htmlFor="firstName">First Name</label>
             <input
               type="text"
@@ -112,8 +123,8 @@ function ProfileModal({ modalOpened, setModalOpened, authData }) {
             />
           </div>
 
-          <div style={{ display: 'grid', width: '100%' }}>
-            <label htmlFor="firstName">Last Name</label>
+          <div className="flex flex-col w-full">
+            <label htmlFor="lastName">Last Name</label>
             <input
               type="text"
               onChange={handleChange}
@@ -126,8 +137,8 @@ function ProfileModal({ modalOpened, setModalOpened, authData }) {
           </div>
         </div>
 
-        <div style={{ marginTop: '20px', height: '4rem' }}>
-          <div style={{ display: 'grid', width: '100%' }}>
+        <div className="mt-5">
+          <div className="grid w-full">
             <label htmlFor="userName">UserName</label>
             <input
               type="text"
@@ -141,8 +152,8 @@ function ProfileModal({ modalOpened, setModalOpened, authData }) {
           </div>
         </div>
 
-        <div style={{ marginTop: '20px', height: '4rem' }}>
-          <div style={{ display: 'grid', width: '100%' }}>
+        <div className="mt-5">
+          <div className="grid w-full">
             <label htmlFor="email">Email</label>
             <input
               type="text"
@@ -153,23 +164,10 @@ function ProfileModal({ modalOpened, setModalOpened, authData }) {
               value={userData.email}
             />
           </div>
-
-          {/* <div style={{ display: 'grid', width: '100%' }}>
-            <label htmlFor="phoneNumber">PhoneNumber</label>
-            <input
-              type="text"
-              onChange={handleChange}
-              className="infoInput"
-              id="phoneNumber"
-              name="phoneNumber"
-              placeholder="PhoneNumber"
-              value={userData.phoneNumber}
-            />
-          </div> */}
         </div>
 
-        <div style={{ marginTop: '20px', height: '4rem' }}>
-          <div style={{ display: 'grid', width: '100%' }}>
+        <div className="mt-5">
+          <div className="grid w-full">
             <label htmlFor="profileImage">ProfileImage</label>
             <input
               id="profileImage"
@@ -200,14 +198,13 @@ function ProfileModal({ modalOpened, setModalOpened, authData }) {
             )}
           </div>
 
-          <div style={{ display: 'grid', width: '100%' }}>
+          <div className="grid w-full mt-5">
             <label htmlFor="coverImage">CoverImage</label>
             <input
               id="coverImage"
               type="file"
               name="coverImage"
               className="infoInput"
-              // placeholder="PhoneNumber"
               ref={imageRef}
               onChange={onImageChange}
             />
@@ -226,7 +223,7 @@ function ProfileModal({ modalOpened, setModalOpened, authData }) {
                 <img
                   className="previewImageDiv"
                   src={image.coverImage}
-                  alt="profileImage"
+                  alt="coverImage"
                 />
               </div>
             )}
@@ -236,7 +233,7 @@ function ProfileModal({ modalOpened, setModalOpened, authData }) {
         <button
           style={{
             width: '100%',
-            marginTop: (image?.coverImage || image?.profileImage) ? '10rem' : '0',
+            marginTop: (image?.coverImage || image?.profileImage) ? '4rem' : '0',
           }}
           type="submit"
           className="button infoInput"
