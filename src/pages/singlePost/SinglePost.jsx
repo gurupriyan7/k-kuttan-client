@@ -192,8 +192,9 @@ const SinglePost = (PostsData) => {
               />
             </div>
             {/* scroll content */}
-            <div className="badan">
-              <div
+            <div className=" mx-auto w-full md:w-[100vw]">
+              
+              <div className='h-full'
                 style={{
                   // backgroundColor: "black",
                   height: '100vh',
@@ -246,12 +247,22 @@ const SinglePost = (PostsData) => {
                   )}
                 </div>
 
-                <div className="singlepost-detail">
+                {/* <div className="singlepost-detail w-full md:w-[60vw] mx-auto">
                   <span>
                     <b>{post?.title}</b>
                   </span>
-                  <span> {post?.story[page - 1]?.story}</span>
+                  <div className='w-[70vw] sm:w-[69vw] md:max-w-[700px] mx-auto'> {post?.story[page - 1]?.story}</div>
+                </div> */}
+                
+                 <div className="max-h-[75vh] overflow-y-scroll  w-full mx-auto">
+                  <span>
+                    <b className=''>{post?.title}</b>
+                  </span>
+                  <div className="  h-[250px] md:h-[350px] lg-h-[50vh] lg:px-[4vw] xl:px-0 xl:h-[80vh] w-[250px] my-auto   md:px-4 md:max-w-[450px] md:w-full mx-auto">
+                    {post?.story[page - 1]?.story}
+                  </div>
                 </div>
+                
               </div>
               <div
                 style={{

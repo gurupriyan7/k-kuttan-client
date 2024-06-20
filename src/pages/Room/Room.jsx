@@ -167,9 +167,9 @@ const Room = () => {
   return (
     <>
       {isLoading && <Preloader />}
-      <div className="Chat">
+      <div className="grid md:grid-cols-[22%_auto] gap-4  relative overflow-hidden">
         {/* Left side */}
-        <div className="Left-side-chat">
+        <div className="Left-side-chat min-w-[300px] z-100 mt-2 px-1 overflow-hidden">
           <select
             onChange={(e) => setRoomId(e.target.value)}
             className="infoInput"
@@ -249,8 +249,8 @@ const Room = () => {
           )}
         </div> */}
 
-        <div className="Right-side-chat">
-          <div style={{ width: '20rem', alignSelf: 'flex-end' }}>
+        <div className="Right-side-chat overflow-hidden">
+          <div style={{ width: '20rem', alignSelf: 'flex-end' }} className='fixed md:static bottom-10  mx-auto md:mx-0 left-0 right-0 md:pr-2'>
             <div className="navIcons">
               <button
                 className="button"
@@ -287,6 +287,7 @@ const Room = () => {
     recieveMessage={recieveMessage}
     /> */}
           {currentChat && (
+             <div className='absolute md:static rounded-[12px] left-0 right-0 bottom-0 w-full h-[95vh] bg-white'>
             <ChatBox
               chatId={currentChat}
               currentUser={authData?.data?._id}
@@ -295,6 +296,7 @@ const Room = () => {
               recieveMessage={recieveMessage}
               chatRoomName={chatRoomName}
             />
+            </div>
           )}
         </div>
       </div>
