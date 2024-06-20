@@ -29,7 +29,7 @@ const Post = ({ data }) => {
     if (data?.isDraft) {
       navigate(`${path.editPost}/${data?._id}`)
     } else {
-      if (!data?.isFree && !data?.isPaid) {
+      if ((!data?.isFree && !data?.isPaid) && data?.amount > 0) {
         e.preventDefault()
         if (userData?.data) {
           navigate(path.auth)
@@ -99,8 +99,8 @@ const Post = ({ data }) => {
       setLiked((prev) => !prev)
       likeAndCommentPost(data?._id, userData?.data?._id)
       liked ? setLikes((prev) => prev - 1) : setLikes((prev) => prev + 1)
-    }else{
-      alert("please login to like")
+    } else {
+      alert('please login to like')
     }
   }
   return (
