@@ -8,7 +8,7 @@ const PostSide = ({postData}) => {
   // const postData = useSelector((state) => state.postReducer.posts)
   return (
     <div className="PostSide">
-      <PostShare />
+      {/* <PostShare /> */}
       <Posts post={postData} />
     </div>
   )

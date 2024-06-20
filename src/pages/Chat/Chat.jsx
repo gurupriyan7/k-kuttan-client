@@ -16,9 +16,9 @@ import WhatshotIcon from '@mui/icons-material/Whatshot'
 import './Chat.css'
 import ChatBox from '../../components/ChatBox/ChatBox'
 import { findUserChats } from '../../actions/chat.actions'
-import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom'
 const Chat = () => {
-  const [isLoading,setIsLoading]=useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const authData = useSelector((state) => state.authReducer.authData)
   const authLoading = useSelector((state) => state.authReducer.isLoading)
   const chatDatas = useSelector((state) => state.chatReducer.chats)
@@ -42,23 +42,21 @@ const Chat = () => {
       setOnlineUsers(users)
     })
   }, [])
-  
+
   //send message
   useEffect(() => {
-    // alert(sendMessage)
     if (sendMessage !== null) {
       socket.current.emit('send-message', sendMessage)
     }
   }, [sendMessage])
 
-  useEffect(()=>{
-    if(chatLoading||authLoading){
+  useEffect(() => {
+    if (chatLoading || authLoading) {
       setIsLoading(true)
-    }else{
+    } else {
       setIsLoading(false)
     }
-
-  },[chatLoading,authLoading])
+  }, [chatLoading, authLoading])
 
   //recieve message
 
@@ -101,11 +99,10 @@ const Chat = () => {
     return online ? true : false
   }
 
-
   return (
     <>
-      {isLoading && <Preloader/>}
- 
+      {isLoading && <Preloader />}
+
       <div className="Chat">
         {/* left side */}
 
@@ -133,9 +130,9 @@ const Chat = () => {
         <div className="Right-side-chat">
           <div style={{ width: '20rem', alignSelf: 'flex-end' }}>
             <div className="navIcons">
-            <Link to="../">
+              <Link to="../">
                 {' '}
-                <img src={Home} style={{width:"1.5rem"}} alt="" />
+                <img src={Home} style={{ width: '1.5rem' }} alt="" />
               </Link>
 
               <Link to="../explore">
@@ -146,9 +143,9 @@ const Chat = () => {
               <Link to="../chat">
                 <img src={Comment} alt="" />
               </Link>
-             <Link to="../room" >
-             <MeetingRoomIcon/>
-             </Link>
+              <Link to="../room">
+                <MeetingRoomIcon />
+              </Link>
             </div>
           </div>
           {console.log(currentChat?._id, 'CURRENT')}

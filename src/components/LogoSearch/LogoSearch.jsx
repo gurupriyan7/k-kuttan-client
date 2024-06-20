@@ -12,6 +12,7 @@ import { path } from '../../paths/paths'
 import { appConfig } from '../../config/appConfig'
 import { createUserChat } from '../../actions/chat.actions'
 import { findUserProfile } from '../../actions/user.actions'
+
 const LogoSearch = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -22,13 +23,13 @@ const LogoSearch = () => {
   const userData = useSelector((state) => state.authReducer.authData)
   const chatDatas = useSelector((state) => state.chatReducer.chats)
 
-  // useEffect(() => {
-  //   dispatch(findUserProfile())
-  // }, [dispatch])
+  useEffect(() => {
+    dispatch(findUserProfile())
+  }, [dispatch])
 
-  if (!userData?.data) {
-    navigate(path.auth)
-  }
+  // if (!userData?.data) {
+  //   navigate(path.auth)
+  // }
   const followers = userData?.data?.followers ?? []
   const followings = userData?.data?.followings ?? []
   const followersArray = Array.isArray(followers) ? followers : []
@@ -123,7 +124,11 @@ const LogoSearch = () => {
               name={d._id}
               className="button l-button"
               value="  Connect  "
-              onClick={(e) => handleChat(e.target.name)}
+              onClick={(e) => {
+                if (userData?.data) {
+                  handleChat(e.target.name)
+                }
+              }}
             />
             {/* </Link> */}
 

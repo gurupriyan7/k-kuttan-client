@@ -7,12 +7,26 @@ const API = axios.create({ baseURL: appConfig.apiUrl });
 export const getUserProfile = async () => {
   try {
     const token = getLocalStorageItem("token");
-    console.log(token, "token");
     return await API.get(`/user`, {
       headers: {
         Authorization: `Bearer ${token}` // Include the Bearer token in the Authorization header
       }
     });
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getAllUsers = async (page) => {
+  try {
+    const token = getLocalStorageItem("token");
+    const data = await API.get(`/user/all?page=${page}`, {
+      headers: {
+        Authorization: `Bearer ${token}` // Include the Bearer token in the Authorization header
+      }
+    });
+
+    console.log(data,"usersssssssssssssssss");
+    return data;
   } catch (error) {
     console.log(error);
   }

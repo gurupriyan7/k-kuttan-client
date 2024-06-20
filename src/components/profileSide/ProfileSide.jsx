@@ -5,24 +5,24 @@ import ProfileCard from '../ProfileCard.jsx/ProfileCard'
 
 import './ProfileSide.css'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { path } from '../../paths/paths'
+// import { useNavigate } from 'react-router-dom'
+// import { path } from '../../paths/paths'
 const ProfileSide = () => {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   const authData = useSelector((state) => state.authReducer.authData)
 
-  useEffect(() => {
-    if (!authData?.data) {
-      navigate(path.auth)
-    }
-  }, [authData])
+  // useEffect(() => {
+  //   if (!authData?.data) {
+  //     navigate(path.auth)
+  //   }
+  // }, [authData])
 
   return (
     <div className="ProfileSide">
       <LogoSearch />
       <ProfileCard />
-      <FollowersCard />
+      {authData?.data && <FollowersCard />}
     </div>
   )
 }

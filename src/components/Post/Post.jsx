@@ -19,7 +19,7 @@ import { PostApprovalStatus } from '../../constants/PostEnum'
 const Post = ({ data }) => {
   const navigate = useNavigate()
   // const dispatch = useDispatch()
-  const { user } = useSelector((state) => state.authReducer.authData)
+  const userData = useSelector((state) => state.authReducer.authData)
   const [liked, setLiked] = useState(data?.isLiked)
   const [likes, setLikes] = useState(data?.likes)
   const [modalOpened, setModalOpened] = useState(false)
@@ -31,6 +31,9 @@ const Post = ({ data }) => {
     } else {
       if (!data?.isFree && !data?.isPaid) {
         e.preventDefault()
+        if (userData?.data) {
+          navigate(path.auth)
+        }
         // const res = await createPayment({
         //   postId: data?._id,const
         // })
@@ -92,9 +95,13 @@ const Post = ({ data }) => {
   // alert(data?.isPaid)
 
   const handleLike = () => {
-    setLiked((prev) => !prev)
-    likeAndCommentPost(data?._id, user?._id)
-    liked ? setLikes((prev) => prev - 1) : setLikes((prev) => prev + 1)
+    if (userData?.data) {
+      setLiked((prev) => !prev)
+      likeAndCommentPost(data?._id, userData?.data?._id)
+      liked ? setLikes((prev) => prev - 1) : setLikes((prev) => prev + 1)
+    }else{
+      alert("please login to like")
+    }
   }
   return (
     <div className="Post">
@@ -137,7 +144,7 @@ const Post = ({ data }) => {
       {!data?.isDraft &&
         data?.approvalStatus === PostApprovalStatus.APPROVED && (
           <span style={{ color: 'var(--gray)', fontSize: '12px' }}>
-            {likes} likes 
+            {likes} likes
           </span>
         )}
 

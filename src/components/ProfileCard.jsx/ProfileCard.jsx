@@ -13,14 +13,11 @@ const ProfileCard = ({ isProfile = false }) => {
   const ProfilePage = true
 
   const handleClick = () => {
-    navigate(path.profile)
+    if (authData?.data) {
+      navigate(path.profile)
+    }
   }
 
-  useEffect(() => {
-    if (!authData?.data) {
-      navigate(path.auth)
-    }
-  }, [authData])
   return (
     <div
       onClick={handleClick}
@@ -51,8 +48,12 @@ const ProfileCard = ({ isProfile = false }) => {
       </div>
 
       <div className="ProfileName">
-        <span> {authData?.data?.userName} </span>
-        <span>{`${authData?.data?.firstName} ${authData?.data?.lastName}`}</span>
+        <span> {authData?.data ? authData?.data?.userName : ''} </span>
+        <span>
+          {authData?.data
+            ? `${authData?.data?.firstName} ${authData?.data?.lastName}`
+            : ''}
+        </span>
       </div>
 
       <div className="followStatus">

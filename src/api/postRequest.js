@@ -11,15 +11,17 @@ export const getAllPosts = async () => {
     const userData = getLocalStorageItem("profile");
     // const token = userData?.data?.token;
     // alert("calling")
-    console.log(token, "tokensssss");
+    // console.log(token, "tokensssss");
 
-    if (!userData) {
-      window.location.href = path.auth;
-    }
+    // if (!userData) {
+    //   window.location.href = path.auth;
+    // }
     return await API.get("/post", {
-      headers: {
-        Authorization: `Bearer ${token}` // Include the Bearer token in the Authorization header
-      }
+      ...(token && {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
     });
   } catch (error) {
     console.log(error);

@@ -1,7 +1,13 @@
 // import { toast } from "react-toastify";
 
 const authReducer = (
-  state = { authData: null, isLoading: false, error: null, isError: false },
+  state = {
+    authData: null,
+    isLoading: false,
+    error: null,
+    isError: false,
+    users: {}
+  },
   action
 ) => {
   switch (action.type) {
@@ -11,10 +17,7 @@ const authReducer = (
     case "AUTH_SUCCESS":
       // console.log(action?.data,"action.data");
       localStorage.setItem("profile", JSON.stringify({ ...action?.data }));
-      localStorage.setItem(
-        "token",
-        JSON.stringify(action?.data?.data?.token )
-      );
+      localStorage.setItem("token", JSON.stringify(action?.data?.data?.token));
 
       return {
         ...state,
@@ -25,6 +28,29 @@ const authReducer = (
       };
 
     case "AUTH_FAIL":
+      // console.log(action?.data, "fail");
+      // toast.error(action?.data?.message);
+      return { ...state, isLoading: false, isError: true, error: action?.data };
+
+    case "ALL_USERS_START":
+      return { ...state, isLoading: true, isError: false };
+
+    case "ALL_USERS_SUCCESS":
+      // console.log(action?.data,"action.data");
+      console.log(action?.data, "reducer-dataa");
+
+      return {
+        ...state,
+        // users: Array.isArray(state.users)
+        // ? [...state.users, ...action?.data]
+        // : [...action?.data],
+        users: action?.data,
+        isLoading: false,
+        isError: false,
+        error: null
+      };
+
+    case "ALL_USERS_FAIL":
       // console.log(action?.data, "fail");
       // toast.error(action?.data?.message);
       return { ...state, isLoading: false, isError: true, error: action?.data };

@@ -35,10 +35,10 @@ const RightSide = () => {
                 <WhatshotIcon />
               </Link>
 
-              <Link to="../chat">
+              <Link to={authData?.data && "../chat"}>
                 <img src={Comment} alt="" />
               </Link>
-             <Link to="../room" >
+             <Link to={authData?.data && "../room"}>
              <MeetingRoomIcon/>
              </Link>
             </div>

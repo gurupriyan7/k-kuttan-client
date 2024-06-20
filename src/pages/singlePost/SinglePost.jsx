@@ -30,18 +30,18 @@ import PaymentFailModal from '../../components/PaymentFailedModal/PaymentFailedM
 const SinglePost = (PostsData) => {
   const dispatch = useDispatch()
   const location = useLocation()
- 
+
   // const searchParams = new URLSearchParams(location.search);
   // const postId = searchParams.get('id');
   // const { postId } = location.state
   const { postId } = useParams()
   const navigate = useNavigate()
   console.log(postId, 'postIdsss')
-   const [load,setLoad]=useState(false)
+  const [load, setLoad] = useState(false)
   const post = useSelector((state) => state.postReducer.post)
-  const postLoading= useSelector((state) => state.postReducer.loading)
-  console.log("postLoading",postLoading);
-  const { user } = useSelector((state) => state.authReducer.authData)
+  const postLoading = useSelector((state) => state.postReducer.loading)
+  console.log('postLoading', postLoading)
+  const userData = useSelector((state) => state.authReducer.authData)
 
   const [liked, setLiked] = useState(post?.isLiked)
   const [likes, setLikes] = useState(post?.likes)
@@ -51,13 +51,13 @@ const SinglePost = (PostsData) => {
     post?.isFree || post?.isPaid,
   )
 
-  useEffect(()=>{
-    if(postLoading){
+  useEffect(() => {
+    if (postLoading) {
       setLoad(true)
-    }else{
+    } else {
       setLoad(false)
     }
-  },[postLoading])
+  }, [postLoading])
 
   const [page, setPage] = useState(1)
 
@@ -73,14 +73,18 @@ const SinglePost = (PostsData) => {
   )
 
   const handleLike = () => {
-    setLiked((prev) => !prev)
-    likeAndCommentPost(post?._id, user?._id)
-    liked ? setLikes((prev) => prev - 1) : setLikes((prev) => prev + 1)
-  }
-  const handleEdit=(e)=>{
-    e.preventDefault();
-    navigate(`${path?.editPost}/${post?._id}`)
+    if(userData?.data){
 
+      setLiked((prev) => !prev)
+      likeAndCommentPost(post?._id, userData?.data?._id)
+      liked ? setLikes((prev) => prev - 1) : setLikes((prev) => prev + 1)
+    }else{
+      alert("please login to like")
+    }
+  }
+  const handleEdit = (e) => {
+    e.preventDefault()
+    navigate(`${path?.editPost}/${post?._id}`)
   }
 
   const handlePagination = (event, isNext) => {
@@ -95,7 +99,7 @@ const SinglePost = (PostsData) => {
   const handleSelect = async (e) => {
     // console.log(postDetails,"postDetails");
     // alert(post?.isPaid)
-    if (!post?.isFree && !post?.isPaid&&!post?.isDraft) {
+    if (!post?.isFree && !post?.isPaid && !post?.isDraft) {
       // e.preventDefault()
       // const res = await createPayment({
       //   postId: post?._id,
@@ -162,8 +166,8 @@ const SinglePost = (PostsData) => {
   }, [])
 
   return (
-    <> 
-     {load && <Preloader/>}
+    <>
+      {load && <Preloader />}
       {paymentStatus ? (
         <div
           className="SinglePost"
@@ -174,12 +178,11 @@ const SinglePost = (PostsData) => {
           }}
         >
           <div className="single-post-container" style={{ color: 'black' }}>
-           
             {/* soldier image left */}
             <div style={{ backgroundColor: '' }}>
-            <Link to="../">
+              <Link to="../">
                 {' '}
-                <img src={Home} style={{width:"1.5rem"}} alt="" />
+                <img src={Home} style={{ width: '1.5rem' }} alt="" />
               </Link>
               <img
                 src={left}
@@ -190,7 +193,6 @@ const SinglePost = (PostsData) => {
             </div>
             {/* scroll content */}
             <div className="badan">
-              
               <div
                 style={{
                   // backgroundColor: "black",
@@ -204,41 +206,44 @@ const SinglePost = (PostsData) => {
                   backgroundRepeat: 'no-repeat',
                 }}
               >
-                
                 {/* <img src={`${appConfig.awsBucketUrl}/${post?.image}`} alt="sdfs" /> */}
 
                 <div class="post-reactions">
-                  {!post?.isDraft&&<div className="postReact-single">
-                    <img
-                      src={liked ? Heart : NotLike}
-                      alt=""
-                      onClick={handleLike}
-                      style={{ cursor: 'pointer' }}
-                    />
-                    <img
-                      onClick={() => setModalOpened(true)}
-                      src={Comment}
-                      alt=""
-                      style={{ cursor: 'pointer' }}
-                    />
-                    <img
-                      src={Share}
-                      alt=""
-                      onClick={() => setShareModalOpened(true)}
-                      style={{ cursor: 'pointer' }}
-                    />
-                  </div>}
+                  {!post?.isDraft && (
+                    <div className="postReact-single">
+                      <img
+                        src={liked ? Heart : NotLike}
+                        alt=""
+                        onClick={handleLike}
+                        style={{ cursor: 'pointer' }}
+                      />
+                      <img
+                        onClick={() => setModalOpened(true)}
+                        src={Comment}
+                        alt=""
+                        style={{ cursor: 'pointer' }}
+                      />
+                      <img
+                        src={Share}
+                        alt=""
+                        onClick={() => setShareModalOpened(true)}
+                        style={{ cursor: 'pointer' }}
+                      />
+                    </div>
+                  )}
 
-                  {!post?.isDraft&&<p
-                    style={{
-                      color: 'var(--gray)',
-                      fontSize: '12px',
-                      display: 'flex',
-                      // display:"none"
-                    }}
-                  >
-                    {likes} likes  
-                  </p>}
+                  {!post?.isDraft && (
+                    <p
+                      style={{
+                        color: 'var(--gray)',
+                        fontSize: '12px',
+                        display: 'flex',
+                        // display:"none"
+                      }}
+                    >
+                      {likes} likes
+                    </p>
+                  )}
                 </div>
 
                 <div className="singlepost-detail">
@@ -287,7 +292,13 @@ const SinglePost = (PostsData) => {
 
             {/* soldier image right */}
             <div style={{ backgroundColor: '' }} className="soldier-2">
-            <div onClick={handleEdit} className='editBtn' style={{zIndex:"2rem"}}>Edit</div>
+              <div
+                onClick={handleEdit}
+                className="editBtn"
+                style={{ zIndex: '2rem' }}
+              >
+                Edit
+              </div>
               <img src={right} style={{ width: '20rem' }} alt="" />
             </div>
           </div>

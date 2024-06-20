@@ -13,6 +13,7 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
   const dispatch = useDispatch()
   // const [image, setImage] = useState(null)
   const [visibleItems, setVisibleItems] = useState(3)
+  const userData = useSelector((state) => state.authReducer.authData)
 
   const handleReadMore = (increment) => {
     if (increment) {
@@ -32,8 +33,12 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
   }
   const handleSubmit = async (e) => {
     // e.preventDefault()
-    dispatch(commentPost(postId, data?.comment))
-    window.reload()
+    if(userData?.data){
+      dispatch(commentPost(postId, data?.comment))
+      window.reload()
+    }else{
+      alert("Please Login to comment")
+    }
     // .setModalOpened(false)
     // console.log(data, 'datassss',isSuccess)
   }
