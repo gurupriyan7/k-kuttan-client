@@ -42,21 +42,6 @@ const Home = () => {
     }
   }, [postDataLoading])
 
-  // useEffect(async () => {
-
-  //   const fetchData = async () => {
-  //     console.log('hello')
-  //     try {
-
-  //       await dispatch(getAllPosts())
-  //     } catch (error) {
-  //       console.error('Error fetching posts:', error)
-  //     }
-  //   }
-
-  //   fetchData()
-  // }, [])
-
   return (
     <>
       {isLoading && <Preloader />}
@@ -66,6 +51,7 @@ const Home = () => {
           searchText={searchText}
           setSearchText={setSearchText}
           postData={posts}
+          isHome={true}
         />
         <RightSide />
       </div>

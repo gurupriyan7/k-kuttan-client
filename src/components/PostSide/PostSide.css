@@ -9,5 +9,6 @@
 @media screen and (width<=648px) {
     .PostSide{
         height: auto;
+        min-height:0
     }
 }

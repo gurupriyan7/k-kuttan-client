@@ -7,6 +7,7 @@ import axios from 'axios'
 import { ClickAwayListener } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { createRoomAction } from '../../actions/room.actions'
+import { useSnackbar } from 'notistack'
 const RoomModal = ({
   modalOpened2,
   setModalOpened2,
@@ -17,6 +18,7 @@ const RoomModal = ({
   const [roomName, setRoomName] = useState('')
   const navigte = useNavigate()
   const dispatch = useDispatch()
+  const { enqueueSnackbar } = useSnackbar()
   const handleSubmit = async (e) => {
     e.preventDefault()
     const room = {
@@ -30,8 +32,20 @@ const RoomModal = ({
       console.log(data, 'room Model data')
       // alert('Room created successfully')
       setModalOpened2(false)
+      enqueueSnackbar('Room Created SuccessFully!', {
+        variant: 'success',
+        ContentProps: {
+          style: { backgroundColor: 'green' },
+        },
+      })
       // window.location.reload()
     } catch (error) {
+      enqueueSnackbar(error?.message, {
+        variant: 'error',
+        ContentProps: {
+          style: { backgroundColor: 'red' },
+        },
+      })
       console.log(error)
     }
   }

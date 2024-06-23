@@ -64,6 +64,7 @@ function ProfileModal({ modalOpened, setModalOpened, authData }) {
           userName:userData?.userName
         }),
       ) 
+
       // setModalOpened(false)
     }else{
 

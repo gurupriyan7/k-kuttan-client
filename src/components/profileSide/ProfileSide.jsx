@@ -7,17 +7,12 @@ import './ProfileSide.css'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { path } from '../../paths/paths'
-// import { path } from '../../paths/paths'
 const ProfileSide = ({ isHome = false }) => {
   const navigate = useNavigate()
 
   const authData = useSelector((state) => state.authReducer.authData)
 
-  // useEffect(() => {
-  //   if (!authData?.data) {
-  //     navigate(path.auth)
-  //   }
-  // }, [authData])
+
 
   const login = () => {
     navigate(path.auth)

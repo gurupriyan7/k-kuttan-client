@@ -77,6 +77,7 @@ const PostShare = ({ data, setData, searchText, setSearchText }) => {
           type="text"
           placeholder="Search Posts..."
           // value={searchText}
+          disabled={!isAuthor}
           onChange={handleSearchText}
         />
       </div>

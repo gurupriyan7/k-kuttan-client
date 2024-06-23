@@ -11,12 +11,14 @@ import { useNavigate } from 'react-router-dom'
 import { path } from '../../paths/paths'
 import { findUserProfile } from '../../actions/user.actions'
 import Preloader from '../../components/Preloader/Preloader'
+import { UserRole } from '../../config/enums'
 const Profile = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const [isDraft, setIsDraft] = useState(false)
   const [posts, setPosts] = useState([])
+  const [searchText, setSearchText] = useState('')
 
   const [load, setLoad] = useState(false)
   const postData = useSelector((state) => state.postReducer.posts)
@@ -24,16 +26,20 @@ const Profile = () => {
 
   const authData = useSelector((state) => state.authReducer.authData)
 
+  const isAuthor = authData?.data?.role === UserRole.AUTHOR
+
   useEffect(() => {
-    dispatch(getPostsByUser(isDraft))
+    
     dispatch(findUserProfile())
-  }, [dispatch, isDraft])
+  }, [ ])
+
+  useEffect(()=>{
+    dispatch(getPostsByUser(isDraft,searchText))
+  },[isDraft , searchText])
 
   useEffect(() => {
     setPosts(postData[0]?.data)
   }, [postData])
-
-  console.log(postData,"postData,------------");
 
   useEffect(() => {
     if (postLoading) {
@@ -49,29 +55,29 @@ const Profile = () => {
         <ProfileLeft />
         <div className="Profile-center">
           <ProfileCard isProfile={true} />
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
-            {/* <button className="button ps-button" style={{ marginLeft: '1rem' }}>
-            Saved
-          </button> */}
-            <button
-              onClick={() => setIsDraft(true)}
-              className={`button ps-button ${isDraft && 'active'}`}
-              style={{ marginLeft: '1rem' }}
-            >
-              Draft
-            </button>
-            <button
-              onClick={() => setIsDraft(false)}
-              className={`button ps-button ${!isDraft && 'active'}`}
-              style={{ marginLeft: '1rem' }}
-            >
-              Publised
-            </button>
-            {/* <button className="button ps-button" style={{ marginLeft: '1rem' }}>
-            Edited
-          </button> */}
-          </div>
-          <PostSide postData={posts} />
+          {isAuthor && (
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <button
+                onClick={() => setIsDraft(true)}
+                className={`button ps-button ${isDraft && 'active'}`}
+                style={{ marginLeft: '1rem' }}
+              >
+                Draft
+              </button>
+              <button
+                onClick={() => setIsDraft(false)}
+                className={`button ps-button ${!isDraft && 'active'}`}
+                style={{ marginLeft: '1rem' }}
+              >
+                Publised
+              </button>
+            </div>
+          )}
+          <PostSide
+            searchText={searchText}
+            setSearchText={setSearchText}
+            postData={posts}
+          />
         </div>
 
         <RightSide />

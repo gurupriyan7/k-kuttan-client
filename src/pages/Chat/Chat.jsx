@@ -16,9 +16,9 @@ import WhatshotIcon from '@mui/icons-material/Whatshot'
 import './Chat.css'
 import ChatBox from '../../components/ChatBox/ChatBox'
 import { findUserChats } from '../../actions/chat.actions'
-import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom'
 const Chat = () => {
-  const [isLoading,setIsLoading]=useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const authData = useSelector((state) => state.authReducer.authData)
   const authLoading = useSelector((state) => state.authReducer.isLoading)
   const chatDatas = useSelector((state) => state.chatReducer.chats)
@@ -42,7 +42,7 @@ const Chat = () => {
       setOnlineUsers(users)
     })
   }, [])
-  
+
   //send message
   useEffect(() => {
     // alert(sendMessage)
@@ -51,14 +51,13 @@ const Chat = () => {
     }
   }, [sendMessage])
 
-  useEffect(()=>{
-    if(chatLoading||authLoading){
+  useEffect(() => {
+    if (chatLoading || authLoading) {
       setIsLoading(true)
-    }else{
+    } else {
       setIsLoading(false)
     }
-
-  },[chatLoading,authLoading])
+  }, [chatLoading, authLoading])
 
   //recieve message
 
@@ -101,16 +100,15 @@ const Chat = () => {
     return online ? true : false
   }
 
-
   return (
     <>
-      {isLoading && <Preloader/>}
- 
+      {isLoading && <Preloader />}
+
       <div className=" grid md:grid-cols-[22%_auto] gap-4  relative overflow-hidden">
         {/* left side */}
 
-        <div className="Left-side-chat w-full   min-w-[300px] z-100 mt-2 px-1 overflow-hidden" >
-          <LogoSearch />
+        <div className="Left-side-chat w-full   min-w-[300px] z-100 mt-2 px-1 overflow-hidden">
+          <LogoSearch isChat={true} />
 
           <div className="Chat-container overflow-hidden">
             <h2>Chats</h2>
@@ -131,11 +129,14 @@ const Chat = () => {
         {/* right side */}
 
         <div className="Right-side-chat overflow-hidden">
-          <div style={{ width: '20rem', alignSelf: 'flex-end' }} className=' fixed md:static bottom-10  mx-auto md:mx-0 left-0 right-0 md:pr-2'>
+          <div
+            style={{ width: '20rem', alignSelf: 'flex-end' }}
+            className=" fixed md:static bottom-10  mx-auto md:mx-0 left-0 right-0 md:pr-2"
+          >
             <div className="navIcons ">
-            <Link to="../">
+              <Link to="../">
                 {' '}
-                <img src={Home} style={{width:"1.5rem"}} alt="" />
+                <img src={Home} style={{ width: '1.5rem' }} alt="" />
               </Link>
 
               <Link to="../explore">
@@ -146,21 +147,21 @@ const Chat = () => {
               <Link to="../chat">
                 <img src={Comment} alt="" />
               </Link>
-             <Link to="../room" >
-             <MeetingRoomIcon/>
-             </Link>
+              <Link to="../room">
+                <MeetingRoomIcon />
+              </Link>
             </div>
           </div>
           {console.log(currentChat?._id, 'CURRENT')}
           {currentChat && (
-            <div className='absolute md:static rounded-[12px] left-0 right-0 bottom-0 w-full h-[95vh] bg-white'>
+            <div className="absolute md:static rounded-[12px] left-0 right-0 bottom-0 w-full h-[95vh] bg-white">
               <ChatBox
-              chatId={currentChat?._id}
-              currentUser={authData?.data?._id}
-              setSendMessage={setSendMessage}
-              recieveMessage={recieveMessage}
-              room={false}
-            />
+                chatId={currentChat?._id}
+                currentUser={authData?.data?._id}
+                setSendMessage={setSendMessage}
+                recieveMessage={recieveMessage}
+                room={false}
+              />
             </div>
           )}
         </div>

@@ -27,15 +27,18 @@ export const getAllPosts = async (searchText) => {
     console.log(error);
   }
 };
-export const getPostsByUser = async (isDraft) => {
+export const getPostsByUser = async (isDraft, searchText) => {
   try {
     const token = getLocalStorageItem("token");
     // const token = userData?.data?.token;
-    return await API.get(`/post/user?isDraft=${isDraft}`, {
-      headers: {
-        Authorization: `Bearer ${token}` // Include the Bearer token in the Authorization header
+    return await API.get(
+      `/post/user?isDraft=${isDraft}&searchTerm=${searchText ?? ""}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}` // Include the Bearer token in the Authorization header
+        }
       }
-    });
+    );
   } catch (error) {
     console.log(error);
   }

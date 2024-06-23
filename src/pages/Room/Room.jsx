@@ -14,6 +14,7 @@ import './Room.css'
 import ChatBox from '../../components/ChatBox/ChatBox'
 import axios from 'axios'
 import RoomModal from '../../components/RoomModal/RoomModal'
+import { useSnackbar } from 'notistack'
 import {
   findUserRooms,
   joinRoomAction,
@@ -58,6 +59,7 @@ const Room = () => {
   const [recieveMessage, setRecieveMessage] = useState(null)
   const [modalOpened2, setModalOpened2] = useState(false)
   const socket = useRef()
+  const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
     socket.current = io('https://k-kuttan-socket-5c70463a5ea1.herokuapp.com/')
@@ -104,8 +106,19 @@ const Room = () => {
     if (!roomId) return
     try {
       await dispatch(joinRoomAction(roomId))
-      alert('Joined successfully')
+      enqueueSnackbar('Joined SuccessFully!', {
+        variant: 'success',
+        ContentProps: {
+          style: { backgroundColor: 'green' },
+        },
+      })
     } catch (error) {
+      enqueueSnackbar(error?.message, {
+        variant: 'error',
+        ContentProps: {
+          style: { backgroundColor: 'red' },
+        },
+      })
       console.error('Error config:', error.config)
     }
   }
@@ -250,7 +263,10 @@ const Room = () => {
         </div> */}
 
         <div className="Right-side-chat overflow-hidden">
-          <div style={{ width: '20rem', alignSelf: 'flex-end' }} className='fixed md:static bottom-10  mx-auto md:mx-0 left-0 right-0 md:pr-2'>
+          <div
+            style={{ width: '20rem', alignSelf: 'flex-end' }}
+            className="fixed md:static bottom-10  mx-auto md:mx-0 left-0 right-0 md:pr-2"
+          >
             <div className="navIcons">
               <button
                 className="button"
@@ -272,7 +288,7 @@ const Room = () => {
 
               <Link to="../explore">
                 {' '}
-                <WhatshotIcon/>
+                <WhatshotIcon />
               </Link>
 
               <Link to="../chat">
@@ -287,15 +303,15 @@ const Room = () => {
     recieveMessage={recieveMessage}
     /> */}
           {currentChat && (
-             <div className='absolute md:static rounded-[12px] left-0 right-0 bottom-0 w-full h-[95vh] bg-white'>
-            <ChatBox
-              chatId={currentChat}
-              currentUser={authData?.data?._id}
-              room={true}
-              setSendMessage={setSendMessage}
-              recieveMessage={recieveMessage}
-              chatRoomName={chatRoomName}
-            />
+            <div className="absolute md:static rounded-[12px] left-0 right-0 bottom-0 w-full h-[95vh] bg-white">
+              <ChatBox
+                chatId={currentChat}
+                currentUser={authData?.data?._id}
+                room={true}
+                setSendMessage={setSendMessage}
+                recieveMessage={recieveMessage}
+                chatRoomName={chatRoomName}
+              />
             </div>
           )}
         </div>

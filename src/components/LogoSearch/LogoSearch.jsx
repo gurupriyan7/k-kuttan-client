@@ -14,7 +14,7 @@ import { createUserChat } from '../../actions/chat.actions'
 import { findUserProfile } from '../../actions/user.actions'
 import defaultProfile from '../../img/default-profile.jpg'
 
-const LogoSearch = () => {
+const LogoSearch = ({ isChat = false }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [users, setUsers] = useState([])
@@ -108,19 +108,21 @@ const LogoSearch = () => {
   }
   return (
     <>
-      <div className="LogoSearch">
-        <img src={Logo} style={{ width: '4rem' }} />
-        <div className="Search">
-          <input
-            type="text"
-            onChange={(e) => setSearchText(e.target.value)}
-            placeholder="#Find connections"
-          />
-          <div className="s-icon" onClick={findUser}>
-            <UilSearch />
+      {isChat && (
+        <div className="LogoSearch">
+          <img src={Logo} style={{ width: '4rem' }} />
+          <div className="Search">
+            <input
+              type="text"
+              onChange={(e) => setSearchText(e.target.value)}
+              placeholder="#Find connections"
+            />
+            <div className="s-icon" onClick={findUser}>
+              <UilSearch />
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {data &&
         data.map((d) => (

@@ -269,7 +269,7 @@ const SinglePost = (PostsData) => {
 
                 <div className="max-h-[75vh] overflow-y-scroll  w-full mx-auto">
                   <div className="mx-auto w-full flex items-center justify-center">
-                    <b className="mx-auto ">{post?.title}</b>
+                    <b className="mx-auto ">{post?.title}</b> 
                   </div>
                   <div className="  h-[250px] md:h-[350px] lg-h-[60vh] lg:px-[6vw] xl:px-0 xl:h-[80vh] w-[250px] my-auto   md:px-[7vw] md:max-w-[450px] md:w-full mx-auto">
                     {post?.story[page - 1]?.story}

@@ -25,22 +25,32 @@ const RightSide = () => {
   return (
     <div className="RightSide">
       <div className="navIcons" style={{backgroundColor:" var(--cardColor)",padding:"1rem",borderRadius:"20px"}}>
+      <div className="tooltip">
               <Link to="../">
                 {' '}
                 <img src={Home} style={{width:"1.5rem"}} alt="" />
+              <span class="tooltiptext">Home</span>
               </Link>
-
+              </div>
+              <div className="tooltip">
               <Link  to="../explore">
                 {' '}
+                <span class="tooltiptext">Explore</span>
                 <WhatshotIcon />
               </Link>
-
+              </div>
+              <div className="tooltip">
               <Link to={authData?.data && "../chat"}>
                 <img src={Comment} alt="" />
+                <span class="tooltiptext">Chat</span>
               </Link>
+              </div>
+              <div className="tooltip1">
              <Link to={authData?.data && "../room"}>
              <MeetingRoomIcon/>
+             <span class="tooltiptext1">Room</span>
              </Link>
+             </div>
             </div>
 
       <TrendCard />

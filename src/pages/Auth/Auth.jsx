@@ -6,8 +6,9 @@ import authback from '../../img/authback.png'
 // import { login } from '../../features/auth/authSlice'
 import { useNavigate } from 'react-router-dom'
 import { path } from '../../paths/paths'
-import { logIn,signUp } from '../../actions/auth.actions'
-import { getLocalStorageItem } from '../../utils/appUtils';
+import { logIn, signUp } from '../../actions/auth.actions'
+import { getLocalStorageItem } from '../../utils/appUtils'
+import { useSnackbar } from 'notistack'
 // import { toast } from 'react-toastify'
 // import 'react-toastify/dist/ReactToastify.css'
 // import { NavLink } from 'react-router-dom'
@@ -15,15 +16,16 @@ import { getLocalStorageItem } from '../../utils/appUtils';
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true)
+
   const [errorMessage, setErrorMessage] = useState('')
   const navigate = useNavigate()
   const userData = getLocalStorageItem('profile')
 
-  useEffect(()=>{
-if(userData){
-  navigate(path.home)
-}
-  },[ userData])
+  useEffect(() => {
+    if (userData) {
+      navigate(path.home)
+    }
+  }, [userData])
   return (
     <div
       className="Auth"
@@ -38,7 +40,7 @@ if(userData){
       }}
     >
       <div className="a-left">
-        <img src={Logo} alt=""  style={{width:"10rem",height:"10rem"}}/>
+        <img src={Logo} alt="" style={{ width: '10rem', height: '10rem' }} />
         <div className="Webname">
           <h1>KAMBI KUTTAPAN</h1>
           <h6>Explore The World Of Stories</h6>
@@ -46,24 +48,34 @@ if(userData){
       </div>
 
       {isLogin ? (
-        <LogIn setIsLogin={setIsLogin} errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
+        <LogIn
+          setIsLogin={setIsLogin}
+          errorMessage={errorMessage}
+          setErrorMessage={setErrorMessage}
+        />
       ) : (
-        <SignUp setIsLogin={setIsLogin} errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
+        <SignUp
+          setIsLogin={setIsLogin}
+          errorMessage={errorMessage}
+          setErrorMessage={setErrorMessage}
+        />
       )}
     </div>
   )
 }
-function LogIn({ setIsLogin ,errorMessage, setErrorMessage }) {
+function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { enqueueSnackbar } = useSnackbar()
 
   const [loginData, setLoginData] = useState({
     email: '',
     password: '',
   })
 
-
-  const { authData, error, isError,isLoading } = useSelector((state) => state.authReducer)
+  const { authData, error, isError, isLoading } = useSelector(
+    (state) => state.authReducer,
+  )
 
   const loginSubmit = async (e) => {
     e.preventDefault()
@@ -74,7 +86,7 @@ function LogIn({ setIsLogin ,errorMessage, setErrorMessage }) {
         password: loginData?.password,
       }),
     )
-    console.log(loginData,"loginData")
+    console.log(loginData, 'loginData')
   }
 
   // const {  } = useSelector(
@@ -83,19 +95,27 @@ function LogIn({ setIsLogin ,errorMessage, setErrorMessage }) {
 
   useEffect(() => {
     if (authData?.data && !isError) {
+      enqueueSnackbar('Login SuccessFully!', {
+        variant: 'success',
+        ContentProps: {
+          style: { backgroundColor: 'green' },
+        },
+      })
       navigate(path.home)
     }
   }, [authData])
-  useEffect(()=>{
-    setErrorMessage("")
+  useEffect(() => {
+    setErrorMessage('')
   })
 
   useEffect(() => {
     if (isError && error != null) {
-      // toast.error(error?.message)
-      setErrorMessage(error?.message)
-    } else {
-      setErrorMessage('')
+      enqueueSnackbar(error?.message, {
+        variant: 'error',
+        ContentProps: {
+          style: { backgroundColor: 'red' },
+        },
+      })
     }
   }, [isError, error])
 
@@ -103,7 +123,15 @@ function LogIn({ setIsLogin ,errorMessage, setErrorMessage }) {
     <div className="a-right" style={{ color: 'black' }}>
       <form onSubmit={loginSubmit} className="infoForm authForm">
         <h3>Log In</h3>
-        <h4 style={{ color: 'red',display:"none",...(errorMessage&&{display:"block"}) }}>{errorMessage}</h4>
+        <h4
+          style={{
+            color: 'red',
+            display: 'none',
+            ...(errorMessage && { display: 'block' }),
+          }}
+        >
+          {errorMessage}
+        </h4>
         <div>
           <input
             type="email"
@@ -113,7 +141,7 @@ function LogIn({ setIsLogin ,errorMessage, setErrorMessage }) {
             required
             id="email"
             onChange={(e) => {
-              console.log(e.target?.value,"value");
+              console.log(e.target?.value, 'value')
               setLoginData({
                 ...loginData,
                 email: e.target?.value,
@@ -154,7 +182,9 @@ function LogIn({ setIsLogin ,errorMessage, setErrorMessage }) {
               SignUp
             </span>
           </span>
-          <button className="button infoButton">{isLoading?"Loading":"Login"}</button>
+          <button className="button infoButton">
+            {isLoading ? 'Loading' : 'Login'}
+          </button>
         </div>
         <div>
           <span style={{ fontSize: '12px' }}>
@@ -175,123 +205,139 @@ function LogIn({ setIsLogin ,errorMessage, setErrorMessage }) {
     </div>
   )
 }
-function SignUp({ setIsLogin ,errorMessage,setErrorMessage }) {
+function SignUp({ setIsLogin, errorMessage, setErrorMessage }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { enqueueSnackbar } = useSnackbar()
 
   const { authData, error, isError } = useSelector((state) => state.authReducer)
 
-  const [signUpdata,setSignUpData]=useState({
-    firstName:"",
-    lastName:"",
-    userName:"",
-    password:"",
+  const [signUpdata, setSignUpData] = useState({
+    firstName: '',
+    lastName: '',
+    userName: '',
+    password: '',
     // phoneNumber:"",
-    email:""
+    email: '',
   })
 
-  const handleSignUp = async (e)=>{
+  const handleSignUp = async (e) => {
     e.preventDefault()
-    await dispatch(
-      signUp({
-        ...signUpdata
-      }),
-    )
-console.log(signUpdata,"signUPdata");
+    if (signUpdata?.password?.length < 4) {
+      enqueueSnackbar('Password must be min 4 characters', {
+        variant: 'warning',
+        ContentProps: {
+          style: { backgroundColor: 'yellow' },
+        },
+      })
+    } else {
+      await dispatch(
+        signUp({
+          ...signUpdata,
+        }),
+      )
+    }
   }
 
   useEffect(() => {
     if (authData?.data && !isError) {
+      enqueueSnackbar('SignUp SuccessFully!', {
+        variant: 'success',
+        ContentProps: {
+          style: { backgroundColor: 'green' },
+        },
+      })
       navigate(path.home)
     }
   }, [authData])
-  useEffect(()=>{
-    setErrorMessage("")
-  })
 
   useEffect(() => {
     if (isError && error != null) {
-      // toast.error(error?.message)
-      setErrorMessage(error?.message)
-    } else {
-      setErrorMessage('')
+      if (isError && error) {
+        enqueueSnackbar(error?.message, {
+          variant: 'error',
+          ContentProps: {
+            style: { backgroundColor: 'red' },
+          },
+        })
+      }
     }
   }, [isError, error])
   return (
     <div className="a-right" style={{ color: 'black' }}>
-    <form onSubmit={handleSignUp} className="infoForm authForm">
-      <h3>SignUp</h3>
-      {/* <h4 style={{ color: 'red' }}>{errorMessage}</h4> */}
-    
-      <div >
-        <input
-          type="text"
-          placeholder="FirstName"
-          className="infoInput"
-          name="firstName"
-          required
-          id="firstName"
-          onChange={(e) => {
-            setSignUpData({
-              ...signUpdata,
-              firstName: e.target?.value,
-            })
-            setErrorMessage('')
-          }}
-        />
-      </div>
-      <div >
-        <input
-          type="text"
-          placeholder="LastName"
-          className="infoInput"
-          name="lastName"
-          required
-          id="lastName"
-          onChange={(e) => {
-            setSignUpData({
-              ...signUpdata,
-              lastName: e.target?.value,
-            })
-            setErrorMessage('')
-          }}
-        />
-      </div>
-      <div >
-        <input
-          type="text"
-          placeholder="UserName"
-          className="infoInput"
-          name="userName"
-          required
-          id="userName"
-          onChange={(e) => {
-            setSignUpData({
-              ...signUpdata,
-              userName: e.target?.value,
-            })
-            setErrorMessage('')
-          }}
-        />
-      </div>
-      <div>
-        <input
-          type="text"
-          placeholder="Email"
-          className="infoInput"
-          name="email"
-          required
-          id="email"
-          onChange={(e) => {
-            setSignUpData({
-              ...signUpdata,
-              email: e.target?.value,
-            })
-            setErrorMessage('')
-          }}
-        />
-      </div>
-      {/* <div>
+      <form onSubmit={handleSignUp} className="infoForm authForm">
+        <h3>SignUp</h3>
+        {/* <h4 style={{ color: 'red' }}>{errorMessage}</h4> */}
+
+        <div>
+          <input
+            type="text"
+            placeholder="FirstName"
+            className="infoInput"
+            name="firstName"
+            required
+            id="firstName"
+            onChange={(e) => {
+              setSignUpData({
+                ...signUpdata,
+                firstName: e.target?.value,
+              })
+              setErrorMessage('')
+            }}
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            placeholder="LastName"
+            className="infoInput"
+            name="lastName"
+            required
+            id="lastName"
+            onChange={(e) => {
+              setSignUpData({
+                ...signUpdata,
+                lastName: e.target?.value,
+              })
+              setErrorMessage('')
+            }}
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            placeholder="UserName"
+            className="infoInput"
+            name="userName"
+            required
+            id="userName"
+            onChange={(e) => {
+              setSignUpData({
+                ...signUpdata,
+                userName: e.target?.value,
+              })
+              setErrorMessage('')
+            }}
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            placeholder="Email"
+            className="infoInput"
+            name="email"
+            required
+            id="email"
+            onChange={(e) => {
+              setSignUpData({
+                ...signUpdata,
+                email: e.target?.value,
+              })
+              setErrorMessage('')
+            }}
+          />
+        </div>
+        {/* <div>
         <input
           type="text"
           placeholder="PhoneNumber"
@@ -309,41 +355,42 @@ console.log(signUpdata,"signUPdata");
         />
       </div> */}
 
-      <div>
-        <input
-          type="password"
-          className="infoInput"
-          placeholder="Password"
-          name="password"
-          required
-          id="password"
-          onChange={(e) => {
-            setSignUpData({
-              ...signUpdata,
-              password: e.target?.value,
-            })
-            setErrorMessage('')
-          }}
-        />
-      </div>
-
-      <div>
-        <span style={{ fontSize: '12px' }}>
-          Already have an account ?
-          <span
-            onClick={(e) => {
-              e.preventDefault()
-              setIsLogin(true)
+        <div className="pass-group">
+          <input
+            type="password"
+            className="infoInput"
+            placeholder="Password"
+            name="password"
+            required
+            id="password"
+            onChange={(e) => {
+              setSignUpData({
+                ...signUpdata,
+                password: e.target?.value,
+              })
+              setErrorMessage('')
             }}
-            className="linkText"
-          >
-            SignIn
+          />
+          {/* <label className='pass-label'>Password must be minimum 4 characters</label> */}
+        </div>
+
+        <div className="btn-grp">
+          <span style={{ fontSize: '12px' }}>
+            Already have an account ?
+            <span
+              onClick={(e) => {
+                e.preventDefault()
+                setIsLogin(true)
+              }}
+              className="linkText"
+            >
+              SignIn
+            </span>
           </span>
-        </span>
-        <button className="button infoButton">SignUp</button>
-      </div>
-    </form>
-  </div>
+          <button className="button infoButton">SignUp</button>
+        </div>
+      </form>
+    </div>
   )
 }
 

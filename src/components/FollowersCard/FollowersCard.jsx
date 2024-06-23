@@ -40,35 +40,10 @@ const FollowersCard = () => {
     fetchData()
   }, [authData])
 
-  // useEffect(() => {
-  //   // const followings = authData?.data?.followings ?? []
-  //   // const followerss = authData?.data?.followers ?? []
-
-  //   const filterFollowers = authData?.data?.followers?.map((follower) => {
-  //     if (
-  //       Array.isArray(followings) &&
-  //       followings.some((following) => following._id === follower._id)
-  //     ) {
-  //       follower.isFollowing = true
-  //     }
-  //     return follower
-  //   })
-
-  //   setFollowers(filterFollowers)
-  // }, [authData])
-
-  const handleFollowUnFollow = async (userId) => {
+  const handleFollowUnFollow = async (e,userId) => {
+    e.preventDefault()
+    await handleFollowToggle(userId)
     dispatch(followUnFollowUser(userId))
-    // const newFollowers = await followers?.map((follower) => {
-    //   if (follower?._id === userId) {
-    //     alert("calling")
-    //     follower?.followers.push(userId)
-    //     console.log(follower,"newFollower",userId);
-    //     return follower
-    //   }
-    //   return follower
-    // })
-    // setFollowers(newFollowers)
   }
 
   useEffect(() => {
@@ -79,7 +54,15 @@ const FollowersCard = () => {
   }, [users])
   const lastPage = page * 10 < users?.totalCount
 
-  console.log(users, 'foloowerj', authData)
+  const handleFollowToggle = async (userId) => {
+    const updatedUsers = followers.map((user) => {
+      if (user._id === userId) {
+        return { ...user, isFollowing: !user.isFollowing }
+      }
+      return user
+    })
+    setFollowers(updatedUsers)
+  }
   const FollowerImage = ({ src }) => {
     const handleError = (event) => {
       event.target.src = defaultImage
@@ -101,10 +84,10 @@ const FollowersCard = () => {
 
       {followers?.map((follower, id) => {
         return (
-          <div className="follower">
+          <div className="follower" id={`${id}-${follower?._id}`}>
             <div>
               <FollowerImage
-                src={`${appConfig?.awsBucketUrl}/${follower?.profileImage}`}
+                src={`${appConfig?.awsBucketUrl}/${follower?.profileImage}` ?? defaultImage}
               />
               <div className="name">
                 <span>{follower?.firstName}</span>
@@ -112,7 +95,7 @@ const FollowersCard = () => {
               </div>
             </div>
             <button
-              onClick={() => handleFollowUnFollow(follower?._id)}
+              onClick={(e) => handleFollowUnFollow(e,follower?._id)}
               className="button fc-button"
               style={{ color: 'black' }}
             >
