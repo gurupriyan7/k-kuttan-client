@@ -61,7 +61,7 @@ const Home = () => {
     <>
       {isLoading && <Preloader />}
       <div className="Home" style={{ backgroundImage: `URL(${back})` }}>
-        <ProfileSide />
+        <ProfileSide isHome={true} />
         <PostSide
           searchText={searchText}
           setSearchText={setSearchText}

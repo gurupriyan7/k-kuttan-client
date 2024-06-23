@@ -6,8 +6,10 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { path } from '../../paths/paths'
 import { appConfig } from '../../config/appConfig'
+import defaultProfile from '../../img/default-profile.jpg'
+import defaultCover from '../../img/post-default.png'
 
-const  ProfileCard = ({ isProfile = false }) => {
+const ProfileCard = ({ isProfile = false }) => {
   const navigate = useNavigate()
   const authData = useSelector((state) => state.authReducer.authData)
   const ProfilePage = true
@@ -16,6 +18,21 @@ const  ProfileCard = ({ isProfile = false }) => {
     if (authData?.data) {
       navigate(path.profile)
     }
+  }
+
+  const ProfileImage = ({ src }) => {
+    const handleError = (event) => {
+      event.target.src = defaultProfile
+    }
+
+    return <img src={src} alt="Follower" onError={handleError} />
+  }
+  const CoverImage = ({ src }) => {
+    const handleError = (event) => {
+      event.target.src = defaultCover
+    }
+
+    return <img src={src} alt="Follower" onError={handleError} />
   }
 
   return (
@@ -29,21 +46,11 @@ const  ProfileCard = ({ isProfile = false }) => {
       }}
     >
       <div className="ProfileImages">
-        <img
-          src={
-            authData?.data?.coverImage
-              ? `${appConfig.awsBucketUrl}/${authData?.data?.coverImage}`
-              : Cover
-          }
-          alt=""
+        <CoverImage
+          src={`${appConfig?.awsBucketUrl}/${authData?.data?.coverImage}`}
         />
-        <img
-          src={
-            authData?.data?.profileImage
-              ? `${appConfig.awsBucketUrl}/${authData?.data?.profileImage}`
-              : Profile
-          }
-          alt=""
+        <ProfileImage
+          src={`${appConfig?.awsBucketUrl}/${authData?.data?.ProfileImage}`}
         />
       </div>
 

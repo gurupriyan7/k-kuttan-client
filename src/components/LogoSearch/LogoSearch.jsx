@@ -12,6 +12,7 @@ import { path } from '../../paths/paths'
 import { appConfig } from '../../config/appConfig'
 import { createUserChat } from '../../actions/chat.actions'
 import { findUserProfile } from '../../actions/user.actions'
+import defaultProfile from '../../img/default-profile.jpg'
 
 const LogoSearch = () => {
   const navigate = useNavigate()
@@ -90,6 +91,21 @@ const LogoSearch = () => {
       console.log(error)
     }
   }
+
+  const ProfileImage = ({ src }) => {
+    const handleError = (event) => {
+      event.target.src = defaultProfile
+    }
+
+    return (
+      <img
+        className="FollowerImg l-image"
+        src={src}
+        alt="Follower"
+        onError={handleError}
+      />
+    )
+  }
   return (
     <>
       <div className="LogoSearch">
@@ -109,12 +125,14 @@ const LogoSearch = () => {
       {data &&
         data.map((d) => (
           <div className="logoDiv">
-            <img
+            <ProfileImage
+              src={`${appConfig.awsBucketUrl}/${d?.profileImage}`}
+            />
+            {/* <img
               src={`${appConfig.awsBucketUrl}/${d?.profileImage}`}
               alt=""
               className="FollowerImg l-image"
-            />
-
+            /> */}
             <h5>
               {d?.firstName} {d?.lastName}
             </h5>
@@ -137,9 +155,9 @@ const LogoSearch = () => {
         ))}
 
       {connection ? (
-        <span className=''>Start converstion via chat box</span>
+        <span className="">Start converstion via chat box</span>
       ) : (
-        <span className=''>Create connection</span>
+        <span className="">Create connection</span>
       )}
     </>
   )

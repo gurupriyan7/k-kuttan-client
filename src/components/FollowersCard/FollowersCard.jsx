@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import './FollowersCard.css'
 
-import defaultImage from '../../img/profileImg.jpg'
+import defaultImage from '../../img/default-profile.jpg'
 
 import { Followers } from '../../Data/FollowersData'
 import { ColorInput } from '@mantine/core'

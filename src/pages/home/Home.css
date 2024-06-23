@@ -8,7 +8,7 @@
 .Home {
   display: flex;
   flex-direction: row;
-  column-gap: 106px;
+  column-gap: 165px;
   padding: 1rem;
   justify-content: center;
 }
