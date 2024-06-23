@@ -26,7 +26,7 @@ const Post = ({ data }) => {
   const [shareModalOpened, setShareModalOpened] = useState(false)
 
   const handleSelect = async (e) => {
-    if (data?.isDraft) {
+    if (data?.isDraft && data?.createdBy?._id === userData?.data?._id) {
       navigate(`${path.editPost}/${data?._id}`)
     } else {
       if (!data?.isFree && !data?.isPaid && data?.amount > 0) {

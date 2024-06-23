@@ -49,18 +49,18 @@ const Explore = () => {
     if (value === 2) {
       // alert('happy')
       if (posts?.length > 0) {
-        const sortData = await posts?.sort((a, b) =>{
-          console.log(a?.likes,"likes",b?.likes);
-        return  b.likes - a.likes
+        const sortData = await posts?.sort((a, b) => {
+          console.log(a?.likes, 'likes', b?.likes)
+          return b.likes - a.likes
         })
-        console.log(posts,"actual");
-        console.log(sortData,"sort");
+        console.log(posts, 'actual')
+        console.log(sortData, 'sort')
         setPosts(sortData)
       }
-    }else if(value===1){
-      const sortData = await posts?.sort((a, b) =>{
-        console.log(a?.updatedAt,"updatedAt",b?.updatedAt);
-      return  b.likes - a.likes
+    } else if (value === 1) {
+      const sortData = await posts?.sort((a, b) => {
+        console.log(a?.updatedAt, 'updatedAt', b?.updatedAt)
+        return b.likes - a.likes
       })
       setPosts(sortData)
     } else {
@@ -102,24 +102,6 @@ const Explore = () => {
           <SimpleBottomNavigation value={value} setValue={setValue} />
         </div>
       </div>
-        {isLoading && <Preloader/>}
-    <div className='Movies '  style={{ backgroundImage: `URL(${back})` }}>
-   <Header/> 
-   
-    <div className='Movie w-full md:h-[80vh] ]'>
-        <Container className='overflow-hidden mt-[40px] md:mt-0'>
-          <div className="trending">
-          <ExploreSingle postData={postData} />
-          </div>
-
-           {/* <CustomPagination setPage={setPage} noOfPages={10}/> */}
-        </Container>
-          <div className='w-full'>
-          <SimpleBottomNavigation/>
-          </div>
-    </div>
-  
-   </div>
     </>
   )
 }

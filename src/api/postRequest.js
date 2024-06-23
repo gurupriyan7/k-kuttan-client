@@ -5,7 +5,7 @@ import { path } from "../paths/paths";
 
 const API = axios.create({ baseURL: appConfig.apiUrl });
 
-export const getAllPosts = async () => {
+export const getAllPosts = async (searchText) => {
   try {
     const token = getLocalStorageItem("token");
     const userData = getLocalStorageItem("profile");
@@ -16,7 +16,7 @@ export const getAllPosts = async () => {
     // if (!userData) {
     //   window.location.href = path.auth;
     // }
-    return await API.get("/post", {
+    return await API.get(`/post?searchTerm=${searchText ?? ""}`, {
       ...(token && {
         headers: {
           Authorization: `Bearer ${token}`

@@ -5,7 +5,7 @@ import Post from '../Post/Post'
 // import { useSelector } from 'react-redux'
 const Posts = ({post}) => {
   // const postData = useSelector((state) => state.postReducer.posts)
-
+console.log(post,"totalPOst");
   return (
     <div className="Posts">
       {post?.map((post, id) => {

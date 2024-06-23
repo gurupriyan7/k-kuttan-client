@@ -19,7 +19,7 @@ const Profile = () => {
   const [posts, setPosts] = useState([])
 
   const [load, setLoad] = useState(false)
-  const postData = useSelector((state) => state.postReducer.post)
+  const postData = useSelector((state) => state.postReducer.posts)
   const postLoading = useSelector((state) => state.postReducer.loading)
 
   const authData = useSelector((state) => state.authReducer.authData)
@@ -32,6 +32,8 @@ const Profile = () => {
   useEffect(() => {
     setPosts(postData[0]?.data)
   }, [postData])
+
+  console.log(postData,"postData,------------");
 
   useEffect(() => {
     if (postLoading) {

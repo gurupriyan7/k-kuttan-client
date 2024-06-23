@@ -1,10 +1,10 @@
 import * as PostApi from "../api/postRequest";
 
-export const getAllPosts = () => async (dispatch) => {
+export const getAllPosts = (searchText) => async (dispatch) => {
   console.log("calling");
   dispatch({ type: "FETCH_START" });
   try {
-    const { data } = await PostApi.getAllPosts();
+    const { data } = await PostApi.getAllPosts(searchText);
     dispatch({ type: "FETCH_SUCCESS", data: data?.data });
   } catch (error) {
     console.log(error, "errorrorrosss");

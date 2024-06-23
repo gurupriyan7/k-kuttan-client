@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { path } from '../../paths/paths'
 import { appConfig } from '../../config/appConfig'
 
-const ProfileCard = ({ isProfile = false }) => {
+const  ProfileCard = ({ isProfile = false }) => {
   const navigate = useNavigate()
   const authData = useSelector((state) => state.authReducer.authData)
   const ProfilePage = true

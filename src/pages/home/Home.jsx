@@ -20,43 +20,53 @@ const Home = () => {
   const postData = useSelector((state) => state.postReducer.posts)
   // const authData = useSelector((state) => state.authReducer.authData)
 
-  // const postDataLoading = useSelector((state) => state.postReducer.loading)
+  const postDataLoading = useSelector((state) => state.postReducer.loading)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [searchText, setSearchText] = useState('')
 
   useEffect(() => {
     setPosts(postData[0]?.data)
   }, [postData])
 
   useEffect(async () => {
-    setIsLoading(true)
-    const fetchData = async () => {
-      console.log('hello')
-      try {
-        // if (!authData?.data) {
-        //   navigate(path.auth)
-        // } else {
-        // console.log(authData?.data, 'userDatasssss')
+    await dispatch(getAllPosts(searchText))
+  }, [searchText])
 
-        await dispatch(getAllPosts())
-        // await dispatch(findUserProfile())
-        setIsLoading(false)
-        // }
-      } catch (error) {
-        console.error('Error fetching posts:', error)
-      }
+  useEffect(() => {
+    if (postDataLoading) {
+      setIsLoading(true)
+    } else {
+      setIsLoading(false)
     }
+  }, [postDataLoading])
 
-    fetchData()
-  }, [])
+  // useEffect(async () => {
+
+  //   const fetchData = async () => {
+  //     console.log('hello')
+  //     try {
+
+  //       await dispatch(getAllPosts())
+  //     } catch (error) {
+  //       console.error('Error fetching posts:', error)
+  //     }
+  //   }
+
+  //   fetchData()
+  // }, [])
 
   return (
     <>
       {isLoading && <Preloader />}
       <div className="Home" style={{ backgroundImage: `URL(${back})` }}>
         <ProfileSide />
-        <PostSide postData={posts} />
+        <PostSide
+          searchText={searchText}
+          setSearchText={setSearchText}
+          postData={posts}
+        />
         <RightSide />
       </div>
     </>

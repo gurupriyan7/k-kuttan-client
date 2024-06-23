@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react'
 import './FollowersCard.css'
 
+import defaultImage from '../../img/profileImg.jpg'
+
 import { Followers } from '../../Data/FollowersData'
 import { ColorInput } from '@mantine/core'
 import { useDispatch, useSelector } from 'react-redux'
@@ -78,6 +80,20 @@ const FollowersCard = () => {
   const lastPage = page * 10 < users?.totalCount
 
   console.log(users, 'foloowerj', authData)
+  const FollowerImage = ({ src }) => {
+    const handleError = (event) => {
+      event.target.src = defaultImage
+    }
+
+    return (
+      <img
+        src={src}
+        alt="Follower"
+        className="followerImage"
+        onError={handleError}
+      />
+    )
+  }
 
   return (
     <div className="FollowersCard">
@@ -87,10 +103,8 @@ const FollowersCard = () => {
         return (
           <div className="follower">
             <div>
-              <img
+              <FollowerImage
                 src={`${appConfig?.awsBucketUrl}/${follower?.profileImage}`}
-                alt=""
-                className="followerImage"
               />
               <div className="name">
                 <span>{follower?.firstName}</span>
@@ -102,9 +116,7 @@ const FollowersCard = () => {
               className="button fc-button"
               style={{ color: 'black' }}
             >
-              {follower?.followers?.includes(String(authData?.data?._id))
-                ? 'UnFollow'
-                : 'Follow'}
+              {follower?.isFollowing ? 'UnFollow' : 'Follow'}
             </button>
           </div>
         )

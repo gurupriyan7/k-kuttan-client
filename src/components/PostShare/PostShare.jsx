@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-expressions */
 import React, { useState, useRef, useEffect } from 'react'
-import ProfileImage from '../../img/profileImg.jpg'
+import defaultImage from '../../img/profileImg.jpg'
 import './PostShare.css'
 import { UilScenery } from '@iconscout/react-unicons'
 import { UilPlayCircle } from '@iconscout/react-unicons'
@@ -15,29 +15,21 @@ import { findUserProfile } from '../../actions/user.actions'
 import { path } from '../../paths/paths'
 import { appConfig } from '../../config/appConfig'
 
-const PostShare = ({ data, setData }) => {
+const PostShare = ({ data, setData, searchText, setSearchText }) => {
   const authData = useSelector((state) => state.authReducer.authData)
 
   const [image, setImage] = useState(null)
+
   const imageRef = useRef()
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  useEffect(async () => {
-    const fetchData = async () => {
-      try {
-        if (!authData) {
-          navigate(path.auth)
-        } else {
-          await dispatch(findUserProfile())
-        }
-      } catch (error) {
-        console.error('Error fetching posts:', error)
-      }
-    }
 
-    fetchData()
-  }, [])
+  const handleSearchText = async (e) => {
+    setTimeout(()=>{
+setSearchText(e?.target?.value)
+    },3000)
+  }
 
   const onImageChange = async (event) => {
     if (event.target.files && event.target.files[0]) {
@@ -52,34 +44,46 @@ const PostShare = ({ data, setData }) => {
       console.log(imageData, 'image-image')
     }
   }
-  console.log(data,"dataaaa ",authData);
+  console.log(data, 'dataaaa ', authData)
+
+  const FollowerImage = ({ src }) => {
+    const handleError = (event) => {
+      // alert('hello')
+      event.target.src = defaultImage
+    }
+
+    return (
+      <img
+        src={src}
+        alt="Follower"
+        onError={handleError}
+        width={48}
+        height={48}
+      />
+    )
+  }
 
   return (
     <div className="PostShare">
       <div>
-        <img
-          src={
-            `${appConfig.awsBucketUrl}/${authData?.data?.profileImage}` ??
-            ProfileImage
-          }
-          // src={authData?.data?.profileImage ?? ProfileImage}
-          alt=""
-          width={48}
-          height={48}
+        <FollowerImage
+          src={`${appConfig?.awsBucketUrl}/${authData?.data?.profileImage}`}
         />
         <input
           className="post-input"
           type="text"
-          placeholder="What's happening"
+          placeholder="Search Posts..."
+          // value={searchText}
+          onChange={handleSearchText}
         />
       </div>
       <div className="postOptions">
         <div
-          className="photo-option"
+          className="photo-option option"
           style={{ color: 'var(--photo)' }}
-          onClick={() => imageRef.current.click()}
+          // onClick={() => imageRef.current.click()}
           ref={imageRef}
-          onChange={onImageChange}
+          onChange={onImageChange} 
         >
           <UilScenery />
           Photo
@@ -96,13 +100,18 @@ const PostShare = ({ data, setData }) => {
           <UilSchedule />
           Shedule
         </div>
-        <button onClick={(e)=>{
-          e.preventDefault()
-          navigate(path.addPost)
-
-        }} style={{ color: 'black' }} className="button ps-button">
-          Share
-        </button>
+        {authData?.data && (
+          <button
+            onClick={(e) => {
+              e.preventDefault()
+              navigate(path.addPost)
+            }}
+            style={{ color: 'black' }}
+            className="button ps-button"
+          >
+            Share
+          </button>
+        )}
         <div style={{ display: 'none' }}>
           <input
             type="file"
