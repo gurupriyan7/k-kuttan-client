@@ -6,7 +6,7 @@ import notFound from '../../img/notFound.gif'
 
 const PageNotFound = () => {
   return (
-    <div className="Home" style={{ backgroundImage: `URL(${back})` }}>
+    <div className="Home-pageNotFound" style={{ backgroundImage: `URL(${back})` }}>
       <section class="page_404">
         <div class="container">
           <div class="row">
