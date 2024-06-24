@@ -3,5 +3,6 @@ export const appConfig = {
   awsBucketUrl: process.env.REACT_APP_AWS_BUCKET_URL,
   razorpayKeyId: process.env.REACT_APP_RAZORPAY_KEY_ID,
   razorpayKeySecret: process.env.REACT_APP_RAZORPAY_KEY_SECRET,
-  frontEndUrl: process.env.REACT_APP_FRONTEND_URL
+  frontEndUrl: process.env.REACT_APP_FRONTEND_URL,
+  socketUrl:process.env.REACT_APP_SOCKET_URL
 };

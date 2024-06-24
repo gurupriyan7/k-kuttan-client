@@ -23,6 +23,7 @@ import {
 import { findUserChats } from '../../actions/chat.actions'
 import { getAllRooms, joinRoom } from '../../api/RoomRequest'
 import Conversations from '../../components/Conversations/Conversations'
+import { appConfig } from '../../config/appConfig'
 // import { ToastContainer, toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
 // import { getRoomChats, getRooms, joinRoom } from "../../api/RoomRequest";
@@ -62,7 +63,7 @@ const Room = () => {
   const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
-    socket.current = io('https://k-kuttan-socket-5c70463a5ea1.herokuapp.com/')
+    socket.current = io(appConfig.socketUrl ?? '')
     socket.current.emit('new-user-add', authData?.data?._id)
     socket.current.on('get-users', (users) => {
       setOnlineUsers(users)

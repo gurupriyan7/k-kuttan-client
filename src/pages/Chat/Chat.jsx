@@ -17,6 +17,7 @@ import './Chat.css'
 import ChatBox from '../../components/ChatBox/ChatBox'
 import { findUserChats } from '../../actions/chat.actions'
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom'
+import { appConfig } from '../../config/appConfig';
 const Chat = () => {
   const [isLoading, setIsLoading] = useState(false)
   const authData = useSelector((state) => state.authReducer.authData)
@@ -36,7 +37,7 @@ const Chat = () => {
   const socket = useRef()
 
   useEffect(() => {
-    socket.current = io('https://k-kuttan-socket-5c70463a5ea1.herokuapp.com/')
+    socket.current = io(appConfig.socketUrl ?? "")
     socket.current.emit('new-user-add', authData?.data?._id)
     socket.current.on('get-users', (users) => {
       setOnlineUsers(users)
