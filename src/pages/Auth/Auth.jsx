@@ -110,7 +110,7 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
 
   useEffect(() => {
     if (isError && error != null) {
-      enqueueSnackbar(error?.message, {
+      enqueueSnackbar(error?.response?.data?.message??"Login failed!", {
         variant: 'error',
         ContentProps: {
           style: { backgroundColor: 'red' },
@@ -253,8 +253,9 @@ function SignUp({ setIsLogin, errorMessage, setErrorMessage }) {
 
   useEffect(() => {
     if (isError && error != null) {
+      console.log(error,"error------ssss",error?.response);
       if (isError && error) {
-        enqueueSnackbar(error?.message, {
+        enqueueSnackbar(error?.response?.data?.message ??" SignUp failed!!", {
           variant: 'error',
           ContentProps: {
             style: { backgroundColor: 'red' },
