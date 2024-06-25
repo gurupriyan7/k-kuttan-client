@@ -15,9 +15,11 @@ import { PaymentStatusEnum } from '../../constants/paymentEnum'
 import PostShareModal from '../PostShareModal/PostshareModal'
 import postImage from '../../img/authback.png'
 import { PostApprovalStatus } from '../../constants/PostEnum'
+import { useSnackbar } from 'notistack'
 
 const Post = ({ data }) => {
   const navigate = useNavigate()
+  const { enqueueSnackbar } = useSnackbar()
   // const dispatch = useDispatch()
   const userData = useSelector((state) => state.authReducer.authData)
   const [liked, setLiked] = useState(data?.isLiked)
@@ -100,8 +102,19 @@ const Post = ({ data }) => {
       likeAndCommentPost(data?._id, userData?.data?._id)
       liked ? setLikes((prev) => prev - 1) : setLikes((prev) => prev + 1)
     } else {
-      alert('please login to like')
+      enqueueSnackbar('Please login to Like !!', {
+        variant: 'warning',
+        autoHideDuration: 2000,
+        ContentProps: {
+          style: { backgroundColor: 'yellow' },
+        },
+      })
     }
+  }
+
+  const handleError = (event) => {
+    // alert('hello')
+    event.target.src = postImage
   }
   return (
     <div className="Post">
@@ -111,6 +124,7 @@ const Post = ({ data }) => {
           data?.image ? `${appConfig.awsBucketUrl}/${data?.image}` : postImage
         }
         alt="story"
+        onError={handleError}
       />
 
       {!data?.isDraft && data?.approvalStatus === PostApprovalStatus.APPROVED && (

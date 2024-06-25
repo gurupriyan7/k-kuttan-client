@@ -1,19 +1,23 @@
 /* eslint-disable no-unused-expressions */
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './AddPost.css'
 import { Center } from '@mantine/core'
 import { UilTimes } from '@iconscout/react-unicons'
 import { UilScenery } from '@iconscout/react-unicons'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { getPreSignedUrlUtill } from '../../utils/s3.utils'
 import back from '../../img/wp4082523.webp'
 import { createPost } from '../../actions/post.actions'
 import { path } from '../../paths/paths';
+import { useSnackbar } from 'notistack';
 
 const AddPost = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { enqueueSnackbar } = useSnackbar()
+
+  const [errorShow, setErrorShow] = useState(false)
 
   const [storyCount, setStoryCount] = useState(1)
   const [stories, setStories] = useState([
@@ -29,6 +33,10 @@ const AddPost = () => {
     summary: '',
     image: null,
   })
+
+  const { error, isError, loading } = useSelector(
+    (state) => state.postReducer,
+  )
 
   const onImageChange = async (event) => {
     event.preventDefault()
@@ -57,6 +65,22 @@ const AddPost = () => {
     setStoryCount(storyCount + 1)
   }
 
+
+  useEffect(() => {
+    if (isError && error != null&& errorShow) {
+      enqueueSnackbar(
+        (error?.message || error?.response?.data?.message) ?? 'Login failed!',
+        {
+          variant: 'error',
+          autoHideDuration: 2000,
+          ContentProps: {
+            style: { backgroundColor: 'red' },
+          },
+        },
+      )
+    }
+  }, [isError, error])
+
   const removeStory = () => {
     if (stories.length > 1) {
       setStories(stories.slice(0, -1))
@@ -72,6 +96,7 @@ const AddPost = () => {
 
   const handleSubmit = (e,isDraft) => {
     e.preventDefault()
+    setErrorShow(true)
     // Handle form submission logic here
     dispatch(
       createPost({
@@ -82,6 +107,13 @@ const AddPost = () => {
         })
       }),
     )
+    enqueueSnackbar('Post Added successfully !!', {
+      variant: 'success',
+      autoHideDuration: 2000,
+      ContentProps: {
+        style: { backgroundColor: 'green' },
+      },
+    })
     navigate(path.home)
     console.log(stories, 'Form submitted:', formData)
   }

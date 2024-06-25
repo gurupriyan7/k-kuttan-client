@@ -8,17 +8,12 @@ import './Home.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllPosts } from '../../actions/post.actions'
 import { useNavigate } from 'react-router-dom'
-// import { path } from '../../paths/paths'
-// import { getLocalStorageItem } from '../../utils/appUtils'
-// import { findUserProfile } from '../../actions/user.actions'
 import Preloader from '../../components/Preloader/Preloader'
 
 const Home = () => {
-  // const userData = getLocalStorageItem('profile')
   const [isLoading, setIsLoading] = useState(false)
   const [posts, setPosts] = useState([])
   const postData = useSelector((state) => state.postReducer.posts)
-  // const authData = useSelector((state) => state.authReducer.authData)
 
   const postDataLoading = useSelector((state) => state.postReducer.loading)
 

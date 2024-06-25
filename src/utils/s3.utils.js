@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getPreSignedUrl } from "../api/s3Request";
-
-export const getPreSignedUrlUtill = async (file) => {
+ 
+export const  getPreSignedUrlUtill = async (file) => {
   try {
     // if (!file || !file.name || !file.path || !file.type) {
     //   throw new Error("Invalid file object");

@@ -1,16 +1,16 @@
 import { Modal, useMantineTheme } from '@mantine/core'
-import PostShare from '../PostShare/PostShare'
-import { useEffect, useState } from 'react'
+import {  useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createPost } from '../../actions/post.actions'
 
 import './CommentModel.css'
 import { appConfig } from '../../config/appConfig'
 import { commentPost } from '../../api/postRequest'
+import { useSnackbar } from 'notistack';
 
 function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
   const theme = useMantineTheme()
   const dispatch = useDispatch()
+  const { enqueueSnackbar } = useSnackbar()
   // const [image, setImage] = useState(null)
   const [visibleItems, setVisibleItems] = useState(3)
   const userData = useSelector((state) => state.authReducer.authData)
@@ -37,7 +37,13 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
       dispatch(commentPost(postId, data?.comment))
       window.reload()
     }else{
-      alert("Please Login to comment")
+      enqueueSnackbar('Please login to Comment !!', {
+        variant: 'warning',
+        autoHideDuration: 2000,
+        ContentProps: {
+          style: { backgroundColor: 'yellow' },
+        },
+      })
     }
     // .setModalOpened(false)
     // console.log(data, 'datassss',isSuccess)

@@ -72,12 +72,14 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
     email: '',
     password: '',
   })
+  const [errorShow, setErrorShow] = useState(false)
 
   const { authData, error, isError, isLoading } = useSelector(
     (state) => state.authReducer,
   )
 
   const loginSubmit = async (e) => {
+    setErrorShow(true)
     e.preventDefault()
     setErrorMessage('')
     await dispatch(
@@ -97,6 +99,7 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
     if (authData?.data && !isError) {
       enqueueSnackbar('Login SuccessFully!', {
         variant: 'success',
+        autoHideDuration: 2000,
         ContentProps: {
           style: { backgroundColor: 'green' },
         },
@@ -109,13 +112,17 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
   })
 
   useEffect(() => {
-    if (isError && error != null) {
-      enqueueSnackbar(error?.response?.data?.message??"Login failed!", {
-        variant: 'error',
-        ContentProps: {
-          style: { backgroundColor: 'red' },
+    if (isError && error != null && errorShow) {
+      enqueueSnackbar(
+        (error?.message || error?.response?.data?.message) ?? 'Login failed!',
+        {
+          variant: 'error',
+          autoHideDuration: 2000,
+          ContentProps: {
+            style: { backgroundColor: 'red' },
+          },
         },
-      })
+      )
     }
   }, [isError, error])
 
@@ -210,6 +217,8 @@ function SignUp({ setIsLogin, errorMessage, setErrorMessage }) {
   const navigate = useNavigate()
   const { enqueueSnackbar } = useSnackbar()
 
+  const [errorShow, setErrorShow] = useState(false)
+
   const { authData, error, isError } = useSelector((state) => state.authReducer)
 
   const [signUpdata, setSignUpData] = useState({
@@ -222,10 +231,12 @@ function SignUp({ setIsLogin, errorMessage, setErrorMessage }) {
   })
 
   const handleSignUp = async (e) => {
+    setErrorShow(true)
     e.preventDefault()
     if (signUpdata?.password?.length < 4) {
       enqueueSnackbar('Password must be min 4 characters', {
         variant: 'warning',
+        autoHideDuration: 2000,
         ContentProps: {
           style: { backgroundColor: 'yellow' },
         },
@@ -252,10 +263,10 @@ function SignUp({ setIsLogin, errorMessage, setErrorMessage }) {
   }, [authData])
 
   useEffect(() => {
-    if (isError && error != null) {
-      console.log(error,"error------ssss",error?.response);
+    if (isError && error != null && errorShow) {
+      console.log(error, 'error------ssss', error?.response)
       if (isError && error) {
-        enqueueSnackbar(error?.response?.data?.message ??" SignUp failed!!", {
+        enqueueSnackbar(error?.response?.data?.message ?? ' SignUp failed!!', {
           variant: 'error',
           ContentProps: {
             style: { backgroundColor: 'red' },
