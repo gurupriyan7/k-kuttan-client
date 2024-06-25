@@ -91,10 +91,6 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
     console.log(loginData, 'loginData')
   }
 
-  // const {  } = useSelector(
-  //   (state) => state?.auth,
-  // )
-
   useEffect(() => {
     if (authData?.data && !isError) {
       enqueueSnackbar('Login SuccessFully!', {
@@ -193,7 +189,19 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
             {isLoading ? 'Loading' : 'Login'}
           </button>
         </div>
-        <div>
+        <div style={{ display: 'grid', justifyContent: 'center' }}>
+          <span style={{ fontSize: '12px' }}>
+          forgot Password : 
+            <span
+              onClick={(e) => {
+                e.preventDefault()
+                navigate(path.forgotPassword)
+              }}
+              className="linkText"
+            >
+              click here..
+            </span>
+          </span>
           <span style={{ fontSize: '12px' }}>
             If you are an Author?
             <span
@@ -206,7 +214,6 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
               signIn
             </span>
           </span>
-          {/* <button className="button infoButton">Login</button> */}
         </div>
       </form>
     </div>

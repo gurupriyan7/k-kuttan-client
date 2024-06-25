@@ -158,7 +158,7 @@ const Post = ({ data }) => {
       {!data?.isDraft &&
         data?.approvalStatus === PostApprovalStatus.APPROVED && (
           <span style={{ color: 'var(--gray)', fontSize: '12px' }}>
-            {likes} likes
+            {likes?.length?? 0 } likes
           </span>
         )}
 

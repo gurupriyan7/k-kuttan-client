@@ -8,5 +8,6 @@ export const path = {
   room:"room",
   explore:"explore",
   addPost:"/add-post",
-  editPost:"/edit-post"
+  editPost:"/edit-post",
+  forgotPassword:"/forgot-password"
 };

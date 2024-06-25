@@ -40,7 +40,7 @@ const FollowersCard = () => {
     fetchData()
   }, [authData])
 
-  const handleFollowUnFollow = async (e,userId) => {
+  const handleFollowUnFollow = async (e, userId) => {
     e.preventDefault()
     await handleFollowToggle(userId)
     dispatch(followUnFollowUser(userId))
@@ -87,7 +87,10 @@ const FollowersCard = () => {
           <div className="follower" id={`${id}-${follower?._id}`}>
             <div>
               <FollowerImage
-                src={`${appConfig?.awsBucketUrl}/${follower?.profileImage}` ?? defaultImage}
+                src={
+                  `${appConfig?.awsBucketUrl}/${follower?.profileImage}` ??
+                  defaultImage
+                }
               />
               <div className="name">
                 <span>{follower?.firstName}</span>
@@ -95,7 +98,7 @@ const FollowersCard = () => {
               </div>
             </div>
             <button
-              onClick={(e) => handleFollowUnFollow(e,follower?._id)}
+              onClick={(e) => handleFollowUnFollow(e, follower?._id)}
               className="button fc-button"
               style={{ color: 'black' }}
             >

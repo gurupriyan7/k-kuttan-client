@@ -34,6 +34,8 @@ const ProfileCard = ({ isProfile = false }) => {
 
     return <img src={src} alt="Follower" onError={handleError} />
   }
+  // alert(authData?.data?.ProfileImage)
+  console.log(authData?.data?.profileImage,"auth-data-auth");
 
   return (
     <div
@@ -50,12 +52,12 @@ const ProfileCard = ({ isProfile = false }) => {
           src={`${appConfig?.awsBucketUrl}/${authData?.data?.coverImage}`}
         />
         <ProfileImage
-          src={`${appConfig?.awsBucketUrl}/${authData?.data?.ProfileImage}`}
+          src={`${appConfig?.awsBucketUrl}/${authData?.data?.profileImage}`}
         />
       </div>
 
       <div className="ProfileName">
-        <span> {authData?.data ? authData?.data?.userName : ''} </span>
+        <span> {authData?.data ? authData?.data?.userName : ''}  </span>
         <span>
           {authData?.data
             ? `${authData?.data?.firstName} ${authData?.data?.lastName}`
