@@ -17,12 +17,14 @@ export default function SimpleBottomNavigation({ value, setValue }) {
   const navigate = useNavigate()
 
   return (
-    <div>
+    <div className='w-full'>
       <Box
         sx={{
           width: '100%',
           position: 'fixed',
           bottom: 0,
+          left:0,
+          right:0,
           zIndex: 100,
           backgroundColor: `red`,
         }}
@@ -79,6 +81,6 @@ export default function SimpleBottomNavigation({ value, setValue }) {
             }} label="home" icon={<HomeIcon />} />
         </BottomNavigation>
       </Box>
-    </div>
+    </div> 
   )
 }

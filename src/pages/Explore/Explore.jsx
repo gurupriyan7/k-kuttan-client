@@ -99,7 +99,9 @@ const Explore = () => {
 
             {/* <CustomPagination setPage={setPage} noOfPages={10}/> */}
           </Container>
+          <div className='w-full'>
           <SimpleBottomNavigation value={value} setValue={setValue} />
+          </div>
         </div>
       </div>
     </>
