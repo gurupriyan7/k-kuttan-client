@@ -42,3 +42,13 @@ export const createPost = (postData) => async (dispatch) => {
     dispatch({ type: "UPLOAD_FAILED", data: error?.response?.data });
   }
 };
+export const addComment = (postData) => async (dispatch) => {
+  dispatch({ type: "COMMENT_START" });
+  try {
+    const { data } = await PostApi.commentPost(postData);
+    dispatch({ type: "COMMENT_SUCCESS", data: data?.data });
+  } catch (error) {
+    console.log(error?.message, "errorrorro");
+    dispatch({ type: "COMMENT_FAILED", data: error?.response?.data });
+  }
+};

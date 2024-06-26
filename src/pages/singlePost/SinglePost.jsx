@@ -65,7 +65,7 @@ const SinglePost = (PostsData) => {
 
   useEffect(async () => {
     await dispatch(getPostById({ postId }))
-  }, [dispatch, postId])
+  }, [paymentStatus, postId])
   console.log(
     post,
     'post post post post post',

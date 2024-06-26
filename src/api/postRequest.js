@@ -80,10 +80,9 @@ export const likeAndCommentPost = async (id, userId) => {
     console.log(error);
   }
 };
-export const commentPost = async (id, comment) => {
+export const commentPost = async ({ id, comment }) => {
   try {
     const token = getLocalStorageItem("token");
-    // const token = userData?.data?.token;
 
     return await API.patch(
       `post/user/${id}`,
@@ -92,7 +91,7 @@ export const commentPost = async (id, comment) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${token}` // Include the Bearer token in the Authorization header
+          Authorization: `Bearer ${token}`
         }
       }
     );

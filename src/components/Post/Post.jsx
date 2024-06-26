@@ -52,9 +52,7 @@ const Post = ({ data }) => {
                 postId: data?._id,
               })
               navigate(`${path.singlePost}/${data?._id}`)
-              // alert(
-              //   `Payment Successful! Payment ID: ${response}`,
-              // )
+
             },
             prefill: {
               name: 'Your Name',
@@ -72,7 +70,6 @@ const Post = ({ data }) => {
           const rzp = new window.Razorpay(options)
           rzp.open()
 
-          // alert('need to pay')
           rzp.on('payment.failed', async function (response) {
             console.log(response, 'payment failed response')
             await updatePayment({
@@ -81,20 +78,13 @@ const Post = ({ data }) => {
               status: PaymentStatusEnum.FAILED,
               postId: data?._id,
             })
-            // alert(`Payment Failed! Error: ${response.error.description}`)
           })
         }
-        // const res = await createPayment({
-        //   postId: data?._id,const
-        // })
-
-        // console.log(res, 'responseddd')
       } else {
         navigate(`${path.singlePost}/${data?._id}`)
       }
     }
   }
-  // alert(data?.isPaid)
 
   const handleLike = () => {
     if (userData?.data) {
@@ -113,7 +103,6 @@ const Post = ({ data }) => {
   }
 
   const handleError = (event) => {
-    // alert('hello')
     event.target.src = postImage
   }
   return (
@@ -158,7 +147,7 @@ const Post = ({ data }) => {
       {!data?.isDraft &&
         data?.approvalStatus === PostApprovalStatus.APPROVED && (
           <span style={{ color: 'var(--gray)', fontSize: '12px' }}>
-            {likes?? 0 } likes
+            {likes ?? 0} likes
           </span>
         )}
 

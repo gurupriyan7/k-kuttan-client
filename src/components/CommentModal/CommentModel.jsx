@@ -1,11 +1,11 @@
 import { Modal, useMantineTheme } from '@mantine/core'
-import {  useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import './CommentModel.css'
 import { appConfig } from '../../config/appConfig'
-import { commentPost } from '../../api/postRequest'
-import { useSnackbar } from 'notistack';
+import { useSnackbar } from 'notistack'
+import { addComment } from '../../actions/post.actions'
 
 function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
   const theme = useMantineTheme()
@@ -13,6 +13,7 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
   const { enqueueSnackbar } = useSnackbar()
   // const [image, setImage] = useState(null)
   const [visibleItems, setVisibleItems] = useState(3)
+  const [commentData, setCommentData] = useState(comments)
   const userData = useSelector((state) => state.authReducer.authData)
 
   const handleReadMore = (increment) => {
@@ -26,17 +27,48 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
   const [data, setData] = useState({
     comment: '',
   })
-  const commentData = comments
+
+  console.log(commentData, 'commentData')
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value })
   }
   const handleSubmit = async (e) => {
-    // e.preventDefault()
-    if(userData?.data){
-      dispatch(commentPost(postId, data?.comment))
-      window.reload()
-    }else{
+    e.preventDefault()
+    if (userData?.data) {
+      try {
+        const newComment = {
+          comment: data?.comment,
+          userId: {
+            userName: userData?.data?.userName,
+            profileImage: userData?.data?.profileImage,
+          },
+        }
+        await dispatch(addComment({ id: postId, comment: data?.comment }))
+        setData({
+          ...data,
+          comment: '',
+        })
+        setCommentData([newComment, ...commentData])
+        enqueueSnackbar('Comment added successfully!!', {
+          variant: 'success',
+          autoHideDuration: 2000,
+          ContentProps: {
+            style: { backgroundColor: 'green' },
+          },
+        })
+      } catch (error) {
+        enqueueSnackbar('Failed to add comment', {
+          variant: 'error',
+          autoHideDuration: 2000,
+          ContentProps: {
+            style: { backgroundColor: 'red' },
+          },
+        })
+      }
+
+      // window.reload()
+    } else {
       enqueueSnackbar('Please login to Comment !!', {
         variant: 'warning',
         autoHideDuration: 2000,
@@ -45,8 +77,6 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
         },
       })
     }
-    // .setModalOpened(false)
-    // console.log(data, 'datassss',isSuccess)
   }
 
   return (
@@ -149,6 +179,7 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
                 name="comment"
                 placeholder="Comment"
                 required
+                value={data.comment}
                 style={{ height: '4rem', width: '96%%' }}
                 onChange={handleChange}
               />
