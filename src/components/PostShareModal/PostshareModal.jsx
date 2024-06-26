@@ -17,8 +17,19 @@ function PostShareModal({ modalOpened, setModalOpened, postId }) {
     setCopySuccess(true)
   }
 
+  const modalStyles = {
+    modal: {
+      width: "95%",
+
+      "@media (min-width: 768px)": {
+        width: "60%",
+      },
+    },
+  };
+
   return (
     <Modal
+      styles={modalStyles}
       overlayColor={
         theme.colorScheme === 'dark'
           ? theme.colors.dark[9]
@@ -68,7 +79,7 @@ function PostShareModal({ modalOpened, setModalOpened, postId }) {
             style={{ display: 'flex', width: '100%', justifyContent: 'end' }}
           >
             <button
-              className="button infoButton"
+              className="button  px-4 py-2 mr-4 "
               // type="submit"
               style={{ marginTop: '1rem' }}
               onClick={handleCopy}
