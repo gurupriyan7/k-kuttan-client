@@ -7,7 +7,7 @@
     position: relative;
   }
 
-  @media screen and (width<=480px){
+  @media screen and (width<=780px){
     .Auth{
       flex-direction: column;
     }
@@ -25,14 +25,49 @@
   .a-left{
       gap: 2rem;
   }
+
+  @media screen and (width<=580px){
+    .a-left{
+      display: flex;
+      gap: 0rem;
+    }
+  }
   
   .a-left > img {
     width: 4rem;
     height: 4rem;
   }
+
+  @media screen and (width<=580px){
+    .a-left > img {
+      width: 3rem;
+      height: 3rem;
+    }
+  }
+  
+  
+  .test-color {
+      /* font-size: 3rem; */
+      background-color: red;
+    
+      /* Create the gradient. */
+      background-image: var(--buttonBg);
+      
+      /* Set the background size and repeat properties. */
+      background-size: 100%;
+    
+    
+      /* Use the text as a mask for the background. */
+      /* This will show the gradient as a text color rather than element bg. */
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; 
+      -moz-background-clip: text;
+      -moz-text-fill-color: transparent;
+  }
+  
   
   .Webname > h1 {
-      font-size: 3rem;
+      /* font-size: 3rem; */
       background-color: red;
     
       /* Create the gradient. */
@@ -55,6 +90,10 @@
       color: #d9af67c9;
   }
 
+  .subh{
+    font-size: 0.85rem;
+    color: #d9af67c9;
+}
 
 
   .infoForm{
@@ -62,8 +101,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 3rem;
+    gap: 2rem;
   }
+
+  
+
   
   .infoInput{
     border: none;
