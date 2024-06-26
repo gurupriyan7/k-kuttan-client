@@ -23,7 +23,7 @@ const Post = ({ data }) => {
   // const dispatch = useDispatch()
   const userData = useSelector((state) => state.authReducer.authData)
   const [liked, setLiked] = useState(data?.isLiked)
-  const [likes, setLikes] = useState(data?.likes)
+  const [likes, setLikes] = useState(data?.liked?.length)
   const [modalOpened, setModalOpened] = useState(false)
   const [shareModalOpened, setShareModalOpened] = useState(false)
 
@@ -158,7 +158,7 @@ const Post = ({ data }) => {
       {!data?.isDraft &&
         data?.approvalStatus === PostApprovalStatus.APPROVED && (
           <span style={{ color: 'var(--gray)', fontSize: '12px' }}>
-            {likes?.length?? 0 } likes
+            {likes?? 0 } likes
           </span>
         )}
 

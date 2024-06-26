@@ -16,7 +16,7 @@ import { path } from '../../paths/paths'
 import { appConfig } from '../../config/appConfig'
 import { UserRole } from '../../config/enums'
 
-const PostShare = ({ data, setData, searchText, setSearchText }) => {
+const PostShare = ({ data, setData, searchText, setSearchText ,isHome=false }) => {
   const authData = useSelector((state) => state.authReducer.authData)
 
   const [image, setImage] = useState(null)
@@ -77,7 +77,7 @@ const PostShare = ({ data, setData, searchText, setSearchText }) => {
           type="text"
           placeholder="Search Posts..."
           // value={searchText}
-          disabled={!isAuthor}
+          disabled={!isAuthor && !isHome }
           onChange={handleSearchText}
         />
       </div>

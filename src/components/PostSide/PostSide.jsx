@@ -13,7 +13,7 @@ const PostSide = ({ postData, searchText, setSearchText, isHome = false }) => {
   // const postData = useSelector((state) => state.postReducer.posts)
   return (
     <div className="PostSide">
-      <PostShare searchText={searchText} setSearchText={setSearchText} />
+      <PostShare searchText={searchText} setSearchText={setSearchText} isHome={isHome}/>
       {(isAuthor || isHome) && <Posts post={postData} />}
     </div>
   )

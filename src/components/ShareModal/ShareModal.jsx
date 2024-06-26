@@ -17,7 +17,7 @@ function ShareModal({ modalOpened, setModalOpened }) {
     title: '',
     summary: '',
     // story: [],
-    story: "",
+    story: '',
     image: null,
   })
   const handleChange = (e) => {
@@ -30,27 +30,7 @@ function ShareModal({ modalOpened, setModalOpened }) {
         ...data,
       }),
     )
-    // console.log(data, 'datassss',isSuccess)
   }
-
-  // const handleNext = () => {
-  //   const sry ={
-  //     page: storyPage,
-  //     story,
-  //   }
-  //   setData({ ...data, story: [...data.story,sry] })
-  //   setStoryPage((page) => page + 1)
-  //   setStory("")
-  // }
-  // const handlePrevious =async (e) => {
-  //   e.preventDefault()
-  //   setStoryPage((page) => page - 1)
-  //   const prevData = await data?.story?.filter((d)=>d.page === storyPage)
-  //   console.log(prevData,"prev"); 
-  //   setStory(prevData[0]?.story)
-  // }
-
-  // console.log(story,"dataddddd");
 
   return (
     <Modal
@@ -114,7 +94,6 @@ function ShareModal({ modalOpened, setModalOpened }) {
           >
             Share
           </button>
-
         </form>
       </div>
     </Modal>
