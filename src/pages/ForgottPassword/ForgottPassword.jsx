@@ -1,20 +1,49 @@
 import { useState } from 'react'
 import './ForgotPassword.css'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import Logo from '../../img/logo.png'
 import authback from '../../img/authback.png'
 import { path } from '../../paths/paths'
+import { forgotPassword } from '../../api/authRequest'
+import { useSnackbar } from 'notistack'
 
 const ForgotPassword = () => {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const { enqueueSnackbar } = useSnackbar()
+  const paramValue = searchParams.get('role')
   const [forgotPasswordData, setForgotPasswordData] = useState({
     email: '',
   })
 
   const haldleForgotPassword = async (e) => {
-          e.preventDefault()
-    alert(forgotPasswordData?.email)
+    e.preventDefault()
+    try {
+      await forgotPassword({
+        email: forgotPasswordData?.email,
+        role: paramValue,
+      })
+      enqueueSnackbar('Link Successfully Send to Mail..', {
+        variant: 'success',
+        autoHideDuration: 2000,
+        ContentProps: {
+          style: { backgroundColor: 'green' },
+        },
+      })
+      setForgotPasswordData({
+        email: '',
+      })
+    } catch (error) {
+      console.log(error, 'errorrorrororor')
+      enqueueSnackbar(error?.response?.data?.message ?? 'Link Send failed...', {
+        variant: 'error',
+        autoHideDuration: 2000,
+        ContentProps: {
+          style: { backgroundColor: 'red' },
+        },
+      })
+    }
   }
 
   return (
@@ -48,6 +77,7 @@ const ForgotPassword = () => {
               className="infoInput"
               name="email"
               required
+              value={forgotPasswordData.email}
               id="email"
               onChange={(e) => {
                 console.log(e.target?.value, 'value')
@@ -61,7 +91,7 @@ const ForgotPassword = () => {
 
           <div>
             <span style={{ fontSize: '12px' }}>
-              Back to Login page : 
+              Back to Login page :
               <span
                 onClick={(e) => {
                   e.preventDefault()

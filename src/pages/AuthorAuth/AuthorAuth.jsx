@@ -11,7 +11,7 @@ import { useSnackbar } from 'notistack'
 const AuthorAuth = () => {
   const [isLogin, setIsLogin] = useState(true)
   const [errorMessage, setErrorMessage] = useState('')
-  
+
   const [isLoading, setIsLoading] = useState(false)
   return (
     <div
@@ -98,7 +98,7 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
   })
 
   useEffect(() => {
-    if (isError && error != null&& errorShow) {
+    if (isError && error != null && errorShow) {
       enqueueSnackbar(
         (error?.message || error?.response?.data?.message) ?? 'Login failed!',
         {
@@ -181,7 +181,19 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
             {isLoading ? 'Loading' : 'Login'}
           </button>
         </div>
-        <div>
+        <div style={{ display: 'grid', justifyContent: 'center' }}>
+          <span style={{ fontSize: '12px' }}>
+            forgot Password :
+            <span
+              onClick={(e) => {
+                e.preventDefault()
+                navigate(`${path.forgotPassword}?role=author`)
+              }}
+              className="linkText"
+            >
+              click here..
+            </span>
+          </span>
           <span style={{ fontSize: '12px' }}>
             If you are an Reader?
             <span
@@ -194,7 +206,6 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
               signIn
             </span>
           </span>
-          {/* <button className="button infoButton">Login</button> */}
         </div>
       </form>
     </div>
@@ -227,8 +238,7 @@ function SignUp({ setIsLogin, errorMessage, setErrorMessage }) {
           style: { backgroundColor: 'yellow' },
         },
       })
-    }else{
-
+    } else {
       await dispatch(
         AuthorSignUp({
           ...signUpdata,

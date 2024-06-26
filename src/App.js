@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import PageNotFound from "./components/PageNotFound/PageNotFound";
 import { SnackbarProvider, useSnackbar } from "notistack";
 import ForgotPassword from "./pages/ForgottPassword/ForgottPassword";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
 
 function App() {
   const { enqueueSnackbar } = useSnackbar();
@@ -37,6 +38,7 @@ function App() {
           <Route path={path.explore} element={<Explore />} />
           <Route path={path.room} element={<Room />} />
           <Route path={path.forgotPassword} element={<ForgotPassword />} />
+          <Route path={path.resetPassword} element={<ResetPassword />} />
           <Route path={`${path.singlePost}/:postId`} element={<SinglePost />} />
           {authData?.data && (
             <Route path={`${path.addPost}`} element={<AddPost />} />

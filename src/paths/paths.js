@@ -9,5 +9,6 @@ export const path = {
   explore:"explore",
   addPost:"/add-post",
   editPost:"/edit-post",
-  forgotPassword:"/forgot-password"
+  forgotPassword:"/forgot-password",
+  resetPassword:"/reset-password"
 };

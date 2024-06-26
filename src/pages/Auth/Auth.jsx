@@ -126,15 +126,6 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
     <div className="a-right" style={{ color: 'black' }}>
       <form onSubmit={loginSubmit} className="infoForm authForm">
         <h3>Log In</h3>
-        <h4
-          style={{
-            color: 'red',
-            display: 'none',
-            ...(errorMessage && { display: 'block' }),
-          }}
-        >
-          {errorMessage}
-        </h4>
         <div>
           <input
             type="email"
@@ -149,7 +140,6 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
                 ...loginData,
                 email: e.target?.value,
               })
-              setErrorMessage('')
             }}
           />
         </div>
@@ -167,7 +157,6 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
                 ...loginData,
                 password: e.target?.value,
               })
-              setErrorMessage('')
             }}
           />
         </div>
@@ -186,7 +175,7 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
             </span>
           </span>
           <button className="button infoButton">
-            {isLoading ? 'Loading' : 'Login'}
+            {isLoading ? 'Loading...' : 'Login'}
           </button>
         </div>
         <div style={{ display: 'grid', justifyContent: 'center' }}>
@@ -195,7 +184,7 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
             <span
               onClick={(e) => {
                 e.preventDefault()
-                navigate(path.forgotPassword)
+                navigate(`${path.forgotPassword}?role=user`)
               }}
               className="linkText"
             >
