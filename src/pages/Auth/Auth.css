@@ -3,13 +3,15 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    gap: 4rem;
+    gap: 2rem;
     position: relative;
   }
 
   @media screen and (width<=780px){
     .Auth{
       flex-direction: column;
+      overflow-y: auto;
+      gap: 20px;
     }
   }
   
