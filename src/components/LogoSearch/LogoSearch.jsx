@@ -126,23 +126,30 @@ const LogoSearch = ({ isChat = false }) => {
 
       {data &&
         data.map((d) => (
-          <div className="logoDiv">
+          <div className="flex justify-between items-center mx-4 mt-2 border-[1px] bg-white hover:bg-gray-200 cursor-pointer rounded-[10px] p-1">
+            <div className='flex gap-8 md:gap-4 items-center'>
+            <div className='w-[50px]'>
             <ProfileImage
               src={`${appConfig.awsBucketUrl}/${d?.profileImage}`}
             />
+            </div>
             {/* <img
               src={`${appConfig.awsBucketUrl}/${d?.profileImage}`}
               alt=""
               className="FollowerImg l-image"
             /> */}
-            <h5>
-              {d?.firstName} {d?.lastName}
+            <h5 className='text-start'>
+              {d?.firstName} 
+              {d?.lastName}
             </h5>
+            </div>
             {/* <Link to="/chat" style={{textDecoration:"none"}} > */}
+
+            <div className="flex items-center justify-center h-full mb-[0.5rem]">
             <input
               type="button"
               name={d._id}
-              className="button l-button"
+              className="button l-button items-center "
               value="  Connect  "
               onClick={(e) => {
                 if (userData?.data) {
@@ -150,6 +157,7 @@ const LogoSearch = ({ isChat = false }) => {
                 }
               }}
             />
+            </div>
             {/* </Link> */}
 
             {/* <button  className='button l-button'  onClick={handleChat} >Chat</button> */}
