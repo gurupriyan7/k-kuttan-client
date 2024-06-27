@@ -1,11 +1,11 @@
-import { Modal, useMantineTheme } from '@mantine/core'
-import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { Modal, useMantineTheme } from "@mantine/core";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import './CommentModel.css'
-import { appConfig } from '../../config/appConfig'
-import { useSnackbar } from 'notistack'
-import { addComment } from '../../actions/post.actions'
+import "./CommentModel.css";
+import { appConfig } from "../../config/appConfig";
+import { useSnackbar } from "notistack";
+import { addComment } from "../../actions/post.actions";
 
 function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
   const theme = useMantineTheme()
@@ -17,23 +17,23 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
 
   const handleReadMore = (increment) => {
     if (increment) {
-      setVisibleItems((prevVisibleItems) => prevVisibleItems + 5)
+      setVisibleItems((prevVisibleItems) => prevVisibleItems + 5);
     } else {
-      setVisibleItems((prevVisibleItems) => prevVisibleItems - 5)
+      setVisibleItems((prevVisibleItems) => prevVisibleItems - 5);
     }
-  }
+  };
 
   const [data, setData] = useState({
-    comment: '',
-  })
+    comment: "",
+  });
 
-  console.log(commentData, 'commentData')
+  console.log(commentData, "commentData");
 
   const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value })
-  }
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (userData?.data) {
       try {
         const newComment = {
@@ -42,60 +42,71 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
             userName: userData?.data?.userName,
             profileImage: userData?.data?.profileImage,
           },
-        }
-        await dispatch(addComment({ id: postId, comment: data?.comment }))
+        };
+        await dispatch(addComment({ id: postId, comment: data?.comment }));
         setData({
           ...data,
-          comment: '',
-        })
-        setCommentData([newComment, ...commentData])
-        enqueueSnackbar('Comment added successfully!!', {
-          variant: 'success',
+          comment: "",
+        });
+        setCommentData([newComment, ...commentData]);
+        enqueueSnackbar("Comment added successfully!!", {
+          variant: "success",
           autoHideDuration: 2000,
           ContentProps: {
-            style: { backgroundColor: 'green' },
+            style: { backgroundColor: "green" },
           },
-        })
+        });
       } catch (error) {
-        enqueueSnackbar('Failed to add comment', {
-          variant: 'error',
+        enqueueSnackbar("Failed to add comment", {
+          variant: "error",
           autoHideDuration: 2000,
           ContentProps: {
-            style: { backgroundColor: 'red' },
+            style: { backgroundColor: "red" },
           },
-        })
+        });
       }
 
     } else {
-      enqueueSnackbar('Please login to Comment !!', {
-        variant: 'warning',
+      enqueueSnackbar("Please login to Comment !!", {
+        variant: "warning",
         autoHideDuration: 2000,
         ContentProps: {
-          style: { backgroundColor: 'yellow' },
+          style: { backgroundColor: "yellow" },
         },
-      })
+      });
     }
-  }
+  };
+
+  const modalStyles = {
+    modal: {
+      width: "95%",
+
+      "@media (min-width: 768px)": {
+        width: "60%",
+      },
+    },
+  };
 
   return (
     <Modal
+      styles={modalStyles}
       overlayColor={
-        theme.colorScheme === 'dark'
+        theme.colorScheme === "dark"
           ? theme.colors.dark[9]
           : theme.colors.gray[2]
       }
       overlayOpacity={0.55}
       overlayBlur={3}
-      size="60%"
+      size="90%"
       opened={modalOpened}
       onClose={() => setModalOpened(false)}
     >
       <div className="a-right">
         <form onSubmit={handleSubmit}>
           <div
-            style={{ width: '100%', justifyContent: 'center', display: 'flex' }}
+            style={{ width: "100%", justifyContent: "center", display: "flex" }}
           >
-            <h3>comments</h3>
+            <h3 className="pb-2">comments</h3>
           </div>
           <div className="main-content">
             {commentData?.slice(0, visibleItems)?.map((comment, index) => {
@@ -120,17 +131,17 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
             {visibleItems > 3 && (
               <div
                 style={{
-                  display: 'flex',
-                  width: '100%',
-                  justifyContent: 'end',
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "end",
                 }}
               >
                 <span
                   className="button infoButton"
                   style={{
-                    marginTop: '1rem',
-                    display: 'flex',
-                    justifyContent: 'center',
+                    marginTop: "1rem",
+                    display: "flex",
+                    justifyContent: "center",
                   }}
                   onClick={() => handleReadMore(false)}
                 >
@@ -141,17 +152,17 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
             {visibleItems < comments?.length && (
               <div
                 style={{
-                  display: 'flex',
-                  width: '100%',
-                  justifyContent: 'end',
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "end",
                 }}
               >
                 <span
                   className="button infoButton"
                   style={{
-                    marginTop: '1rem',
-                    display: 'flex',
-                    justifyContent: 'center',
+                    marginTop: "1rem",
+                    display: "flex",
+                    justifyContent: "center",
                   }}
                   onClick={() => handleReadMore(true)}
                 >
@@ -162,10 +173,10 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
 
             <div
               style={{
-                width: '96%',
-                padding: '10px',
-                display: 'flex',
-                justifyContent: 'center',
+                width: "96%",
+                padding: "10px",
+                display: "flex",
+                justifyContent: "center",
               }}
             >
               <input
@@ -175,18 +186,18 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
                 placeholder="Comment"
                 required
                 value={data.comment}
-                style={{ height: '4rem', width: '96%%' }}
+                style={{ height: "4rem", width: "96%%" }}
                 onChange={handleChange}
               />
             </div>
           </div>
           <div
-            style={{ display: 'flex', width: '100%', justifyContent: 'end' }}
+            style={{ display: "flex", width: "100%", justifyContent: "end" }}
           >
             <button
               className="button infoButton"
               type="submit"
-              style={{ marginTop: '1rem' }}
+              style={{ marginTop: "1rem" }}
             >
               Submit
             </button>
@@ -194,7 +205,7 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
         </form>
       </div>
     </Modal>
-  )
+  );
 }
 
-export default CommentModel
+export default CommentModel;

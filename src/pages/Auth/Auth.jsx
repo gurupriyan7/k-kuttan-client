@@ -39,11 +39,11 @@ const Auth = () => {
         boxShadow: 'inset 0 0 0 100vmax rgba(0,0,0,.4)',
       }}
     >
-      <div className="a-left">
-        <img src={Logo} alt="" style={{ width: '10rem', height: '10rem' }} />
-        <div className="Webname">
-          <h1>KAMBI KUTTAPPAN</h1>
-          <h6>Explore The World Of Stories</h6>
+      <div className="flex md:gap-8 mt-[8rem] md:mt-0">
+        <img src={Logo} alt="" style={{ width: '10rem', height: '10rem' }} className='w-[3rem] h-[3rem]' />
+        <div className="">
+          <h1 className='text-[2rem] sm:text-[3rem] test-color font-[600]' >KAMBI KUTTAPAN</h1>
+          <h6 className='subh'>Explore The World Of Stories</h6>
         </div>
       </div>
 
