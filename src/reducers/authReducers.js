@@ -27,18 +27,37 @@ const authReducer = (
         error: null
       };
 
+    case "ADMIN_AUTH_FAIL":
+      return { ...state, isLoading: false, isError: true, error: action?.data };
+    case "ADMIN_AUTH_START":
+      return { ...state, isLoading: true, isError: false };
+
+    case "ADMIN_AUTH_SUCCESS":
+      // console.log(action?.data,"action.data");
+      localStorage.setItem(
+        "admin-profile",
+        JSON.stringify({ ...action?.data })
+      );
+      localStorage.setItem(
+        "admin-token",
+        JSON.stringify(action?.data?.data?.token)
+      );
+
+      return {
+        ...state,
+        adminData: action.data,
+        isLoading: false,
+        isError: false,
+        error: null
+      };
+
     case "AUTH_FAIL":
-      // console.log(action?.data, "fail");
-      // toast.error(action?.data?.message);
       return { ...state, isLoading: false, isError: true, error: action?.data };
 
     case "ALL_USERS_START":
       return { ...state, isLoading: true, isError: false };
 
     case "ALL_USERS_SUCCESS":
-      // console.log(action?.data,"action.data");
-      console.log(action?.data, "reducer-dataa");
-
       return {
         ...state,
         // users: Array.isArray(state.users)

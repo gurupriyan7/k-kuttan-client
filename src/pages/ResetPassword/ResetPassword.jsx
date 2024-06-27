@@ -73,7 +73,7 @@ const ResetPassword = () => {
       <div className="a-left">
         <img src={Logo} alt="" style={{ width: '10rem', height: '10rem' }} />
         <div className="Webname">
-          <h1>KAMBI KUTTAPAN</h1>
+          <h1>KAMBI KUTTAPPAN</h1>
           <h6>Explore The World Of Stories</h6>
         </div>
       </div>

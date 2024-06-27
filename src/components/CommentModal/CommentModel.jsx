@@ -11,7 +11,6 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
   const theme = useMantineTheme()
   const dispatch = useDispatch()
   const { enqueueSnackbar } = useSnackbar()
-  // const [image, setImage] = useState(null)
   const [visibleItems, setVisibleItems] = useState(3)
   const [commentData, setCommentData] = useState(comments)
   const userData = useSelector((state) => state.authReducer.authData)
@@ -67,7 +66,6 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
         })
       }
 
-      // window.reload()
     } else {
       enqueueSnackbar('Please login to Comment !!', {
         variant: 'warning',
@@ -102,7 +100,6 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
           <div className="main-content">
             {commentData?.slice(0, visibleItems)?.map((comment, index) => {
               return (
-                // <div >
                 <div className="comment-section">
                   <div className="comment">
                     <img
@@ -110,7 +107,6 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
                       alt="story"
                       className="profile-image"
                     />
-                    {/* <img src="profile1.jpg" alt="Profile Image" className="profile-image"> */}
                     <div className="comment-details">
                       <h4 className="comment-name">
                         {comment?.userId?.userName}
@@ -119,8 +115,7 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
                     </div>
                   </div>
                 </div>
-                // </div>
-              )
+               )
             })}
             {visibleItems > 3 && (
               <div

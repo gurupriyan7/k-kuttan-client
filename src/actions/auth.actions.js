@@ -12,6 +12,17 @@ export const logIn = (formData) => async (dispatch) => {
     dispatch({ type: "AUTH_FAIL", data: error?.response?.data });
   }
 };
+export const adminLogin = (formData) => async (dispatch) => {
+  dispatch({ type: "ADMIN_AUTH_START" });
+  try {
+    console.log(formData, "formdata");
+    const { data } = await AuthApi.adminLogin(formData);
+    dispatch({ type: "ADMIN_AUTH_SUCCESS", data: data });
+  } catch (error) {
+    console.log(error, "loginError");
+    dispatch({ type: "ADMIN_AUTH_FAIL", data: error?.response?.data });
+  }
+};
 export const AuthorLogin = (formData) => async (dispatch) => {
   dispatch({ type: "AUTH_START" });
   try {

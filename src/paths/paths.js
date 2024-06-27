@@ -10,5 +10,6 @@ export const path = {
   addPost:"/add-post",
   editPost:"/edit-post",
   forgotPassword:"/forgot-password",
-  resetPassword:"/reset-password"
+  resetPassword:"/reset-password",
+  admin:"/admin"
 };

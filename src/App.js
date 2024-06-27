@@ -14,12 +14,12 @@ import AddPost from "./components/AddPost/AddPost";
 import EditPost from "./components/EditPost/EditPost";
 import { useSelector } from "react-redux";
 import PageNotFound from "./components/PageNotFound/PageNotFound";
-import { SnackbarProvider, useSnackbar } from "notistack";
+import { SnackbarProvider } from "notistack";
 import ForgotPassword from "./pages/ForgottPassword/ForgottPassword";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
+import AdminAuth from "./pages/AdminAuth/AdminAuth";
 
 function App() {
-  const { enqueueSnackbar } = useSnackbar();
   const authData = useSelector((state) => state.authReducer.authData);
 
   return (
@@ -47,6 +47,7 @@ function App() {
             <Route path={`${path.editPost}/:postId`} element={<EditPost />} />
           )}
           <Route path="*" element={<PageNotFound />} />
+          <Route path={path.admin} element={<AdminAuth />} />
         </Routes>
       </div>
     </SnackbarProvider>
