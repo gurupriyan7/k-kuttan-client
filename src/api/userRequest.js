@@ -13,7 +13,7 @@ export const getUserProfile = async () => {
       }
     });
   } catch (error) {
-    await authCheck(error)
+    await authCheck(error);
     console.log(error);
   }
 };
@@ -26,10 +26,26 @@ export const getAllUsers = async (page) => {
       }
     });
 
-    console.log(data,"usersssssssssssssssss");
+    console.log(data, "usersssssssssssssssss");
     return data;
   } catch (error) {
-    await authCheck(error)
+    await authCheck(error);
+    console.log(error);
+  }
+};
+export const getAllAvailableChatUsers = async (searchTeam) => {
+  try {
+    const token = getLocalStorageItem("token");
+    const data = await API.get(`/user/all-chat?searchTerm=${searchTeam}`, {
+      headers: {
+        Authorization: `Bearer ${token}` // Include the Bearer token in the Authorization header
+      }
+    });
+
+    console.log(data, "usersssssssssssssssss");
+    return data;
+  } catch (error) {
+    await authCheck(error);
     console.log(error);
   }
 };
@@ -50,7 +66,7 @@ export const updateUser = async (userData) => {
       }
     );
   } catch (error) {
-    await authCheck(error)
+    await authCheck(error);
     console.log(error);
   }
 };
@@ -70,7 +86,7 @@ export const followUnFollowUser = async (userId) => {
       }
     );
   } catch (error) {
-    await authCheck(error)
+    await authCheck(error);
     console.log(error);
   }
 };
@@ -90,8 +106,7 @@ export const updateAuthor = async (userData) => {
       }
     );
   } catch (error) {
-    console.log(error,"fail-update");
-    await authCheck(error)
-
+    console.log(error, "fail-update");
+    await authCheck(error);
   }
 };

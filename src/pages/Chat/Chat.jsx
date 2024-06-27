@@ -32,6 +32,7 @@ const Chat = () => {
   const [onlineUsers, setOnlineUsers] = useState([])
   const [sendMessage, setSendMessage] = useState(null)
   const [recieveMessage, setRecieveMessage] = useState(null)
+  const [chatInit,setChatInit]=useState(false)
   const socket = useRef()
 
   useEffect(() => {
@@ -70,16 +71,18 @@ const Chat = () => {
   const getChats = async () => {
     try {
       await dispatch(findUserChats(false))
-
-      console.log()
       setChats(chatDatas?.data)
     } catch (error) {
       console.log(error)
     }
   }
+
+  useEffect(()=>{
+    setChats(chatDatas?.data)
+  },[chatDatas?.data])
   useEffect(() => {
     getChats()
-  }, [authData?.data])
+  }, [chatInit])
 
   console.log(currentChat, 'NEW CHAT')
 
@@ -100,7 +103,7 @@ const Chat = () => {
         {/* left side */}
 
         <div className="Left-side-chat w-full   min-w-[300px] z-100 mt-2 px-1 overflow-hidden">
-          <LogoSearch isChat={true} />
+          <LogoSearch setChatInit={setChatInit} isChat={true} />
 
           <div className="Chat-container overflow-hidden">
             <h2>Chats</h2>

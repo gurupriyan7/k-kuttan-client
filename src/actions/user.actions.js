@@ -31,3 +31,14 @@ export const getAllUsers = (page) => async (dispatch) => {
     dispatch({ type: "ALL_USERS_FAIL", data: error?.response?.data });
   }
 };
+export const getAllAvailableChatUsers = (searchTeam) => async (dispatch) => {
+  dispatch({ type: "ALL_CHAT_USERS_START" });
+  try {
+    const { data } = await UserApi.getAllAvailableChatUsers(searchTeam)
+  console.log(data,"action-data");
+    dispatch({ type: "ALL_CHAT_USERS_SUCCESS", data: data?.data });
+  } catch (error) {
+    console.log(error?.message, "loginError");
+    dispatch({ type: "ALL_CHAT_USERS_FAIL", data: error?.response?.data });
+  }
+};

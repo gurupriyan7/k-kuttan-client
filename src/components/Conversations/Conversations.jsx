@@ -10,7 +10,6 @@ const Conversations = ({ data, currentUserId, online }) => {
 
   useEffect(() => {
     const member = data.members.find((member) => member?._id !== currentUserId)
-    console.log(member,"memberrrr",member?._id,"mmm",currentUserId)
 
     const getUserData = async () => {
       try { 

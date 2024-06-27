@@ -7,7 +7,8 @@ const authReducer = (
     isLoading: false,
     error: null,
     isError: false,
-    users: {}
+    users: [],
+    availableChatUsers: []
   },
   action
 ) => {
@@ -61,9 +62,6 @@ const authReducer = (
     case "ALL_USERS_SUCCESS":
       return {
         ...state,
-        // users: Array.isArray(state.users)
-        // ? [...state.users, ...action?.data]
-        // : [...action?.data],
         users: action?.data,
         isLoading: false,
         isError: false,
@@ -71,8 +69,20 @@ const authReducer = (
       };
 
     case "ALL_USERS_FAIL":
-      // console.log(action?.data, "fail");
-      // toast.error(action?.data?.message);
+      return { ...state, isLoading: false, isError: true, error: action?.data };
+    case "ALL_CHAT_USERS_START":
+      return { ...state, isLoading: true, isError: false };
+
+    case "ALL_CHAT_USERS_SUCCESS":
+      return {
+        ...state,
+        availableChatUsers: action?.data,
+        isLoading: false,
+        isError: false,
+        error: null
+      };
+
+    case "ALL_CHAT_USERS_FAIL":
       return { ...state, isLoading: false, isError: true, error: action?.data };
 
     case "UPDATING_START":
