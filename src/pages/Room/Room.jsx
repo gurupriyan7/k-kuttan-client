@@ -6,7 +6,6 @@ import { Link, useParams } from 'react-router-dom'
 import Home from '../../img/home.png'
 import { io } from 'socket.io-client'
 import Comment from '../../img/comment.png'
-import { UilSetting } from '@iconscout/react-unicons'
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom'
 import WhatshotIcon from '@mui/icons-material/Whatshot'
 import Preloader from '../../components/Preloader/Preloader'
@@ -22,11 +21,7 @@ import {
 } from '../../actions/room.actions'
 import { findUserChats } from '../../actions/chat.actions'
 import { getAllRooms, joinRoom } from '../../api/RoomRequest'
-import Conversations from '../../components/Conversations/Conversations'
 import { appConfig } from '../../config/appConfig'
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
-// import { getRoomChats, getRooms, joinRoom } from "../../api/RoomRequest";
 
 const Room = () => {
   const dispatch = useDispatch()
@@ -150,9 +145,7 @@ const Room = () => {
     try {
       await dispatch(findUserChats(true))
 
-      // console.log()
       setChats(chatDatas?.data)
-      // console.log(chatDatas, 'gurururu')
     } catch (error) {
       console.log(error)
     }
@@ -162,21 +155,11 @@ const Room = () => {
   }, [authData?.data])
 
   useEffect(() => {
-    getAllRooms()
+    dispatch(findAllRooms({}))
     getRooms()
 
     // joinRoom()
   }, [authData])
-
-  const checkOnlineStatus = (chat) => {
-    const chatMember = chat?.members?.find(
-      (member) => member?._id !== authData?.data?._id,
-    )
-    // console.log(chatMember,"chatMember",authData?.data,"MEMBER",chat);
-
-    const online = onlineUsers?.find((user) => user?.userId === chatMember?._id)
-    return online ? true : false
-  }
 
   return (
     <>
@@ -225,57 +208,12 @@ const Room = () => {
           </div>
         </div>
 
-        {/* Right side */}
-        {/* <div className="Right-side-chat">
-          <div style={{ width: "20rem", alignSelf: "flex-end" }}>
-            <div className="navIcons">
-              <button
-                className="button"
-                style={{ width: "5rem", height: "2rem" }}
-                onClick={() => setModalOpened(true)}
-              >
-                Create Room
-              </button>
-              <RoomModal
-                modalOpened={modalOpened}
-                setModalOpened={setModalOpened}
-              />
-              <Link to="../home">
-                <img src={Home} alt="Home" />
-              </Link>
-              <Link to="../trending">
-                <WhatshotIcon />
-              </Link>
-              <Link to="../chat">
-                <img src={Comment} alt="Chat" />
-              </Link>
-              <UilSetting />
-            </div>
-          </div>
-          {currentChat && (
-            <ChatBox
-              chat={currentChat}
-              currentUser={authData?.data?._id}
-              room={true}
-              setSendMessage={setSendMessage}
-              receiveMessage={receiveMessage}
-            />
-          )}
-        </div> */}
-
         <div className="Right-side-chat overflow-hidden">
           <div
             style={{ width: '20rem', alignSelf: 'flex-end' }}
             className="fixed md:static bottom-10  mx-auto md:mx-0 left-0 right-0 md:pr-2"
           >
             <div className="navIcons">
-              <button
-                className="button"
-                style={{ width: '5rem', height: '2rem' }}
-                onClick={() => setModalOpened2(true)}
-              >
-                Create Room
-              </button>
               <RoomModal
                 modalOpened2={modalOpened2}
                 setModalOpened2={setModalOpened2}

@@ -4,7 +4,6 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
-// import { userChats } from "../../api/ChatRequest";
 import Preloader from '../../components/Preloader/Preloader'
 import Conversations from '../../components/Conversations/Conversations'
 import LogoSearch from '../../components/LogoSearch/LogoSearch'
@@ -25,7 +24,6 @@ const Chat = () => {
   const chatDatas = useSelector((state) => state.chatReducer.chats)
   const chatLoading = useSelector((state) => state.chatReducer.isLoading)
 
-  console.log(chatDatas, 'chats-----------------------')
 
   const dispatch = useDispatch()
 
@@ -46,7 +44,6 @@ const Chat = () => {
 
   //send message
   useEffect(() => {
-    // alert(sendMessage)
     if (sendMessage !== null) {
       socket.current.emit('send-message', sendMessage)
     }
@@ -68,10 +65,6 @@ const Chat = () => {
       setRecieveMessage(data)
     })
 
-    // // Clean up listener on unmount
-    // return () => {
-    //   socket.current.off('recieve-message')
-    // }
   }, [])
 
   const getChats = async () => {
@@ -80,7 +73,6 @@ const Chat = () => {
 
       console.log()
       setChats(chatDatas?.data)
-      // console.log(chatDatas, 'gurururu')
     } catch (error) {
       console.log(error)
     }
@@ -95,7 +87,6 @@ const Chat = () => {
     const chatMember = chat?.members?.find(
       (member) => member?._id !== authData?.data?._id,
     )
-    // console.log(chatMember,"chatMember",authData?.data,"MEMBER",chat);
 
     const online = onlineUsers?.find((user) => user?.userId === chatMember?._id)
     return online ? true : false

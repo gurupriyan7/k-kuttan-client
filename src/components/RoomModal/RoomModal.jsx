@@ -8,13 +8,15 @@ import { ClickAwayListener } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { createRoomAction } from '../../actions/room.actions'
 import { useSnackbar } from 'notistack'
+import "./RoomModal.css"
 const RoomModal = ({
   modalOpened2,
   setModalOpened2,
   joinedList,
   setJoinedList,
 }) => {
-  const authData = useSelector((state) => state.authReducer.authData)
+  const authData = useSelector((state) => state.authReducer.adminData)
+  const { loading } = useSelector((state) => state.roomReducer)
   const [roomName, setRoomName] = useState('')
   const navigte = useNavigate()
   const dispatch = useDispatch()
@@ -28,9 +30,14 @@ const RoomModal = ({
     console.log(room, 'ROOM DATA')
     try {
       const data = await dispatch(createRoomAction(room))
-      // setJoinedList([...joinedList, room])
+      setJoinedList([
+        ...joinedList,
+        {
+          ...room,
+          members: 1,
+        },
+      ])
       console.log(data, 'room Model data')
-      // alert('Room created successfully')
       setModalOpened2(false)
       enqueueSnackbar('Room Created SuccessFully!', {
         variant: 'success',
@@ -64,16 +71,18 @@ const RoomModal = ({
       onClose={() => setModalOpened2(false)}
     >
       <form onSubmit={handleSubmit}>
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <div className='modal-heading'>Create Post</div>
+        <div style={{ display: 'grid', flexDirection: 'row', gap: '1rem' }}>
           <input
             type="text"
             className="infoInput"
             value={roomName}
-            style={{ width: '70%' }}
+            placeholder="Room Name..."
+            style={{ width: '100%' }}
             onChange={(e) => setRoomName(e.target.value)}
           />
-          <button className="button" onClick={() => navigte('../room')}>
-            Create
+          <button style={{ padding: '1rem' }} className="button">
+            {loading ? 'Loading...' : 'Create'}
           </button>
         </div>
       </form>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getLocalStorageItem } from "../utils/appUtils";
+import { authCheck, getLocalStorageItem } from "../utils/appUtils";
 import { appConfig } from "../config/appConfig";
 import { path } from "../paths/paths";
 
@@ -77,6 +77,7 @@ export const likeAndCommentPost = async (id, userId) => {
       }
     );
   } catch (error) {
+    await authCheck(error)
     console.log(error);
   }
 };
@@ -96,6 +97,7 @@ export const commentPost = async ({ id, comment }) => {
       }
     );
   } catch (error) {
+    await authCheck(error)
     console.log(error);
   }
 };
@@ -116,6 +118,7 @@ export const createPost = async (postData) => {
       }
     );
   } catch (error) {
+    await authCheck(error)
     console.log(error);
   }
 };
@@ -136,6 +139,7 @@ export const updatePayment = async (paymentData) => {
       }
     );
   } catch (error) {
+    await authCheck(error)
     console.log(error);
   }
 };
@@ -157,6 +161,7 @@ export const updatePost = async (id, userData) => {
       }
     );
   } catch (error) {
+    await authCheck(error)
     console.log(error);
   }
 };

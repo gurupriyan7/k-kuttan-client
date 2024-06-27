@@ -1,6 +1,6 @@
 import axios from "axios";
 import { appConfig } from "../config/appConfig";
-import { getLocalStorageItem } from "../utils/appUtils";
+import { authCheck, getLocalStorageItem } from "../utils/appUtils";
 
 const API = axios.create({ baseURL: appConfig.apiUrl });
 
@@ -13,6 +13,7 @@ export const getUserProfile = async () => {
       }
     });
   } catch (error) {
+    await authCheck(error)
     console.log(error);
   }
 };
@@ -28,6 +29,7 @@ export const getAllUsers = async (page) => {
     console.log(data,"usersssssssssssssssss");
     return data;
   } catch (error) {
+    await authCheck(error)
     console.log(error);
   }
 };
@@ -48,6 +50,7 @@ export const updateUser = async (userData) => {
       }
     );
   } catch (error) {
+    await authCheck(error)
     console.log(error);
   }
 };
@@ -67,6 +70,7 @@ export const followUnFollowUser = async (userId) => {
       }
     );
   } catch (error) {
+    await authCheck(error)
     console.log(error);
   }
 };
@@ -86,6 +90,8 @@ export const updateAuthor = async (userData) => {
       }
     );
   } catch (error) {
-    console.log(error);
+    console.log(error,"fail-update");
+    await authCheck(error)
+
   }
 };

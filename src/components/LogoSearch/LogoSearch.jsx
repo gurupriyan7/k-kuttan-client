@@ -28,43 +28,32 @@ const LogoSearch = ({ isChat = false }) => {
     dispatch(findUserProfile())
   }, [dispatch])
 
-  // if (!userData?.data) {
-  //   navigate(path.auth)
-  // }
-  const followers = userData?.data?.followers ?? []
-  const followings = userData?.data?.followings ?? []
-  const followersArray = Array.isArray(followers) ? followers : []
-  const followingsArray = Array.isArray(followings) ? followings : []
-
-  useEffect(() => {
+  useEffect(async() => {
     const fetchPersons = async () => {
-      const combined = [...followersArray, ...followingsArray]
+      const combined = [
+        ...userData?.data?.followers,
+        ...userData?.data?.followings,
+      ]
 
       // Use a Set to filter out duplicates based on the 'id' property
       const unique = [...new Set(combined)]
+      console.log(unique,"uniqueeee----------");
       setUsers(unique)
     }
-    fetchPersons()
-  }, [followers, followings])
+   await fetchPersons()
+  }, [userData?.data])
   // const serverPublic = process.env.REACT_APP_PUBLIC_FOLDER
   const findUser = () => {
-    console.log(searchText, 'searchText', users)
-
-    console.log(users, 'users')
     const filteredUsers = users.filter((user) => {
-      console.log(user?.firstName, 'usersssssssss')
-      // Check if user's first name includes the search text (case insensitive)
       const matchesSearchText = user?.firstName
         ?.toLowerCase()
         .includes(searchText.toLowerCase())
       console.log(matchesSearchText, 'matchText', user?.firstName)
 
       if (matchesSearchText) {
-        // Iterate through chat data to check if the user is part of any chat
         const isUserInChat = chatDatas?.data.some((chat) => {
           return chat?.members.some((member) => member?._id === user?._id)
         })
-        console.log(isUserInChat, 'isUserInChat', user?.firstName)
 
         // Only include user if they are not in any chat
         return !isUserInChat
@@ -72,8 +61,6 @@ const LogoSearch = ({ isChat = false }) => {
 
       return false
     })
-
-    console.log(filteredUsers, 'data', users, 'apple')
     setData(filteredUsers)
     setSearchText('')
     console.log(filteredUsers)
@@ -91,6 +78,8 @@ const LogoSearch = ({ isChat = false }) => {
       console.log(error)
     }
   }
+
+  console.log(users,"poiuytrewsdfgh------------");
 
   const ProfileImage = ({ src }) => {
     const handleError = (event) => {
@@ -117,7 +106,7 @@ const LogoSearch = ({ isChat = false }) => {
               onChange={(e) => setSearchText(e.target.value)}
               placeholder="#Find connections"
             />
-            <div className="s-icon" onClick={findUser}>
+            <div  className="s-icon" onClick={findUser}>
               <UilSearch />
             </div>
           </div>

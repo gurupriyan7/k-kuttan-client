@@ -22,8 +22,6 @@ const AdminAuth = () => {
   })
   const [errorShow, setErrorShow] = useState(false)
 
-  const userData = getLocalStorageItem('profile')
-
   useEffect(() => {
     if (adminData?.data && !isError) {
       enqueueSnackbar('Login SuccessFully!', {
@@ -33,9 +31,14 @@ const AdminAuth = () => {
           style: { backgroundColor: 'green' },
         },
       })
-      navigate(path.home)
     }
-  }, [adminData])
+  }, [adminData?.data])
+
+  useEffect(() => {
+    if (adminData?.data) {
+      navigate(path.adminHome)
+    }
+  }, [adminData?.data])
 
   useEffect(() => {
     if (isError && error != null && errorShow) {
@@ -52,11 +55,11 @@ const AdminAuth = () => {
     }
   }, [isError, error])
 
-  useEffect(() => {
-    if (adminData?.data) {
-      navigate(path.home)
-    }
-  }, [adminData?.data])
+  // useEffect(() => {
+  //   if (adminData?.data) {
+  //     navigate(path.home)
+  //   }
+  // }, [adminData?.data])
 
   const loginSubmit = async (e) => {
     setErrorShow(true)
@@ -92,7 +95,7 @@ const AdminAuth = () => {
 
       <div className="a-right" style={{ color: 'black' }}>
         <form onSubmit={loginSubmit} className="infoForm authForm">
-          <h3>Log In</h3>
+          <h3>Admin LogIn</h3>
           <div>
             <input
               type="email"
@@ -130,8 +133,8 @@ const AdminAuth = () => {
 
           <div>
             <button className="button infoButton2">
-              {/* {isLoading ? 'Loading...' : 'Login'} */}
-              Login
+              {isLoading ? 'Loading...' : 'Login'}
+              {/* Login */}
             </button>
           </div>
         </form>

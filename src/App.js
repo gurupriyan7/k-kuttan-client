@@ -18,6 +18,7 @@ import { SnackbarProvider } from "notistack";
 import ForgotPassword from "./pages/ForgottPassword/ForgottPassword";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import AdminAuth from "./pages/AdminAuth/AdminAuth";
+import AdminHome from "./pages/AdminHome/AdminHome";
 
 function App() {
   const authData = useSelector((state) => state.authReducer.authData);
@@ -48,6 +49,7 @@ function App() {
           )}
           <Route path="*" element={<PageNotFound />} />
           <Route path={path.admin} element={<AdminAuth />} />
+          <Route path={path.adminHome} element={<AdminHome />} />
         </Routes>
       </div>
     </SnackbarProvider>

@@ -62,9 +62,9 @@ export const updateUser = (formData) => async (dispatch) => {
     const { data } = await UserApi.updateUser(formData);
 
     dispatch({ type: "UPDATING_SUCCESS", data: data });
-    window.location.reload()
+    window.location.reload();
   } catch (error) {
-    console.log(error); 
+    console.log(error);
     dispatch({ type: "UPDATING_FAIL", data: error });
   }
 };
@@ -74,14 +74,15 @@ export const updateAuthor = (formData) => async (dispatch) => {
     console.log(formData, "formDataaa");
     const { data } = await UserApi.updateAuthor(formData);
     dispatch({ type: "UPDATING_SUCCESS", data: data });
-    window.location.reload()
-
+    window.location.reload();
   } catch (error) {
-    console.log(error);
     dispatch({ type: "UPDATING_FAIL", data: error });
   }
 };
 
 export const logout = () => async (dispatch) => {
   dispatch({ type: "LOGOUT" });
+};
+export const adminLogout = () => async (dispatch) => {
+  dispatch({ type: "ADMIN_LOGOUT" });
 };

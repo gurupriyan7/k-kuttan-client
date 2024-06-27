@@ -1,6 +1,6 @@
 import axios from "axios";
 import { appConfig } from "../config/appConfig";
-import { getLocalStorageItem } from "../utils/appUtils";
+import { authCheck, getLocalStorageItem } from "../utils/appUtils";
 import { path } from "../paths/paths";
 
 const API = axios.create({ baseURL: appConfig.apiUrl });
@@ -25,6 +25,7 @@ export const getUserChats = async (isRoom) => {
       }
     });
   } catch (error) {
+    await authCheck(error)
     console.log(error);
   }
 };
@@ -48,6 +49,7 @@ export const findChatById = async (chatId,isRoom) => {
     });
     return data?.data;
   } catch (error) {
+    await authCheck(error)
     console.log(error);
   }
 };
@@ -69,6 +71,7 @@ export const getUserMessages = async (chatId, isRoom) => {
       }
     });
   } catch (error) {
+    await authCheck(error)
     console.log(error);
   }
 };
@@ -90,6 +93,7 @@ export const findRoomMessages = async (chatId) => {
       }
     });
   } catch (error) {
+    await authCheck(error)
     console.log(error);
   }
 };
@@ -111,6 +115,7 @@ export const createUserChat = async (chatData) => {
       }
     );
   } catch (error) {
+    await authCheck(error)
     console.log(error);
   }
 };
@@ -132,6 +137,7 @@ export const createMessage = async (messageData) => {
       }
     );
   } catch (error) {
+    await authCheck(error)
     console.log(error);
   }
 };
