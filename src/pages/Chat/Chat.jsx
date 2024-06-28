@@ -65,7 +65,6 @@ const Chat = () => {
       console.log(data, 'receive message')
       setRecieveMessage(data)
     })
-
   }, [])
 
   const getChats = async () => {
