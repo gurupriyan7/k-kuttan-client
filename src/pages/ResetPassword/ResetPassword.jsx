@@ -80,7 +80,7 @@ const ResetPassword = () => {
 
       <div className="a-right" style={{ color: 'black' }}>
         <form onSubmit={handleForgotPassword} className="infoForm authForm">
-          <h3>Forgot Password</h3>
+          <h3>Reset Password</h3>
           <div>
             <input
               type="password"
