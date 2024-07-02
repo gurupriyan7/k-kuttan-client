@@ -79,7 +79,7 @@ const FollowersCard = () => {
   }
 
   return (
-    <div className="FollowersCard">
+    <div className="FollowersCard text-orange-500 font-[800]">
       <h3>Who is following you</h3>
 
       {followers?.map((follower, id) => {
@@ -92,7 +92,7 @@ const FollowersCard = () => {
                   defaultImage
                 }
               />
-              <div className="name">
+              <div className="name text-white">
                 <span>{follower?.firstName}</span>
                 <span>@{follower?.userName}</span>
               </div>
