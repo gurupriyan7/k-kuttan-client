@@ -165,12 +165,35 @@ const SinglePost = (PostsData) => {
     await handleSelect()
   }, [])
 
+  useEffect(() => {
+    const disableRightClick = (e) => {
+      e.preventDefault();
+    };
+
+    const disableCopy = (e) => {
+      console.log(e,"copy-text");
+      alert(e.ckey)
+      if (e.ctrlKey && (e.key === 'c' || e.key === 'p')) {
+       
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener('contextmenu', disableRightClick);
+    document.addEventListener('keydown', disableCopy);
+
+    return () => {
+      document.removeEventListener('contextmenu', disableRightClick);
+      document.removeEventListener('keydown', disableCopy);
+    };
+  }, []);
+
   return (
     <>
       {load && <Preloader />}
       {paymentStatus ? (
         <div
-          className="SinglePost"
+          className="SinglePost no-select"
           style={{
             backgroundImage: `URL(${back})`,
             backgroundPosition: 'center',
@@ -229,7 +252,7 @@ const SinglePost = (PostsData) => {
                               // display:"none"
                             }}
                           >
-                            {likes} likes
+                            {likes} likesss
                           </p>
                         )}
                       </div>
@@ -269,7 +292,7 @@ const SinglePost = (PostsData) => {
 
                 <div className="max-h-[75vh] overflow-y-scroll  w-full mx-auto">
                   <div className="mx-auto w-full flex items-center justify-center">
-                    <b className="mx-auto ">{post?.title}</b> 
+                    <b className="mx-auto ">{post?.title}</b>
                   </div>
                   <div className="  h-[431px] md:h-[350px] lg-h-[60vh] lg:px-[6vw] xl:px-0 xl:h-[80vh] w-[250px] my-auto   md:px-[7vw] md:max-w-[450px] md:w-full mx-auto">
                     {post?.story[page - 1]?.story}
