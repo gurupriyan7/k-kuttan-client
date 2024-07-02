@@ -131,7 +131,7 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
           <input
             type="email"
             placeholder="Email"
-            className="infoInput"
+            className="infoInput placeholder-gray-600"
             name="email"
             required
             id="email"
@@ -149,8 +149,8 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
         <div>
           <input
             type="password"
-            className="infoInput"
-            placeholder="Password"
+            className="infoInput placeholder-gray-600"
+            placeholder="Password "
             name="password"
             required
             id="password"
@@ -285,7 +285,7 @@ function SignUp({ setIsLogin, errorMessage, setErrorMessage }) {
           <input
             type="text"
             placeholder="FirstName"
-            className="infoInput"
+            className="infoInput placeholder-gray-600"
             name="firstName"
             required
             id="firstName"
@@ -302,7 +302,7 @@ function SignUp({ setIsLogin, errorMessage, setErrorMessage }) {
           <input
             type="text"
             placeholder="LastName"
-            className="infoInput"
+            className="infoInput placeholder-gray-600"
             name="lastName"
             required
             id="lastName"
@@ -319,7 +319,7 @@ function SignUp({ setIsLogin, errorMessage, setErrorMessage }) {
           <input
             type="text"
             placeholder="UserName"
-            className="infoInput"
+            className="infoInput placeholder-gray-600"
             name="userName"
             required
             id="userName"
@@ -336,7 +336,7 @@ function SignUp({ setIsLogin, errorMessage, setErrorMessage }) {
           <input
             type="text"
             placeholder="Email"
-            className="infoInput"
+            className="infoInput placeholder-gray-600"
             name="email"
             required
             id="email"
@@ -370,7 +370,7 @@ function SignUp({ setIsLogin, errorMessage, setErrorMessage }) {
         <div>
           <input
             type="password"
-            className="infoInput"
+            className="infoInput placeholder-gray-600"
             placeholder="Password"
             name="password"
             required
