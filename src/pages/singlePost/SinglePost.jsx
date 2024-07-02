@@ -221,7 +221,7 @@ const SinglePost = (PostsData) => {
                 style={{
                   // backgroundColor: "black",
                   height: '100vh',
-                  paddingTop: '5rem',
+                  paddingTop: '4.2rem',
                   // paddingLeft: "10rem",
                   // paddingRight: "10rem",
                   backgroundImage: `URL(${scroll})`,
@@ -232,7 +232,7 @@ const SinglePost = (PostsData) => {
               >
                 {/* <img src={`${appConfig.awsBucketUrl}/${post?.image}`} alt="sdfs" /> */}
 
-                <div class="post-reactions flex flex-col items-center justify-center mr-2 md:mr-2 lg:-ml-16 ">
+                <div class="post-reactions flex flex-col items-center justify-center mr-2 md:mr-2 lg:-ml-16 mt-0 lg:mt-0 ">
                   {!post?.isDraft && (
                     <div className="postReact-single">
                       <div>
@@ -292,9 +292,9 @@ const SinglePost = (PostsData) => {
 
                 <div className="max-h-[75vh] overflow-y-scroll  w-full mx-auto">
                   <div className="mx-auto w-full flex items-center justify-center">
-                    <b className="mx-auto ">{post?.title}</b>
+                    <b className="mx-auto max-w-[250px] md:max-w-[350px] lg:max-w-[450px] w-full">{post?.title}</b>
                   </div>
-                  <div className="  h-[431px] md:h-[350px] lg-h-[60vh] lg:px-[6vw] xl:px-0 xl:h-[80vh] w-[250px] my-auto   md:px-[7vw] md:max-w-[450px] md:w-full mx-auto">
+                  <div className=" h-[250px] md:h-[350px] lg:h-[50vh] lg:px-[2vw] xl:px-0 xl:h-[58vh] 2xl:h-[60vh] w-[250px] my-auto   md:px-[7vw] md:max-w-[450px] md:w-full mx-auto">
                     {post?.story[page - 1]?.story}
                   </div>
                 </div>

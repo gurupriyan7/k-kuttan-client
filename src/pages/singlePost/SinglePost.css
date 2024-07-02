@@ -32,7 +32,8 @@
   padding:0 10rem;
 }
 
-@media screen and (width<=1000px) {
+/* @media screen and (width<=1000px) { */
+@media screen and (width<=1300px) {
 
   .badan>div{
     padding:0;
