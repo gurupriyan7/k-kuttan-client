@@ -17,26 +17,26 @@
   /* padding: 0 5rem; */
 }
 
-.post-reactions{
+.post-reactions {
   padding-left: 5rem;
 }
 
-.postReact-single  {
+.postReact-single {
   display: flex;
   align-items: flex-start;
   justify-content: center;
   gap: 1.5rem;
 }
 
-.badan>div{
-  padding:0 10rem;
+.badan>div {
+  padding: 0 10rem;
 }
 
 /* @media screen and (width<=1000px) { */
 @media screen and (width<=1300px) {
 
-  .badan>div{
-    padding:0;
+  .badan>div {
+    padding: 0;
   }
 
   .soldier-1,
@@ -44,7 +44,7 @@
     display: none;
   }
 
-  .post-reactions{
+  .post-reactions {
     padding-left: 1rem;
   }
 
@@ -62,18 +62,20 @@
     margin-top: 100px;
   }
 }
+
 @media screen and (width<=600px) {
   .singlepost-detail {
     max-height: 45vh;
     overflow-y: scroll;
     padding: 11px;
   }
+
   .postReact-single {
     margin-top: 125px;
   }
 
-  .badan>div{
-    padding:0;
+  .badan>div {
+    padding: 0;
   }
 
   .soldier-1,
@@ -81,7 +83,7 @@
     display: none;
   }
 
-  .post-reactions{
+  .post-reactions {
     padding-left: 1rem;
   }
 
@@ -96,17 +98,18 @@
   justify-content: space-between;
 }
 
-.navIcons > img {
+.navIcons>img {
   width: 1.5rem;
   height: 1.5rem;
 }
-.pagination-byn{
+
+.pagination-byn {
   background-color: orange;
-  border: 2px solid white ;
+  border: 2px solid white;
   border-radius: 5px;
 }
 
-.editBtn{
+.editBtn {
   z-index: 2rem;
   background-color: orange;
   min-width: 2rem;
@@ -119,10 +122,7 @@
   /* font-weight: 600; */
   cursor: pointer;
 }
-.editBtn:hover{
+
+.editBtn:hover {
   border: 2px solid white;
 }
-
-
-
-
