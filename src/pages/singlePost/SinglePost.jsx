@@ -172,7 +172,6 @@ const SinglePost = (PostsData) => {
 
     const disableCopy = (e) => {
       console.log(e,"copy-text");
-      alert(e.ckey)
       if (e.ctrlKey && (e.key === 'c' || e.key === 'p')) {
        
         e.preventDefault();
