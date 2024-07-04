@@ -19,6 +19,11 @@ import ForgotPassword from "./pages/ForgottPassword/ForgottPassword";
 import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import AdminAuth from "./pages/AdminAuth/AdminAuth";
 import AdminHome from "./pages/AdminHome/AdminHome";
+import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
+import TermsAndConditions from "./pages/TermsAndConditions/TermsAndConditions";
+import CancellationAndRefund from "./pages/CancellationAndRefund/CancellationAndRefund";
+import ShippingAndDelivery from "./pages/ShippingAndDelivery/ShippingAndDelivery";
+import ContactUs from "./pages/ContactUs/ContactUs";
 
 function App() {
   const authData = useSelector((state) => state.authReducer.authData);
@@ -50,6 +55,11 @@ function App() {
           <Route path="*" element={<PageNotFound />} />
           <Route path={path.admin} element={<AdminAuth />} />
           <Route path={path.adminHome} element={<AdminHome />} />
+          <Route path={path.privacyPolicy} element={<PrivacyPolicy />} />
+          <Route path={path.termsAndconditions} element={<TermsAndConditions />} />
+          <Route path={path.cancellationAndRefund} element={<CancellationAndRefund />} />
+          <Route path={path.shippingAndDelivery} element={<ShippingAndDelivery />} />
+          <Route path={path.contactUs} element={<ContactUs />} />
         </Routes>
       </div>
     </SnackbarProvider>

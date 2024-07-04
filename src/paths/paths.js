@@ -12,5 +12,10 @@ export const path = {
   forgotPassword: "/forgot-password",
   resetPassword: "/reset-password",
   admin: "/admin",
-  adminHome: "/admin-home"
+  adminHome: "/admin-home",
+  privacyPolicy:"/privacypolicy",
+  termsAndconditions:"termsandconditions",
+  cancellationAndRefund:"cancellationandrefund",
+  shippingAndDelivery:"shippinganddelivery",
+  contactUs:"contactus"
 };
