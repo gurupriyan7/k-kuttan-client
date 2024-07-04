@@ -245,17 +245,18 @@ const SinglePost = (PostsData) => {
             <div className="items-center flex flex-col gap-4 md:gap-8 justify-center w-full h-full">
               <div class=" flex flex-col items-center justify-center  ">
                 {!post?.isDraft && (
-                  <div className="flex gap-4">
-                    <div className="w-[54px] h-[34px] ">
+                  <div className="flex gap-4 md:gap-7 lg:mt-4">
+                    <div className="w-[34px] h-[34px] ">
                       <img
                         src={liked ? Heart : NotLike}
                         alt=""
                         onClick={handleLike}
                         style={{ cursor: "pointer" }}
+                        className="items-center  mx-auto w-[30px] h-[26px]"
                       />
                       {!post?.isDraft && (
                         <p
-                          className="w-full item-center flex justify-center"
+                          className="w-full item-center flex justify-center font-[500]"
                           style={{
                             color: "var(--gray)",
                             fontSize: "12px",
@@ -268,13 +269,14 @@ const SinglePost = (PostsData) => {
                       )}
                     </div>
                     <img
-                      className="w-[34px] h-[34px]"
+                      className=" w-[30px] h-[26px]"
                       onClick={() => setModalOpened(true)}
                       src={Comment}
                       alt=""
                       style={{ cursor: "pointer" }}
                     />
                     <img
+                      className=" w-[30px] h-[26px]"
                       src={Share}
                       alt=""
                       onClick={() => setShareModalOpened(true)}
@@ -286,11 +288,11 @@ const SinglePost = (PostsData) => {
 
               <div className="max-h-[85vh] overflow-y-scroll  w-full mx-auto lg:mb-[2rem]">
                 <div className="mx-auto w-full flex items-center justify-center">
-                  <b className="mx-auto w-[190px] sm:w-[290px] md:w-[390px] lg:max-w-[450px] ">
+                  <b className="mx-auto w-[250px] sm:w-[290px] md:w-[390px] lg:max-w-[450px] ">
                     {post?.title}
                   </b>
                 </div>
-                <div className=" h-[250px] md:h-[350px] lg:h-[580px]  w-[190px] sm:w-[290px] my-auto   md:w-[390px] lg:w-[480px]  xl:w-[50vw] mx-auto">
+                <div className=" h-[40vh] md:h-[350px] lg:h-[580px]  w-[40vh] sm:w-[290px] my-auto   md:w-[390px] lg:w-[480px]  xl:w-[50vw] mx-auto">
                   {post?.story[page - 1]?.story}
                 </div>
               </div>
