@@ -234,7 +234,7 @@ const SinglePost = (PostsData) => {
           </div>
 
           <div
-            className="w-full h-[100vh] bg-no-repeat bg-center md:bg-cover ml-[1vw] mr-[16vw] sm:mx-0 bg-cover sm:bg-[length:100%_120%] "
+            className="w-full h-[100vh] bg-no-repeat bg-center  md:bg-[length:100%_140%] ml-[1vw] mr-[16vw] sm:mx-0 bg-cover sm:bg-[length:100%_120%] "
             style={{
               backgroundImage: `URL(${scroll})`,
               // backgroundPosition: 'center',
@@ -242,7 +242,7 @@ const SinglePost = (PostsData) => {
               // backgroundRepeat: 'no-repeat',
             }}
           >
-            <div className="items-center flex flex-col gap-4 md:gap-8 justify-center w-full h-full">
+            <div className="items-center flex flex-col gap-2 md:gap-4 justify-center w-full h-full">
               <div class=" flex flex-col items-center justify-center  ">
                 {!post?.isDraft && (
                   <div className="flex gap-4 md:gap-7 lg:mt-4">
@@ -256,7 +256,7 @@ const SinglePost = (PostsData) => {
                       />
                       {!post?.isDraft && (
                         <p
-                          className="w-full item-center flex justify-center font-[500]"
+                          className="w-full item-center flex justify-center font-[500] mt-1"
                           style={{
                             color: "var(--gray)",
                             fontSize: "12px",
@@ -264,19 +264,22 @@ const SinglePost = (PostsData) => {
                             // display:"none"
                           }}
                         >
-                          {likes} <span>
-                            likes
-                            </span>
+                          {likes} <span>likes</span>
                         </p>
                       )}
                     </div>
-                    <img
-                      className=" w-[30px] h-[26px]"
-                      onClick={() => setModalOpened(true)}
-                      src={Comment}
-                      alt=""
-                      style={{ cursor: "pointer" }}
-                    />
+                    <div>
+                      <img
+                        className=" w-[30px] h-[26px]"
+                        onClick={() => setModalOpened(true)}
+                        src={Comment}
+                        alt=""
+                        style={{ cursor: "pointer" }}
+                      />
+                      <span className="items-center flex justify-center text-gray-600 mt-1 text-[12px]">
+                        {post?.comments?.length}
+                      </span>
+                    </div>
                     <img
                       className=" w-[30px] h-[26px]"
                       src={Share}
@@ -290,11 +293,11 @@ const SinglePost = (PostsData) => {
 
               <div className="max-h-[85vh] overflow-y-scroll  w-full mx-auto lg:mb-[2rem]">
                 <div className="mx-auto w-full flex items-center justify-center">
-                  <b className="mx-auto w-[250px] sm:w-[290px] md:w-[390px] lg:max-w-[450px] ">
+                  <b className="mx-auto w-[250px] sm:w-[290px] md:w-[390px] lg:max-w-[450px] mb-2">
                     {post?.title}
                   </b>
                 </div>
-                <div className=" h-[40vh] md:h-[350px] lg:h-[580px]  w-[40vh] sm:w-[290px] my-auto   md:w-[390px] lg:w-[480px]  xl:w-[50vw] mx-auto">
+                <div className=" h-[40vh] md:h-[350px] lg:h-[60vh]  w-[40vh] sm:w-[290px] my-auto   md:w-[390px] lg:w-[480px]  xl:w-[50vw] mx-auto">
                   {post?.story[page - 1]?.story}
                 </div>
               </div>
