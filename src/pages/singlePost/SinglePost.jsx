@@ -264,7 +264,9 @@ const SinglePost = (PostsData) => {
                             // display:"none"
                           }}
                         >
-                          {likes} likes
+                          {likes} <span>
+                            likes
+                            </span>
                         </p>
                       )}
                     </div>

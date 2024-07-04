@@ -32,6 +32,14 @@
   padding:0 10rem;
 }
 
+@media screen and (width<=1000px) {
+  .soldier-1,
+  .soldier-2 {
+    display: none;
+  }
+  
+}
+
 /* @media screen and (width<=1000px) { */
 @media screen and (width<=1300px) {
 
@@ -39,10 +47,7 @@
     padding:0;
   }
 
-  .soldier-1,
-  .soldier-2 {
-    display: none;
-  }
+
 
   .post-reactions{
     padding-left: 1rem;
