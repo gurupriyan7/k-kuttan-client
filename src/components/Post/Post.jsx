@@ -152,10 +152,10 @@ const Post = ({ data }) => {
         )}
 
       <div className="detail">
-        <p className="truncate">
-          <b>{data?.title}</b>
+        <p className=" flex flex-col gap-1">
+          <b className='line-clamp-2'>{data?.title}</b>
+        <p className="line-clamp-4">{data?.summary}</p>
         </p>
-        <p className="truncate">{data?.summary}</p>
         <CommentModel
           modalOpened={modalOpened}
           setModalOpened={setModalOpened}
