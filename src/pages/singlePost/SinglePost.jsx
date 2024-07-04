@@ -172,7 +172,10 @@ const SinglePost = (PostsData) => {
 
     const disableCopy = (e) => {
       console.log(e, "copy-text");
-      if (e.ctrlKey && (e.key === "c" || e.key === "p")) {
+      if (
+        (e.ctrlKey || e.metaKey) && // metaKey is for Cmd on macOS
+        (e.key === "c" || e.key === "p")
+      ) {
         e.preventDefault();
       }
     };
@@ -186,9 +189,8 @@ const SinglePost = (PostsData) => {
     };
   }, []);
 
-
   function formatText(text) {
-    return text.split('\n').map((item, key) => {
+    return text.split("\n").map((item, key) => {
       return (
         <span key={key}>
           {item}
@@ -197,7 +199,6 @@ const SinglePost = (PostsData) => {
       );
     });
   }
-  
 
   return (
     <>
@@ -310,7 +311,7 @@ const SinglePost = (PostsData) => {
                   </b>
                 </div>
                 <div className=" h-[40vh] md:h-[350px] lg:h-[60vh]  w-[40vh] sm:w-[290px] my-auto   md:w-[390px] lg:w-[480px]  xl:w-[50vw] mx-auto">
-                  {formatText((post?.story[page - 1]?.story))}
+                  {formatText(post?.story[page - 1]?.story)}
                 </div>
               </div>
             </div>
