@@ -9,7 +9,6 @@ const PostSide = ({ postData, searchText, setSearchText, isHome = false }) => {
   const authData = useSelector((state) => state.authReducer.authData)
 
   const isAuthor = authData?.data?.role === UserRole.AUTHOR
-  console.log(postData, 'postDataaaa------------------------------->>>>>>>>>>')
   // const postData = useSelector((state) => state.postReducer.posts)
   return (
     <div className="PostSide">

@@ -7,13 +7,30 @@ import { appConfig } from "../../config/appConfig";
 import { useSnackbar } from "notistack";
 import { addComment } from "../../actions/post.actions";
 
+import defaultProfile from "../../img/default-profile.jpg";
+
 function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
-  const theme = useMantineTheme()
-  const dispatch = useDispatch()
-  const { enqueueSnackbar } = useSnackbar()
-  const [visibleItems, setVisibleItems] = useState(3)
-  const [commentData, setCommentData] = useState(comments)
-  const userData = useSelector((state) => state.authReducer.authData)
+  const theme = useMantineTheme();
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+  const [visibleItems, setVisibleItems] = useState(3);
+  const [commentData, setCommentData] = useState(comments);
+  const userData = useSelector((state) => state.authReducer.authData);
+
+  const ProfileImage = ({ src }) => {
+    const handleError = (event) => {
+      event.target.src = defaultProfile;
+    };
+
+    return (
+      <img
+        src={src}
+        className="profile-image"
+        alt="comment"
+        onError={handleError}
+      />
+    );
+  };
 
   const handleReadMore = (increment) => {
     if (increment) {
@@ -65,7 +82,6 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
           },
         });
       }
-
     } else {
       enqueueSnackbar("Please login to Comment !!", {
         variant: "warning",
@@ -113,11 +129,14 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
               return (
                 <div className="comment-section">
                   <div className="comment">
-                    <img
+                    <ProfileImage
+                      src={`${appConfig?.awsBucketUrl}/${comment?.userId?.profileImage}`}
+                    />
+                    {/* <img
                       src={`${appConfig.awsBucketUrl}/${comment?.userId?.profileImage}`}
                       alt="story"
                       className="profile-image"
-                    />
+                    /> */}
                     <div className="comment-details">
                       <h4 className="comment-name">
                         {comment?.userId?.userName}
@@ -126,7 +145,7 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
                     </div>
                   </div>
                 </div>
-               )
+              );
             })}
             {visibleItems > 3 && (
               <div

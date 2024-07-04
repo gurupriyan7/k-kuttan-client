@@ -5,6 +5,7 @@ import Comment from "../../img/comment.png";
 import Share from "../../img/share.png";
 import Heart from "../../img/like.png";
 import NotLike from "../../img/notlike.png";
+import defaultProfile from '../../img/default-profile.jpg'
 import { useSelector } from "react-redux";
 import { likeAndCommentPost, updatePayment } from "../../api/postRequest";
 import { appConfig } from "../../config/appConfig";
@@ -26,6 +27,21 @@ const Post = ({ data }) => {
   const [likes, setLikes] = useState(data?.liked?.length);
   const [modalOpened, setModalOpened] = useState(false);
   const [shareModalOpened, setShareModalOpened] = useState(false);
+
+  const ProfileImage = ({ src }) => {
+    const handleError = (event) => {
+      event.target.src = defaultProfile;
+    };
+
+    return (
+      <img
+        src={src}
+        className="profile-image"
+        alt="comment"
+        onError={handleError}
+      />
+    );
+  };
 
   const handleSelect = async (e) => {
     if (data?.isDraft && data?.createdBy?._id === userData?.data?._id) {
@@ -183,13 +199,11 @@ const Post = ({ data }) => {
         <div className="">
           <h6 className="font-[700] text-[16px] my-2">Comments</h6>
           {data?.comments?.slice(0, 3).map((comment, index) => (
-            <div className="" key={index} >
+            <div className="" key={index}>
               {/* <p className='line-clamp-1 text-[14px]'>{comment?.comment}</p> */}
               <div className="comment">
-                <img
-                  src={`${appConfig.awsBucketUrl}/${comment?.userId?.profileImage}`}
-                  alt="story"
-                  className="profile-image"
+                <ProfileImage
+                  src={`${appConfig?.awsBucketUrl}/${comment?.userId?.profileImage}`}
                 />
                 <div className="comment-details">
                   <h4 className="comment-name">{comment?.userId?.userName}</h4>
@@ -200,7 +214,12 @@ const Post = ({ data }) => {
               </div>
             </div>
           ))}
-          <span onClick={handleCommentClick} className="flex justify-end text-[14px] font-[800]">Read more</span>
+          <span
+            onClick={handleCommentClick}
+            className="flex justify-end text-[14px] font-[800]"
+          >
+            Read more
+          </span>
         </div>
 
         <CommentModel
