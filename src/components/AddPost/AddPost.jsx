@@ -100,6 +100,7 @@ const AddPost = () => {
 
   const handleInputChange = async (index, value = "") => {
     const wordCount = await countWords(value);
+    console.log(wordCount,"owrd");
     const pagefound = await findStoryByPage(index + 2);
     if (wordCount > 200 && !pagefound) {
       const tempChunks = splitTextIntoChunks(value, 200, index + 1);
