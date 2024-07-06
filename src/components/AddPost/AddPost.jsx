@@ -101,8 +101,8 @@ const AddPost = () => {
   const handleInputChange = async (index, value = "") => {
     const wordCount = await countWords(value);
     const pagefound = await findStoryByPage(index + 2);
-    if (wordCount > 2 && !pagefound) {
-      const tempChunks = splitTextIntoChunks(value, 2, index + 1);
+    if (wordCount > 200 && !pagefound) {
+      const tempChunks = splitTextIntoChunks(value, 200, index + 1);
 
       const spreadStories = [...stories, ...tempChunks];
       const checkpages = [];
@@ -125,7 +125,7 @@ const AddPost = () => {
       setStories(updatedStories);
       setStoryCount(updatedStories?.length ?? 1);
     } else {
-      if (wordCount > 2) {
+      if (wordCount > 200) {
         enqueueSnackbar("Stories must be less than 200 words per page!", {
           variant: "warning",
           autoHideDuration: 2000,
