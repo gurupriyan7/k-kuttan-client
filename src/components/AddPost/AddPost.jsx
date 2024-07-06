@@ -1,122 +1,191 @@
 /* eslint-disable no-unused-expressions */
-import React, { useEffect, useRef, useState } from 'react'
-import './AddPost.css'
-import { Center } from '@mantine/core'
-import { UilTimes } from '@iconscout/react-unicons'
-import { UilScenery } from '@iconscout/react-unicons'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { getPreSignedUrlUtill } from '../../utils/s3.utils'
-import back from '../../img/wp4082523.webp'
-import { createPost } from '../../actions/post.actions'
-import { path } from '../../paths/paths';
-import { useSnackbar } from 'notistack';
+import React, { useEffect, useRef, useState } from "react";
+import "./AddPost.css";
+import { Center } from "@mantine/core";
+import { UilTimes } from "@iconscout/react-unicons";
+import { UilScenery } from "@iconscout/react-unicons";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { getPreSignedUrlUtill } from "../../utils/s3.utils";
+import back from "../../img/wp4082523.webp";
+import { createPost } from "../../actions/post.actions";
+import { path } from "../../paths/paths";
+import { useSnackbar } from "notistack";
 
 const AddPost = () => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { enqueueSnackbar } = useSnackbar()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
-  const [errorShow, setErrorShow] = useState(false)
+  const [errorShow, setErrorShow] = useState(false);
 
-  const [storyCount, setStoryCount] = useState(1)
+  const [storyCount, setStoryCount] = useState(1);
+
   const [stories, setStories] = useState([
     {
       page: 1,
-      story: '',
+      story: "",
     },
-  ])
-  const [image, setImage] = useState(null)
-  const imageRef = useRef()
+  ]);
+  // useEffect(() => {
+  //   console.log(storyCount, "storycountttttt", stories);
+  // }, [storyCount, stories]);
+  const [image, setImage] = useState(null);
+  const imageRef = useRef();
   const [formData, setFormData] = useState({
-    title: '',
-    summary: '',
+    title: "",
+    summary: "",
     image: null,
-  })
+  });
 
-  const { error, isError, loading } = useSelector(
-    (state) => state.postReducer,
-  )
+  const { error, isError, loading } = useSelector((state) => state.postReducer);
+
+  const countWords = async (sentence) => {
+    if (!sentence) return 0; // handle empty string or undefined
+    const words = sentence.trim().split(/\s+/);
+    return words.length;
+  };
+
+  const findStoryByPage = (page) => {
+    // console.log(stories, "apple-orange-grapes");
+    return stories.find((story) => story?.page === page);
+  };
+
+
+  const splitTextIntoChunks = (text, chunkSize, currentPage) => {
+    const words = text.trim().split(/\s+/);
+    const chunks = [];
+
+    let page = currentPage;
+
+    for (let i = 0; i < words.length; i += chunkSize) {
+      const chunk = words.slice(i, i + chunkSize).join(" ");
+      const newChunk = { page, story: chunk };
+      chunks.push(newChunk);
+      page = page + 1;
+    }
+
+    console.log(chunks,"good-morning-");
+
+    return chunks;
+  };
 
   const onImageChange = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
     if (event.target.files && event.target.files[0]) {
-      let img = event.target.files[0]
-      setImage(URL.createObjectURL(img))
+      let img = event.target.files[0];
+      setImage(URL.createObjectURL(img));
 
-      const imageData = await getPreSignedUrlUtill(img)
+      const imageData = await getPreSignedUrlUtill(img);
       setFormData({
         ...formData,
-        image: imageData ?? '',
-      })
-      console.log(imageData, 'image-image')
+        image: imageData ?? "",
+      });
+      console.log(imageData, "image-image");
     }
-  }
+  };
 
   const handleChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
-    })
-  }
+    });
+  };
   const addStory = () => {
-    setStories([...stories, { page: stories.length + 1, story: '' }])
-    setStoryCount(storyCount + 1)
-  }
+    setStories([...stories, { page: stories.length + 1, story: "" }]);
+    setStoryCount(storyCount + 1);
+  };
 
 
-  useEffect(() => {
-    if (isError && error != null&& errorShow) {
-      enqueueSnackbar(
-        (error?.message || error?.response?.data?.message) ?? 'Login failed!',
-        {
-          variant: 'error',
+  const handleInputChange = async (index, value = "") => {
+    const wordCount = await countWords(value);
+    const pagefound = await findStoryByPage(index + 2);
+    if (wordCount > 2 && !pagefound) {
+      const tempChunks = splitTextIntoChunks(value, 2, index + 1);
+
+      const spreadStories = [...stories, ...tempChunks];
+      const checkpages = [];
+      
+      const updatedStories = spreadStories.reduce((result, spreadStory) => {
+        const page = tempChunks.find((temp) => temp?.page === spreadStory?.page);
+      
+        if (spreadStory?.page === page?.page) {
+          if (!checkpages.includes(spreadStory?.page)) {
+            result.push({ page: spreadStory?.page, story: page?.story });
+            checkpages.push(spreadStory?.page);
+          }
+        } else {
+          result.push(spreadStory);
+        }
+      
+        return result;
+      }, []);
+      
+      setStories(updatedStories);
+      setStoryCount(updatedStories?.length ?? 1);
+    } else {
+      if (wordCount > 2) {
+        enqueueSnackbar("Stories must be less than 200 words per page!", {
+          variant: "warning",
           autoHideDuration: 2000,
           ContentProps: {
-            style: { backgroundColor: 'red' },
+            style: { backgroundColor: "yellow" },
           },
-        },
-      )
+        });
+      } else {
+        const newStories = [...stories];
+        newStories[index].story = value;
+        setStories(newStories);
+      }
     }
-  }, [isError, error])
+  };
+
+  useEffect(() => {
+    if (isError && error != null && errorShow) {
+      enqueueSnackbar(
+        (error?.message || error?.response?.data?.message) ?? "Login failed!",
+        {
+          variant: "error",
+          autoHideDuration: 2000,
+          ContentProps: {
+            style: { backgroundColor: "red" },
+          },
+        }
+      );
+    }
+  }, [isError, error]);
 
   const removeStory = () => {
     if (stories.length > 1) {
-      setStories(stories.slice(0, -1))
-      setStoryCount(storyCount - 1)
+      setStories(stories.slice(0, -1));
+      setStoryCount(storyCount - 1);
     }
-  }
+  };
 
-  const handleInputChange = (index, value) => {
-    const newStories = [...stories]
-    newStories[index].story = value
-    setStories(newStories)
-  }
-
-  const handleSubmit = (e,isDraft) => {
-    e.preventDefault()
-    setErrorShow(true)
+  const handleSubmit = (e, isDraft) => {
+    e.preventDefault();
+    setErrorShow(true);
     // Handle form submission logic here
     dispatch(
       createPost({
         ...formData,
         story: stories,
-        ...(isDraft&&{
-          isDraft:isDraft
-        })
-      }),
-    )
-    enqueueSnackbar('Post Added successfully !!', {
-      variant: 'success',
+        ...(isDraft && {
+          isDraft: isDraft,
+        }),
+      })
+    );
+    enqueueSnackbar("Post Added successfully !!", {
+      variant: "success",
       autoHideDuration: 2000,
       ContentProps: {
-        style: { backgroundColor: 'green' },
+        style: { backgroundColor: "green" },
       },
-    })
-    navigate(path.home)
-    console.log(stories, 'Form submitted:', formData)
-  }
+    });
+    navigate(path.home);
+    console.log(stories, "Form submitted:", formData);
+  };
 
   return (
     <div className="main" style={{ backgroundImage: `URL(${back})` }}>
@@ -159,33 +228,33 @@ const AddPost = () => {
                   required
                   className="input"
                 />
-                <div style={{ position: 'relative', display: 'inline-block' }}>
+                <div style={{ position: "relative", display: "inline-block" }}>
                   <input
                     type="file"
                     ref={imageRef}
                     onChange={onImageChange}
                     className="input"
                     style={{
-                      cursor: 'pointer',
-                      color: 'var(--photo)',
-                      width: '100%', // Ensure the input takes the full width
+                      cursor: "pointer",
+                      color: "var(--photo)",
+                      width: "100%", // Ensure the input takes the full width
                       opacity: 0, // Hide the input
-                      position: 'absolute', // Overlay the input on top of the button
+                      position: "absolute", // Overlay the input on top of the button
                       left: 0,
                       top: 0,
-                      height: '100%', // Ensure the input takes the full height of the container
+                      height: "100%", // Ensure the input takes the full height of the container
                     }}
                   />
                   <span
                     onClick={() => imageRef.current.click()}
                     style={{
-                      cursor: 'pointer',
-                      color: 'var(--photo)',
-                      display: 'flex',
-                      alignItems: 'center',
+                      cursor: "pointer",
+                      color: "var(--photo)",
+                      display: "flex",
+                      alignItems: "center",
                     }}
                   >
-                    <UilScenery /> Photo 
+                    <UilScenery /> Photo
                   </span>
                 </div>
                 {image && (
@@ -193,7 +262,7 @@ const AddPost = () => {
                     <UilTimes
                       onClick={() => {
                         setImage(null),
-                          setFormData({ ...formData, image: null })
+                          setFormData({ ...formData, image: null });
                       }}
                     />
                     <img src={image} alt="sdfsf" />
@@ -204,22 +273,22 @@ const AddPost = () => {
                     rows="8"
                     placeholder={`Page ${index + 1}`}
                     name="story"
-                    value={formData.story}
+                    value={findStoryByPage(index + 1)?.story}
                     onChange={(e) => handleInputChange(index, e.target.value)}
                     className="input"
                   ></textarea>
                 ))}
                 <div
                   style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    gap: '1rem',
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "1rem",
                   }}
                 >
                   <span
                     onClick={removeStory}
                     className="next-btn"
-                    style={{ display: storyCount <= 1 && 'none' }}
+                    style={{ display: storyCount <= 1 && "none" }}
                   >
                     Remove page
                   </span>
@@ -229,13 +298,15 @@ const AddPost = () => {
                 </div>
                 <div
                   style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    gap: '1rem',
+                    display: "flex",
+                    justifyContent: "space-between",
+                    gap: "1rem",
                   }}
                 >
-                  <span onClick={(e)=>handleSubmit(e,true)} className="btn">Save Draft</span>
-                  <span onClick={(e)=>handleSubmit(e,false)} className="btn">
+                  <span onClick={(e) => handleSubmit(e, true)} className="btn">
+                    Save Draft
+                  </span>
+                  <span onClick={(e) => handleSubmit(e, false)} className="btn">
                     Add Post
                   </span>
                 </div>
@@ -245,7 +316,7 @@ const AddPost = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AddPost
+export default AddPost;
