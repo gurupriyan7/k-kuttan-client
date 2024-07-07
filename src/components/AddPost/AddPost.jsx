@@ -51,24 +51,58 @@ const AddPost = () => {
     return stories.find((story) => story?.page === page);
   };
 
-
   const splitTextIntoChunks = (text, chunkSize, currentPage) => {
-    const words = text.trim().split(/\s+/);
+    const paragraphs = text.split('\n');
     const chunks = [];
-
+    let currentWords = [];
     let page = currentPage;
-
-    for (let i = 0; i < words.length; i += chunkSize) {
-      const chunk = words.slice(i, i + chunkSize).join(" ");
-      const newChunk = { page, story: chunk };
-      chunks.push(newChunk);
-      page = page + 1;
+    let wordCount = 0;
+  
+    paragraphs.forEach(paragraph => {
+      const words = paragraph.trim().split(/\s+/);
+  
+      if (words.length === 1 && words[0] === "") {
+        if (currentWords.length > 0) {
+          currentWords.push('\n'); // Adding a newline to preserve empty lines in the chunks
+        } else {
+          chunks.push({ page, story: '\n' });
+          page++;
+        }
+        return;
+      }
+  
+      words.forEach(word => {
+        currentWords.push(word);
+        wordCount++;
+  
+        if (wordCount === chunkSize) {
+          chunks.push({ page, story: currentWords.join(' ') });
+          currentWords = [];
+          wordCount = 0;
+          page++;
+        }
+      });
+  
+      if (currentWords.length > 0 && wordCount < chunkSize) {
+        currentWords.push('\n'); // Adding a newline to separate paragraphs in the chunks
+      }
+    });
+  
+    // Handle any remaining words
+    if (currentWords.length > 1 || (currentWords.length === 1 && currentWords[0] !== '\n')) { // Avoid pushing a single newline
+      // Remove the last newline added
+      if (currentWords[currentWords.length - 1] === '\n') {
+        currentWords.pop();
+      }
+      chunks.push({ page, story: currentWords.join(' ').trim() });
     }
-
-    console.log(chunks,"good-morning-");
-
+  
+    console.log(chunks); // Output the chunks to console for verification
+  
     return chunks;
   };
+  
+  
 
   const onImageChange = async (event) => {
     event.preventDefault();
@@ -97,20 +131,21 @@ const AddPost = () => {
     setStoryCount(storyCount + 1);
   };
 
-
   const handleInputChange = async (index, value = "") => {
     const wordCount = await countWords(value);
-    console.log(wordCount,"owrd");
+    console.log(wordCount, "owrd");
     const pagefound = await findStoryByPage(index + 2);
     if (wordCount > 200 && !pagefound) {
       const tempChunks = splitTextIntoChunks(value, 200, index + 1);
 
       const spreadStories = [...stories, ...tempChunks];
       const checkpages = [];
-      
+
       const updatedStories = spreadStories.reduce((result, spreadStory) => {
-        const page = tempChunks.find((temp) => temp?.page === spreadStory?.page);
-      
+        const page = tempChunks.find(
+          (temp) => temp?.page === spreadStory?.page
+        );
+
         if (spreadStory?.page === page?.page) {
           if (!checkpages.includes(spreadStory?.page)) {
             result.push({ page: spreadStory?.page, story: page?.story });
@@ -119,10 +154,10 @@ const AddPost = () => {
         } else {
           result.push(spreadStory);
         }
-      
+
         return result;
       }, []);
-      
+
       setStories(updatedStories);
       setStoryCount(updatedStories?.length ?? 1);
     } else {
