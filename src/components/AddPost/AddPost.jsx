@@ -27,9 +27,9 @@ const AddPost = () => {
       story: "",
     },
   ]);
-  // useEffect(() => {
-  //   console.log(storyCount, "storycountttttt", stories);
-  // }, [storyCount, stories]);
+  useEffect(() => {
+    console.log(storyCount, "storycountttttt", stories);
+  }, [storyCount, stories]);
   const [image, setImage] = useState(null);
   const imageRef = useRef();
   const [formData, setFormData] = useState({
@@ -51,58 +51,82 @@ const AddPost = () => {
     return stories.find((story) => story?.page === page);
   };
 
+  const removeAndReindex = (array, index) => {
+    // Remove the element at the specified index
+    array.splice(index, 1);
+
+    // Reindex the remaining elements
+    for (let i = index; i < array.length; i++) {
+      array[i].page = i + 1;
+    }
+
+    return array;
+  };
+
+  const handleClearStory = async (index) => {
+    if (stories?.length > 1) {
+      const tempStories = stories;
+      const data = await removeAndReindex(tempStories, index);
+      console.log(index, "indexxxx", tempStories, "temp", data);
+      setStories(data);
+      setStoryCount(storyCount - 1);
+    }
+  };
+
   const splitTextIntoChunks = (text, chunkSize, currentPage) => {
-    const paragraphs = text.split('\n');
+    const paragraphs = text.split("\n");
     const chunks = [];
     let currentWords = [];
     let page = currentPage;
     let wordCount = 0;
-  
-    paragraphs.forEach(paragraph => {
+
+    paragraphs.forEach((paragraph) => {
       const words = paragraph.trim().split(/\s+/);
-  
+
       if (words.length === 1 && words[0] === "") {
         if (currentWords.length > 0) {
-          currentWords.push('\n'); // Adding a newline to preserve empty lines in the chunks
+          currentWords.push("\n"); // Adding a newline to preserve empty lines in the chunks
         } else {
-          chunks.push({ page, story: '\n' });
+          chunks.push({ page, story: "\n" });
           page++;
         }
         return;
       }
-  
-      words.forEach(word => {
+
+      words.forEach((word) => {
         currentWords.push(word);
         wordCount++;
-  
+
         if (wordCount === chunkSize) {
-          chunks.push({ page, story: currentWords.join(' ') });
+          chunks.push({ page, story: currentWords.join(" ") });
           currentWords = [];
           wordCount = 0;
           page++;
         }
       });
-  
+
       if (currentWords.length > 0 && wordCount < chunkSize) {
-        currentWords.push('\n'); // Adding a newline to separate paragraphs in the chunks
+        currentWords.push("\n"); // Adding a newline to separate paragraphs in the chunks
       }
     });
-  
+
     // Handle any remaining words
-    if (currentWords.length > 1 || (currentWords.length === 1 && currentWords[0] !== '\n')) { // Avoid pushing a single newline
+    if (
+      currentWords.length > 1 ||
+      (currentWords.length === 1 && currentWords[0] !== "\n")
+    ) {
+      // Avoid pushing a single newline
       // Remove the last newline added
-      if (currentWords[currentWords.length - 1] === '\n') {
+      if (currentWords[currentWords.length - 1] === "\n") {
         currentWords.pop();
       }
-      chunks.push({ page, story: currentWords.join(' ').trim() });
+      chunks.push({ page, story: currentWords.join(" ").trim() });
     }
-  
+
     console.log(chunks); // Output the chunks to console for verification
-  
+
     return chunks;
   };
-  
-  
 
   const onImageChange = async (event) => {
     event.preventDefault();
@@ -202,25 +226,37 @@ const AddPost = () => {
   const handleSubmit = (e, isDraft) => {
     e.preventDefault();
     setErrorShow(true);
-    // Handle form submission logic here
-    dispatch(
-      createPost({
-        ...formData,
-        story: stories,
-        ...(isDraft && {
-          isDraft: isDraft,
-        }),
-      })
-    );
-    enqueueSnackbar("Post Added successfully !!", {
-      variant: "success",
-      autoHideDuration: 2000,
-      ContentProps: {
-        style: { backgroundColor: "green" },
-      },
-    });
-    navigate(path.home);
-    console.log(stories, "Form submitted:", formData);
+
+    if(!formData?.title || !formData?.summary){
+      enqueueSnackbar("Title and summary should not be empty!", {
+        variant: "warning",
+        autoHideDuration: 2000,
+        ContentProps: {
+          style: { backgroundColor: "yellow" },
+        },
+      });
+    }else{
+  //  Handle form submission logic here
+   dispatch(
+    createPost({
+      ...formData,
+      story: stories,
+      ...(isDraft && {
+        isDraft: isDraft,
+      }),
+    })
+  );
+  enqueueSnackbar("Post Added successfully !!", {
+    variant: "success",
+    autoHideDuration: 2000,
+    ContentProps: {
+      style: { backgroundColor: "green" },
+    },
+  });
+  navigate(path.home);
+  console.log(stories, "Form submitted:", formData);
+    }
+ 
   };
 
   return (
@@ -304,15 +340,30 @@ const AddPost = () => {
                     <img src={image} alt="sdfsf" />
                   </div>
                 )}
-                {Array.from({ length: storyCount }).map((_, index) => (
-                  <textarea
-                    rows="8"
-                    placeholder={`Page ${index + 1}`}
-                    name="story"
-                    value={findStoryByPage(index + 1)?.story}
-                    onChange={(e) => handleInputChange(index, e.target.value)}
-                    className="input"
-                  ></textarea>
+                {stories?.map((story, index) => (
+                  <div style={{ position: "relative" }}>
+                    <textarea
+                      rows="8"
+                      placeholder={`Page ${index + 1}`}
+                      name="story"
+                      value={story?.story}
+                      onChange={(e) => handleInputChange(index, e.target.value)}
+                      className="input"
+                    ></textarea>
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: "5px",
+                        right: "5px",
+                        cursor: "pointer",
+                        color: "red", // Adjust color as needed
+                        zIndex: 1, // Ensure it's above the textarea content
+                      }}
+                      onClick={() => handleClearStory(index)}
+                    >
+                      &#x2715; {/* Unicode for cross icon */}
+                    </span>
+                  </div>
                 ))}
                 <div
                   style={{
