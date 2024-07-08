@@ -189,8 +189,8 @@ const SinglePost = (PostsData) => {
     };
   }, []);
 
-  function formatText(text) {
-    return text.split("\n").map((item, key) => {
+  function formatText(text="") {
+    return text?.split("\n").map((item, key) => {
       return (
         <span key={key}>
           {item}
