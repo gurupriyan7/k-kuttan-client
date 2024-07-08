@@ -44,7 +44,9 @@ const Post = ({ data }) => {
   };
 
   const handleSelect = async (e) => {
-    if (data?.isDraft && data?.createdBy?._id === userData?.data?._id) {
+    if(data?.createdBy?._id === userData?.data?._id){
+      navigate(`${path.singlePost}/${data?._id}`);
+    }else if (data?.isDraft && data?.createdBy?._id === userData?.data?._id) {
       navigate(`${path.editPost}/${data?._id}`);
     } else {
       if (!data?.isFree && !data?.isPaid && data?.amount > 0) {

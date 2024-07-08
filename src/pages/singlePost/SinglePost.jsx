@@ -162,7 +162,11 @@ const SinglePost = (PostsData) => {
   };
 
   useEffect(async () => {
-    await handleSelect();
+    if (post?.createdBy?._id !== userData?.data?._id) {
+      await handleSelect();
+    }else{
+      setPaymentStatus(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -189,8 +193,8 @@ const SinglePost = (PostsData) => {
     };
   }, []);
 
-  function formatText(text="") {
-    return text?.split("\n").map((item, key) => {
+  function formatText(text) {
+    return text.split("\n").map((item, key) => {
       return (
         <span key={key}>
           {item}
