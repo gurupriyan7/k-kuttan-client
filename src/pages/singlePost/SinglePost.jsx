@@ -160,7 +160,9 @@ const SinglePost = (PostsData) => {
       });
     }
   };
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [page]);
   useEffect(async () => {
     if (post?.createdBy?._id !== userData?.data?._id) {
       await handleSelect();
