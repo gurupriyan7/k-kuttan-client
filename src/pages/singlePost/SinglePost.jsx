@@ -62,6 +62,7 @@ const SinglePost = (PostsData) => {
   const [page, setPage] = useState(1);
 
   const [failed, setFailed] = useState(false);
+  console.log(post,"POST")
 
   useEffect(async () => {
     await dispatch(getPostById({ postId }));
@@ -253,7 +254,7 @@ const SinglePost = (PostsData) => {
           </div>
 
           <div
-            className="w-full h-[100vh] bg-no-repeat bg-center  md:bg-[length:100%_140%] ml-[1vw] mr-[16vw] sm:mx-0 bg-cover sm:bg-[length:100%_120%] "
+            className="w-full h-[100vh] bg-no-repeat bg-center  md:bg-[length:100%_140%] ml-[1vw] mr-[16vw] sm:mx-0 bg-[length:140%_120%] "
             style={{
               backgroundImage: `URL(${scroll})`,
               // backgroundPosition: 'center',
@@ -310,13 +311,30 @@ const SinglePost = (PostsData) => {
                 )}
               </div>
 
-              <div className="max-h-[85vh] overflow-y-scroll  w-full mx-auto lg:mb-[2rem]">
+              <Link
+              to={`/`}
+              className="absolute top-2 left-12 flex gap-2 items-center cursor-pointer rounded-[12px] px-[20px] py-1 bg-gray-300 ">
+                 <div className="rounded-full  items-center w-[44px] h-[44px]"> 
+                  <img src={`${appConfig?.awsBucketUrl}/${post?.createdBy?.profileImage}`} width={44} height={44} className="" 
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    objectPosition: "top 0 0",
+                    borderRadius: "50%",
+                  }}
+                  />
+                 </div> 
+                 <h6 className="text-start "> {post?.createdBy?.userName}</h6>
+                </Link>
+           <div className="max-h-[100vh] overflow-y-scroll  w-full mx-auto lg:mb-[2rem]">
+                
                 <div className="mx-auto w-full flex items-center justify-center">
                   <b className="mx-auto w-[250px] sm:w-[290px] md:w-[390px] lg:max-w-[450px] mb-2">
                     {post?.title}
                   </b>
                 </div>
-                <div className=" h-[40vh] md:h-[350px] lg:h-[60vh]  w-[40vh] sm:w-[290px] my-auto   md:w-[390px] lg:w-[480px]  xl:w-[50vw] mx-auto">
+                <div className=" h-[50vh] md:h-[350px] lg:h-[60vh]  w-[35vh] sm:w-[290px] my-auto   md:w-[390px] lg:w-[480px]  xl:w-[50vw] mx-auto">
                   {formatText(post?.story[page - 1]?.story)}
                 </div>
               </div>
