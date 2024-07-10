@@ -17,6 +17,15 @@ export const getUserProfile = async () => {
     console.log(error);
   }
 };
+export const getAuthorUserProfile = async (authorId) => {
+  try {
+    return await API.get(`/user/${authorId}`, {
+    });
+  } catch (error) {
+    await authCheck(error);
+    console.log(error);
+  }
+};
 export const getAllUsers = async (page) => {
   try {
     const token = getLocalStorageItem("token");

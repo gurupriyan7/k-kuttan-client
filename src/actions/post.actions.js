@@ -20,6 +20,15 @@ export const getPostsByUser = (isDraft,searchText) => async (dispatch) => {
     console.log(error, "errorrorrosss");
     dispatch({ type: "FETCH_FAILED", data: error?.response?.data });
   }
+};export const getPostsByUserId= (authorId,searchText) => async (dispatch) => {
+  dispatch({ type: "FETCH_START" });
+  try {
+    const { data } = await PostApi.getPostsByUserId(authorId,searchText);
+    dispatch({ type: "FETCH_SUCCESS", data: data?.data });
+  } catch (error) {
+    console.log(error, "errorrorrosss");
+    dispatch({ type: "FETCH_FAILED", data: error?.response?.data });
+  }
 };
 export const getPostById = (postId) => async (dispatch) => {
   dispatch({ type: "FETCH_POST_START" });

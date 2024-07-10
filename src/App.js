@@ -24,6 +24,7 @@ import TermsAndConditions from "./pages/TermsAndConditions/TermsAndConditions";
 import CancellationAndRefund from "./pages/CancellationAndRefund/CancellationAndRefund";
 import ShippingAndDelivery from "./pages/ShippingAndDelivery/ShippingAndDelivery";
 import ContactUs from "./pages/ContactUs/ContactUs";
+import SingleUserProfile from "./pages/SingleUserProfile/SingleUserProfile";
 
 function App() {
   const authData = useSelector((state) => state.authReducer.authData);
@@ -45,6 +46,7 @@ function App() {
           <Route path={path.room} element={<Room />} />
           <Route path={path.forgotPassword} element={<ForgotPassword />} />
           <Route path={path.resetPassword} element={<ResetPassword />} />
+          <Route path={`${path.authorPosts}/:authorId`} element={<SingleUserProfile />} />
           <Route path={`${path.singlePost}/:postId`} element={<SinglePost />} />
           {authData?.data && (
             <Route path={`${path.addPost}`} element={<AddPost />} />

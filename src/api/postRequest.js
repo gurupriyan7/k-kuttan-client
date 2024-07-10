@@ -43,6 +43,24 @@ export const getPostsByUser = async (isDraft, searchText) => {
     console.log(error);
   }
 };
+export const getPostsByUserId = async (authorId, searchText) => {
+  try {
+   const token = getLocalStorageItem("token");
+    // const token = userData?.data?.token;
+    return await API.get(
+      `/post/user/${authorId}?searchTerm=${searchText ?? ""}`,
+      {
+        ...(token && {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        })
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
 export const getPostById = async ({ postId }) => {
   try {
     const token = getLocalStorageItem("token");

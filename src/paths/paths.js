@@ -17,5 +17,6 @@ export const path = {
   termsAndconditions:"termsandconditions",
   cancellationAndRefund:"cancellationandrefund",
   shippingAndDelivery:"shippinganddelivery",
-  contactUs:"contactus"
+  contactUs:"contactus",
+  authorPosts:"author-posts"
 };

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Cover from '../../img/cover.jpg'
 import Profile from '../../img/profileImg.jpg'
 import './ProfileCard.css'
@@ -8,14 +8,21 @@ import { path } from '../../paths/paths'
 import { appConfig } from '../../config/appConfig'
 import defaultProfile from '../../img/default-profile.jpg'
 import defaultCover from '../../img/post-default.png'
-
-const ProfileCard = ({ isProfile = false }) => {
+const ProfileCard = ({ isProfile = false,authorData,isAuthorProfile=false}) => {
   const navigate = useNavigate()
   const authData = useSelector((state) => state.authReducer.authData)
   const ProfilePage = true
 
+  const [userData,setUserData]=useState({});
+  useEffect(()=>{
+if( isAuthorProfile&&authorData ){
+  setUserData(authorData)
+}else{
+  setUserData(authData?.data)
+}
+  },[authorData,authData])
   const handleClick = () => {
-    if (authData?.data) {
+    if (authData?.data&&!isAuthorProfile) {
       navigate(path.profile)
     }
   }
@@ -31,12 +38,10 @@ const ProfileCard = ({ isProfile = false }) => {
     const handleError = (event) => {
       event.target.src = defaultCover
     }
-
     return <img src={src} alt="Follower" onError={handleError} />
   }
   // alert(authData?.data?.ProfileImage)
-  console.log(authData?.data?.profileImage,"auth-data-auth");
-
+  console.log(userData?.profileImage,"auth-data-auth");
   return (
     <div
       onClick={handleClick}
@@ -49,18 +54,18 @@ const ProfileCard = ({ isProfile = false }) => {
     >
       <div className="ProfileImages">
         <CoverImage
-          src={`${appConfig?.awsBucketUrl}/${authData?.data?.coverImage}`}
+          src={`${appConfig?.awsBucketUrl}/${userData?.coverImage}`}
         />
         <ProfileImage
-          src={`${appConfig?.awsBucketUrl}/${authData?.data?.profileImage}`}
+          src={`${appConfig?.awsBucketUrl}/${userData?.profileImage}`}
         />
       </div>
 
       <div className="ProfileName">
-        <span> {authData?.data ? authData?.data?.userName : ''}  </span>
+        <span> {userData ? userData?.userName : ''}  </span>
         <span>
-          {authData?.data
-            ? `${authData?.data?.firstName} ${authData?.data?.lastName}`
+          {userData
+            ? `${userData?.firstName} ${userData?.lastName}`
             : ''}
         </span>
       </div>
@@ -69,12 +74,12 @@ const ProfileCard = ({ isProfile = false }) => {
         <hr />
         <div>
           <div className="follow">
-            <span>{authData?.data?.followings?.length ?? 0}</span>
+            <span>{userData?.followings?.length ?? 0}</span>
             <span>Followings</span>
           </div>
           <div className="vl"></div>
           <div className="follow">
-            <span>{authData?.data?.followers?.length ?? 0}</span>
+            <span>{userData?.followers?.length ?? 0}</span>
             <span>Followers</span>
           </div>
 
@@ -82,7 +87,7 @@ const ProfileCard = ({ isProfile = false }) => {
             <>
               <div className="vl"></div>
               <div className="follow">
-                <span>{authData?.data?.postCount ?? 0}</span>
+                <span>{userData?.postCount ?? 0}</span>
                 <span>Posts</span>
               </div>
             </>

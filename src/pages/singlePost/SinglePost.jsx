@@ -205,7 +205,7 @@ const SinglePost = (PostsData) => {
         </span>
       );
     });
-  }
+ }
 
   return (
     <>
@@ -312,7 +312,7 @@ const SinglePost = (PostsData) => {
               </div>
 
               <Link
-              to={`/`}
+              to={`/${path.authorPosts}/${post?.createdBy?._id}`}
               className="absolute top-2 left-12 flex gap-2 items-center cursor-pointer rounded-[12px] px-[20px] py-1 bg-gray-300 ">
                  <div className="rounded-full  items-center w-[44px] h-[44px]"> 
                   <img src={`${appConfig?.awsBucketUrl}/${post?.createdBy?.profileImage}`} width={44} height={44} className="" 

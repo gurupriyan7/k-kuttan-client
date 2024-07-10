@@ -16,7 +16,7 @@ import { path } from '../../paths/paths'
 import { appConfig } from '../../config/appConfig'
 import { UserRole } from '../../config/enums'
 
-const PostShare = ({ data, setData, searchText, setSearchText ,isHome=false }) => {
+const PostShare = ({ data, setData, searchText, setSearchText ,isHome=false ,isAuthorProfile=false }) => {
   const authData = useSelector((state) => state.authReducer.authData)
 
   const [image, setImage] = useState(null)
@@ -116,10 +116,10 @@ const PostShare = ({ data, setData, searchText, setSearchText ,isHome=false }) =
             <span class="tooltiptext">Comming Soon...</span>
           </div>
         </div>
-        {authData?.data && isAuthor && (
+        {authData?.data && isAuthor && !isAuthorProfile&&(
           <button
             onClick={(e) => {
-              e.preventDefault()
+              e.preventDefault() 
               navigate(path.addPost)
             }}
             style={{ color: 'black' }}
