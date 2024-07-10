@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import "./SinglePost.css";
 import { Link } from "react-router-dom";
 import Post from "../../components/Post/Post";
@@ -35,6 +35,8 @@ const SinglePost = (PostsData) => {
   // const postId = searchParams.get('id');
   // const { postId } = location.state
   const { postId } = useParams();
+  const textContainerRef = useRef(null);
+
   const navigate = useNavigate();
   console.log(postId, "postIdsss");
   const [load, setLoad] = useState(false);
@@ -62,7 +64,7 @@ const SinglePost = (PostsData) => {
   const [page, setPage] = useState(1);
 
   const [failed, setFailed] = useState(false);
-  console.log(post,"POST")
+  console.log(post, "POST");
 
   useEffect(async () => {
     await dispatch(getPostById({ postId }));
@@ -72,6 +74,12 @@ const SinglePost = (PostsData) => {
     "post post post post post",
     process.env.REACT_APP_FRONTEND_URL
   );
+
+  useEffect(() => {
+    if (textContainerRef.current) {
+      textContainerRef.current.scrollTop = 0;
+    }
+  }, [page]);
 
   const handleLike = () => {
     if (userData?.data) {
@@ -167,7 +175,7 @@ const SinglePost = (PostsData) => {
   useEffect(async () => {
     if (post?.createdBy?._id !== userData?.data?._id) {
       await handleSelect();
-    }else{
+    } else {
       setPaymentStatus(true);
     }
   }, []);
@@ -205,7 +213,7 @@ const SinglePost = (PostsData) => {
         </span>
       );
     });
- }
+  }
 
   return (
     <>
@@ -312,29 +320,36 @@ const SinglePost = (PostsData) => {
               </div>
 
               <Link
-              to={`/${path.authorPosts}/${post?.createdBy?._id}`}
-              className="absolute top-2 left-12 flex gap-2 items-center cursor-pointer rounded-[12px] px-[20px] py-1 bg-gray-300 ">
-                 <div className="rounded-full  items-center w-[44px] h-[44px]"> 
-                  <img src={`${appConfig?.awsBucketUrl}/${post?.createdBy?.profileImage}`} width={44} height={44} className="" 
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    objectPosition: "top 0 0",
-                    borderRadius: "50%",
-                  }}
+                to={`/${path.authorPosts}/${post?.createdBy?._id}`}
+                className="absolute top-2 left-12 flex gap-2 items-center cursor-pointer rounded-[12px] px-[20px] py-1 bg-gray-300 "
+              >
+                <div className="rounded-full  items-center w-[44px] h-[44px]">
+                  <img
+                    src={`${appConfig?.awsBucketUrl}/${post?.createdBy?.profileImage}`}
+                    width={44}
+                    height={44}
+                    className=""
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      objectPosition: "top 0 0",
+                      borderRadius: "50%",
+                    }}
                   />
-                 </div> 
-                 <h6 className="text-start "> {post?.createdBy?.userName}</h6>
-                </Link>
-           <div className="max-h-[100vh] overflow-y-scroll  w-full mx-auto lg:mb-[2rem]">
-                
+                </div>
+                <h6 className="text-start "> {post?.createdBy?.userName}</h6>
+              </Link>
+              <div className="max-h-[100vh] overflow-y-scroll  w-full mx-auto lg:mb-[2rem]">
                 <div className="mx-auto w-full flex items-center justify-center">
                   <b className="mx-auto w-[250px] sm:w-[290px] md:w-[390px] lg:max-w-[450px] mb-2">
                     {post?.title}
                   </b>
                 </div>
-                <div className=" h-[50vh] md:h-[350px] lg:h-[60vh]  w-[35vh] sm:w-[290px] my-auto   md:w-[390px] lg:w-[480px]  xl:w-[50vw] mx-auto">
+                <div
+                  ref={textContainerRef}
+                  className=" h-[50vh] md:h-[350px] lg:h-[60vh]  w-[35vh] sm:w-[290px] my-auto   md:w-[390px] lg:w-[480px]  xl:w-[50vw] mx-auto"
+                >
                   {formatText(post?.story[page - 1]?.story)}
                 </div>
               </div>
