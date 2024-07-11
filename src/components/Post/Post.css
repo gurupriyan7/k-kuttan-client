@@ -11,8 +11,9 @@
 
 .Post>img{
     width: 100%;
-    max-height: 20rem;
-    object-fit: cover;
+    max-height: 24rem;
+    object-fit: fill;
+
     border-radius: 0.5rem;
 }
 
