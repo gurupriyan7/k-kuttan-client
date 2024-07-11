@@ -43,6 +43,8 @@ const ChatBox = ({
   };
   //fetching data for header of chat box
 
+  console.log(messages,"messagesss-messagess");
+
   useEffect(async () => {
     const chatData = await findChatById(chatId, isRoom);
     setChat(chatData?.data);
@@ -118,6 +120,7 @@ const ChatBox = ({
       // await addMessage(message)
       setMessages([...messages, message]);
       setNewMessage("");
+    
     } catch (error) {
       console.log(error);
     }
@@ -230,7 +233,7 @@ const ChatBox = ({
            ( isAdminRoom&&isAdmin || !isAdminRoom) ?
               (<div className="chat-sender">
                 <div>+</div>
-                <InputEmoji value={newMessage} onChange={handleChange} />
+                <InputEmoji style={{width:"9rem!important"}}  value={newMessage} onChange={handleChange} />
                 <div className="send-button button" onClick={handleSend}>
                   Send
                 </div>
