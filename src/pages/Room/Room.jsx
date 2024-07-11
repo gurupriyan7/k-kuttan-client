@@ -44,6 +44,7 @@ const Room = () => {
   // console.log(roomDatas, "DATA#")
 
   const [rooms, setRooms] = useState([])
+  const [chatRoomId,setChatRoomId]=useState("")
   const [chats, setChats] = useState([])
   const [joinedList, setJoinedList] = useState([])
   // console.log(chats,"CHATS")
@@ -199,6 +200,7 @@ const Room = () => {
                     onClick={() => {
                       setCurrentChat(list?.chatId)
                       setChatRoomName(list?.name)
+                      setChatRoomId(list?._id)
                     }}
                   >
                     <span>{list?.name}</span>
@@ -250,8 +252,9 @@ const Room = () => {
                 setSendMessage={setSendMessage}
                 recieveMessage={recieveMessage}
                 chatRoomName={chatRoomName}
+                roomId={chatRoomId}
               />
-            </div>
+            </div> 
           )}
         </div>
       </div>

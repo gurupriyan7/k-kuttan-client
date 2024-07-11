@@ -61,6 +61,16 @@
     border-radius: 1rem;
     align-self: end;
 }
+.admin-chat-sender{
+    background: #1514143d;
+    display: flex;
+    justify-content: center;
+    height: 3.5rem;
+    align-items: center;
+    padding: 0.8rem;
+    border-radius: 1rem;
+    align-self: end;
+}
 .chat-sender>input{
     height: 70%;
     background-color: rgb(236, 236, 236);
