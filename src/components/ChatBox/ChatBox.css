@@ -114,3 +114,7 @@
     justify-content: flex-start;
     gap: 0.3rem;
 }
+.react-input-emoji--input {
+    width: 9rem!important; /* Set the desired fixed width */
+    max-width:9rem!important ; /* Prevents the width from exceeding the specified value */
+  }
