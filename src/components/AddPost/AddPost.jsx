@@ -36,6 +36,8 @@ const AddPost = () => {
     title: "",
     summary: "",
     image: null,
+    part: "",
+    contentType:"",
   });
 
   const { error, isError, loading } = useSelector((state) => state.postReducer);
@@ -145,10 +147,24 @@ const AddPost = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    // setFormData({
+    //   ...formData,
+    //   [name]: value,
+    // });
+    if (name === "part") {
+      const numberValue = Number(value);
+      if (!isNaN(numberValue)) {
+        setFormData({
+          ...formData,
+          [name]: numberValue,
+        });
+      }
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
   const addStory = () => {
     setStories([...stories, { page: stories.length + 1, story: "" }]);
@@ -227,36 +243,45 @@ const AddPost = () => {
     e.preventDefault();
     setErrorShow(true);
 
-    if(!formData?.title || !formData?.summary){
-      enqueueSnackbar("Title and summary should not be empty!", {
+    
+
+    if (!formData?.title || !formData?.summary || !formData?.contentType || !formData?.part) {
+      enqueueSnackbar("Title, summary, part and category should not be empty!", {
         variant: "warning",
         autoHideDuration: 2000,
         ContentProps: {
           style: { backgroundColor: "yellow" },
         },
       });
-    }else{
-  //  Handle form submission logic here
-   dispatch(
-    createPost({
-      ...formData,
-      story: stories,
-      ...(isDraft && {
-        isDraft: isDraft,
-      }),
-    })
-  );
-  enqueueSnackbar("Post Added successfully !!", {
-    variant: "success",
-    autoHideDuration: 2000,
-    ContentProps: {
-      style: { backgroundColor: "green" },
-    },
-  });
-  navigate(path.home);
-  console.log(stories, "Form submitted:", formData);
+    } else {
+      //  Handle form submission logic here
+      dispatch(
+        createPost({
+          ...formData,
+          part: Number(formData.part),
+          story: stories,
+          ...(isDraft && {
+            isDraft: isDraft,
+          }),
+        })
+      );
+      enqueueSnackbar("Post Added successfully !!", {
+        variant: "success",
+        autoHideDuration: 2000,
+        ContentProps: {
+          style: { backgroundColor: "green" },
+        },
+      });
+      navigate(path.home);
+      console.log(stories, "Form submitted:", formData);
     }
- 
+  };
+
+  const handleKeyPress = (event) => {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (charCode < 48 || charCode > 57) {
+      event.preventDefault();
+    }
   };
 
   return (
@@ -300,6 +325,39 @@ const AddPost = () => {
                   required
                   className="input"
                 />
+
+                <div className="flex flex-col lg:flex-row gap-4">
+                  <input
+                    type="number"
+                    min={1}
+                    placeholder="Part No"
+                    name="part"
+                    value={formData.part}
+                    onChange={handleChange}
+                    required
+                    className="input"
+                    onKeyPress={handleKeyPress}
+                  />
+
+              
+                   
+                    <select
+                      name="contentType"
+                      id="contentType"
+                      value={formData.contentType}
+                      onChange={handleChange}
+                      className="input px-1"
+                    >
+                      <option value="" disabled>
+                        Select a category
+                      </option>
+                      <option value="option1">Option 1</option>
+                      <option value="option2">Option 2</option>
+                      <option value="option3">Option 3</option>
+                    </select>
+                
+                </div>
+
                 <div style={{ position: "relative", display: "inline-block" }}>
                   <input
                     type="file"
