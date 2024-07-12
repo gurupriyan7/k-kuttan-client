@@ -11,11 +11,21 @@ import back from "../../img/wp4082523.webp";
 import { createPost } from "../../actions/post.actions";
 import { path } from "../../paths/paths";
 import { useSnackbar } from "notistack";
+import Select from "react-select";
+
+const options = [
+  { value: "chocolate", label: "Chocolate" },
+  { value: "strawberry", label: "Strawberry" },
+  { value: "vanilla", label: "Vanilla" },
+];
+
 
 const AddPost = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedContent, setSelectedContent] = useState(null);
 
   const [errorShow, setErrorShow] = useState(false);
 
@@ -38,7 +48,7 @@ const AddPost = () => {
     image: null,
     part: "",
     contentType: "",
-    categoryType:""
+    categoryType: "",
   });
 
   const { error, isError, loading } = useSelector((state) => state.postReducer);
@@ -164,9 +174,12 @@ const AddPost = () => {
       setFormData({
         ...formData,
         [name]: value,
+        // ["categoryType"]: selectedCategory?.value,
+        // ["contentType"]: selectedContent?.value,
       });
     }
   };
+  console.log(formData,"DATA1")
   const addStory = () => {
     setStories([...stories, { page: stories.length + 1, story: "" }]);
     setStoryCount(storyCount + 1);
@@ -334,28 +347,70 @@ const AddPost = () => {
                   className="input"
                 />
 
-                <select
-                  name="categoryType"
-                  id="categoryType"
-                  value={formData.categoryType}
-                  onChange={handleChange}
-                  className="input px-1 cursor-pointer py-1"
-                >
-                  <option value="" disabled>
-                    Select a category Type
-                  </option>
-                  <option className="cursor-pointer py-1" value="option1">
-                    Option 1
-                  </option>
-                  <option className="cursor-pointer py-1" value="option2">
-                    Option 2
-                  </option>
-                  <option className="cursor-pointer py-1" value="option3">
-                    Option 3
-                  </option>
-                </select>
+            
 
-                <div className="flex flex-col lg:flex-row gap-4">
+                <div>
+                  <Select
+                    className="text-[14px] cursor-pointer"
+                    name="categoryType"
+                    defaultValue={selectedCategory}
+                    value={selectedCategory}
+                    placeholder="select category"
+                    // onChange={setSelectedCategory}
+                    onChange={(selectedOption) => {
+                      setSelectedCategory(selectedOption);
+                      setFormData((prevData) => ({
+                        ...prevData,
+                        categoryType: selectedOption.value,
+                      }));
+                    }}
+                    options={options}
+                    theme={(theme) => ({
+                      ...theme,
+                      borderRadius: 0,
+                      border: "none",
+                      padding: "4px",
+                      colors: {
+                        ...theme.colors,
+                        neutral0: "#D1D5DB", // Set the background color
+                        primary25: "#E5E7EB", // Option hover background color to gray-200
+                        primary: "#6B7280", // Option selected color to gray-500
+                      },
+                    })}
+                    styles={{
+                      control: (base) => ({
+                        ...base,
+                        cursor: 'pointer',
+                        backgroundColor: "#EEEEEE", // gray-300
+                        borderColor: "#D1D5DB", // gray-300
+                        boxShadow: "none",
+                        "&:hover": {
+                          borderColor: "#6B7280", // gray-500
+                        },
+                      }),
+                      option: (base, state) => ({
+                        ...base,
+                        cursor: 'pointer',
+                        backgroundColor: state.isFocused ? "#E5E7EB" : "white", // gray-200 on hover
+                        color: "black",
+                        "&:active": {
+                          backgroundColor: "#D1D5DB", // gray-300
+                        },
+                      }),
+                      menu: (base) => ({
+                        ...base,
+                        backgroundColor: "#D1D5DB", // gray-300 for the dropdown
+                      }),
+                      singleValue: (base) => ({
+                        ...base,
+                        color: "black",
+                      }),
+                    }}
+                    // unstyled
+                  />
+                </div>
+
+                <div className="flex flex-col lg:flex-row lg:gap-4 mb-4 lg:mb-0">
                   <input
                     type="number"
                     min={1}
@@ -368,26 +423,67 @@ const AddPost = () => {
                     onKeyPress={handleKeyPress}
                   />
 
-                  <select
+                  <Select
+                    className="text-[14px] cursor-pointer w-full lg:mt-[16px] pt-1"
                     name="contentType"
-                    id="contentType"
-                    value={formData.contentType}
-                    onChange={handleChange}
-                    className="input px-1 cursor-pointer "
-                  >
-                    <option value="" disabled>
-                      Select a category
-                    </option>
-                    <option className="cursor-pointer py-1" value="option1">
-                      Option 1
-                    </option>
-                    <option className="cursor-pointer py-1" value="option2">
-                      Option 2
-                    </option>
-                    <option className="cursor-pointer py-1" value="option3">
-                      Option 3
-                    </option>
-                  </select>
+                    defaultValue={selectedContent}
+                    value={selectedContent}
+                    placeholder="select content type"
+                    // onChange={setSelectedContent}
+                    onChange={(selectedOption) => {
+                      setSelectedContent(selectedOption);
+                      setFormData((prevData) => ({
+                        ...prevData,
+                        contentType: selectedOption.value,
+                      }));
+                    }}
+                    options={options}
+                    theme={(theme) => ({
+                      ...theme,
+                      borderRadius: 0,
+                      border: "none",
+                      padding: "9px",
+                      colors: {
+                        ...theme.colors,
+                        neutral0: "#D1D5DB", // Set the background color
+                        primary25: "#E5E7EB", // Option hover background color to gray-200
+                        primary: "#6B7280", // Option selected color to gray-500
+                      },
+                    })}
+                    styles={{
+                      control: (base) => ({
+                        ...base,
+                        cursor: 'pointer',
+                        backgroundColor: "#EEEEEE", // gray-300
+                        // borderColor: "#D1D5DB", // gray-300
+                        boxShadow: "none",
+                        padding:"2px",
+                        "&:hover": {
+                          borderColor: "#6B7280", // gray-500
+                        },
+                      }),
+                      option: (base, state) => ({
+                        ...base,
+                        cursor: 'pointer',
+                        backgroundColor: state.isFocused ? "#E5E7EB" : "white", // gray-200 on hover
+                        color: "black",
+                        "&:active": {
+                          backgroundColor: "#D1D5DB", // gray-300
+                        },
+                      }),
+                      menu: (base) => ({
+                        ...base,
+                        backgroundColor: "#D1D5DB", // gray-300 for the dropdown
+                      }),
+                      singleValue: (base) => ({
+                        ...base,
+                        color: "black",
+                      }),
+                    }}
+                    // unstyled
+                  />
+
+                
                 </div>
 
                 <div style={{ position: "relative", display: "inline-block" }}>

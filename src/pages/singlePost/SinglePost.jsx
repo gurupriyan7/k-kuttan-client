@@ -27,6 +27,7 @@ import PostShareModal from "../../components/PostShareModal/PostshareModal";
 import { PaymentStatusEnum } from "../../constants/paymentEnum";
 import { path } from "../../paths/paths";
 import PaymentFailModal from "../../components/PaymentFailedModal/PaymentFailedModal";
+import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 const SinglePost = (PostsData) => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -273,7 +274,16 @@ const SinglePost = (PostsData) => {
             <div className="items-center flex flex-col gap-2 md:gap-4 justify-center w-full h-full">
               <div class=" flex flex-col items-center justify-center  ">
                 {!post?.isDraft && (
-                  <div className="flex gap-4 md:gap-7 lg:mt-4">
+                  <div className="flex gap-4 md:gap-7 mt-1 lg:mt-4">
+                    <Link to={`/`} className="cursor-pointer flex gap-1 p-1 border-2 border-gray-600  rounded-[8px] items-center">
+                      <KeyboardDoubleArrowLeftIcon fontSize="medium" />
+                      <span 
+                      className="hidden md:flex hover:text-gray-900 hover:font-[500]"
+                      style={{
+                        color: "var(--gray)",
+                        fontSize: "12px",
+                      }}>Previous story</span>
+                    </Link>
                     <div className="w-[34px] h-[34px] ">
                       <img
                         src={liked ? Heart : NotLike}
@@ -309,12 +319,16 @@ const SinglePost = (PostsData) => {
                       </span>
                     </div>
                     <img
-                      className=" w-[30px] h-[26px]"
+                      className=" w-[30px] h-[26px] "
                       src={Share}
                       alt=""
                       onClick={() => setShareModalOpened(true)}
                       style={{ cursor: "pointer" }}
                     />
+
+                    <div className="flex mt-1 justify-center px-[10px] py-[4px] rounded-[12px] bg-orange-500 text-white font-[500] text-[14px] h-fit">
+                      <p>category</p>
+                    </div>
                   </div>
                 )}
               </div>
@@ -342,7 +356,7 @@ const SinglePost = (PostsData) => {
               </Link>
               <div className="max-h-[100vh] overflow-y-scroll  w-full mx-auto lg:mb-[2rem]">
                 <div className="mx-auto w-full flex items-center justify-center">
-                  <b className="mx-auto w-[250px] sm:w-[290px] md:w-[390px] lg:max-w-[450px] mb-2">
+                  <b className="mx-auto w-[250px] sm:w-[290px] md:w-[390px] lg:max-w-[450px] xl:w-[50vw] mb-2">
                     {post?.title}
                   </b>
                 </div>
