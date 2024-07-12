@@ -12,6 +12,8 @@ import { createPost } from "../../actions/post.actions";
 import { path } from "../../paths/paths";
 import { useSnackbar } from "notistack";
 import Select from "react-select";
+import Home from "../../img/home.png";
+import { Link } from "react-router-dom";
 
 const options = [
   { value: "chocolate", label: "Chocolate" },
@@ -49,7 +51,7 @@ const AddPost = () => {
     part: "",
     contentType: "",
     categoryType: "",
-    OtherContentType:"",
+    OtherContentType: "",
   });
 
   const { error, isError, loading } = useSelector((state) => state.postReducer);
@@ -308,6 +310,12 @@ const AddPost = () => {
 
   return (
     <div className="main" style={{ backgroundImage: `URL(${back})` }}>
+      <div style={{ backgroundColor: "" }} className="absolute left-4 top-4">
+        <Link to="../">
+          {" "}
+          <img src={Home} style={{ width: "1.5rem" }} alt="" />
+        </Link>
+      </div>
       <div className="container">
         <div className="form-container">
           {/* <div className="left-container">
@@ -484,15 +492,15 @@ const AddPost = () => {
                 </div>
 
                 {selectedContent?.value === "other" && (
-                   <input
-                   type="text"
-                   placeholder="Content type"
-                   name="OtherContentType"
-                   value={formData?.OtherContentType}
-                   onChange={handleChange}
-                   required
-                   className="input"
-                 />
+                  <input
+                    type="text"
+                    placeholder="Content type"
+                    name="OtherContentType"
+                    value={formData?.OtherContentType}
+                    onChange={handleChange}
+                    required
+                    className="input"
+                  />
                 )}
 
                 <div style={{ position: "relative", display: "inline-block" }}>

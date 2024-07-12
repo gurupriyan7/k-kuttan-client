@@ -272,9 +272,9 @@ const SinglePost = (PostsData) => {
             }}
           >
             <div className="items-center flex flex-col gap-2 md:gap-4 justify-center w-full h-full">
-              <div class=" flex flex-col items-center justify-center  ">
+              <div class=" flex flex-col items-center justify-center    w-[75vw] sm:w-[60vh]   md:w-[390px] lg:w-[480px]  xl:w-[50vw] ">
                 {!post?.isDraft && (
-                  <div className="flex gap-4 md:gap-7 mt-1 lg:mt-4">
+                  <div className="flex  justify-between w-full md:gap-7 mt-1 lg:mt-4">
                     <Link to={`/`} className="cursor-pointer flex gap-1 p-1 border-2 border-gray-600  rounded-[8px] items-center">
                       <KeyboardDoubleArrowLeftIcon fontSize="medium" />
                       <span 
@@ -284,6 +284,9 @@ const SinglePost = (PostsData) => {
                         fontSize: "12px",
                       }}>Previous story</span>
                     </Link>
+
+                    <div className="flex gap-8">
+
                     <div className="w-[34px] h-[34px] ">
                       <img
                         src={liked ? Heart : NotLike}
@@ -325,8 +328,9 @@ const SinglePost = (PostsData) => {
                       onClick={() => setShareModalOpened(true)}
                       style={{ cursor: "pointer" }}
                     />
+                    </div>
 
-                    <div className="flex mt-1 justify-center px-[10px] py-[4px] rounded-[12px] bg-orange-500 text-white font-[500] text-[14px] h-fit">
+                    <div className="flex mt-1 justify-center  py-[4px] rounded-[4px]  text-white font-[500] text-[14px] h-fit">
                       <p>category</p>
                     </div>
                   </div>
