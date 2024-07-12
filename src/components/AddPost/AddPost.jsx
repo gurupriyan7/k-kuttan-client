@@ -37,7 +37,8 @@ const AddPost = () => {
     summary: "",
     image: null,
     part: "",
-    contentType:"",
+    contentType: "",
+    categoryType:""
   });
 
   const { error, isError, loading } = useSelector((state) => state.postReducer);
@@ -243,16 +244,23 @@ const AddPost = () => {
     e.preventDefault();
     setErrorShow(true);
 
-    
-
-    if (!formData?.title || !formData?.summary || !formData?.contentType || !formData?.part) {
-      enqueueSnackbar("Title, summary, part and category should not be empty!", {
-        variant: "warning",
-        autoHideDuration: 2000,
-        ContentProps: {
-          style: { backgroundColor: "yellow" },
-        },
-      });
+    if (
+      !formData?.title ||
+      !formData?.summary ||
+      !formData?.contentType ||
+      !formData?.part ||
+      !formData?.categoryType
+    ) {
+      enqueueSnackbar(
+        "Title, summary, part ,category Type and content Type should not be empty!",
+        {
+          variant: "warning",
+          autoHideDuration: 2000,
+          ContentProps: {
+            style: { backgroundColor: "yellow" },
+          },
+        }
+      );
     } else {
       //  Handle form submission logic here
       dispatch(
@@ -326,6 +334,27 @@ const AddPost = () => {
                   className="input"
                 />
 
+                <select
+                  name="categoryType"
+                  id="categoryType"
+                  value={formData.categoryType}
+                  onChange={handleChange}
+                  className="input px-1 cursor-pointer py-1"
+                >
+                  <option value="" disabled>
+                    Select a category Type
+                  </option>
+                  <option className="cursor-pointer py-1" value="option1">
+                    Option 1
+                  </option>
+                  <option className="cursor-pointer py-1" value="option2">
+                    Option 2
+                  </option>
+                  <option className="cursor-pointer py-1" value="option3">
+                    Option 3
+                  </option>
+                </select>
+
                 <div className="flex flex-col lg:flex-row gap-4">
                   <input
                     type="number"
@@ -339,23 +368,26 @@ const AddPost = () => {
                     onKeyPress={handleKeyPress}
                   />
 
-              
-                   
-                    <select
-                      name="contentType"
-                      id="contentType"
-                      value={formData.contentType}
-                      onChange={handleChange}
-                      className="input px-1"
-                    >
-                      <option value="" disabled>
-                        Select a category
-                      </option>
-                      <option value="option1">Option 1</option>
-                      <option value="option2">Option 2</option>
-                      <option value="option3">Option 3</option>
-                    </select>
-                
+                  <select
+                    name="contentType"
+                    id="contentType"
+                    value={formData.contentType}
+                    onChange={handleChange}
+                    className="input px-1 cursor-pointer "
+                  >
+                    <option value="" disabled>
+                      Select a category
+                    </option>
+                    <option className="cursor-pointer py-1" value="option1">
+                      Option 1
+                    </option>
+                    <option className="cursor-pointer py-1" value="option2">
+                      Option 2
+                    </option>
+                    <option className="cursor-pointer py-1" value="option3">
+                      Option 3
+                    </option>
+                  </select>
                 </div>
 
                 <div style={{ position: "relative", display: "inline-block" }}>
