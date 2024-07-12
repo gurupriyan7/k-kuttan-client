@@ -17,8 +17,8 @@ const options = [
   { value: "chocolate", label: "Chocolate" },
   { value: "strawberry", label: "Strawberry" },
   { value: "vanilla", label: "Vanilla" },
+  { value: "other", label: "Other" },
 ];
-
 
 const AddPost = () => {
   const dispatch = useDispatch();
@@ -49,6 +49,7 @@ const AddPost = () => {
     part: "",
     contentType: "",
     categoryType: "",
+    OtherContentType:"",
   });
 
   const { error, isError, loading } = useSelector((state) => state.postReducer);
@@ -179,7 +180,7 @@ const AddPost = () => {
       });
     }
   };
-  console.log(formData,"DATA1")
+  console.log(formData, "DATA1");
   const addStory = () => {
     setStories([...stories, { page: stories.length + 1, story: "" }]);
     setStoryCount(storyCount + 1);
@@ -347,11 +348,9 @@ const AddPost = () => {
                   className="input"
                 />
 
-            
-
                 <div>
                   <Select
-                    className="text-[14px] cursor-pointer"
+                    className="text-[14px] cursor-pointer mt-[18px]"
                     name="categoryType"
                     defaultValue={selectedCategory}
                     value={selectedCategory}
@@ -380,7 +379,7 @@ const AddPost = () => {
                     styles={{
                       control: (base) => ({
                         ...base,
-                        cursor: 'pointer',
+                        cursor: "pointer",
                         backgroundColor: "#EEEEEE", // gray-300
                         borderColor: "#D1D5DB", // gray-300
                         boxShadow: "none",
@@ -390,7 +389,7 @@ const AddPost = () => {
                       }),
                       option: (base, state) => ({
                         ...base,
-                        cursor: 'pointer',
+                        cursor: "pointer",
                         backgroundColor: state.isFocused ? "#E5E7EB" : "white", // gray-200 on hover
                         color: "black",
                         "&:active": {
@@ -410,19 +409,7 @@ const AddPost = () => {
                   />
                 </div>
 
-                <div className="flex flex-col lg:flex-row lg:gap-4 mb-4 lg:mb-0">
-                  <input
-                    type="number"
-                    min={1}
-                    placeholder="Part No"
-                    name="part"
-                    value={formData.part}
-                    onChange={handleChange}
-                    required
-                    className="input"
-                    onKeyPress={handleKeyPress}
-                  />
-
+                <div className="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-[24px]">
                   <Select
                     className="text-[14px] cursor-pointer w-full lg:mt-[16px] pt-1"
                     name="contentType"
@@ -453,18 +440,18 @@ const AddPost = () => {
                     styles={{
                       control: (base) => ({
                         ...base,
-                        cursor: 'pointer',
+                        cursor: "pointer",
                         backgroundColor: "#EEEEEE", // gray-300
                         // borderColor: "#D1D5DB", // gray-300
                         boxShadow: "none",
-                        padding:"2px",
+                        padding: "2px",
                         "&:hover": {
                           borderColor: "#6B7280", // gray-500
                         },
                       }),
                       option: (base, state) => ({
                         ...base,
-                        cursor: 'pointer',
+                        cursor: "pointer",
                         backgroundColor: state.isFocused ? "#E5E7EB" : "white", // gray-200 on hover
                         color: "black",
                         "&:active": {
@@ -483,8 +470,30 @@ const AddPost = () => {
                     // unstyled
                   />
 
-                
+                  <input
+                    type="number"
+                    min={1}
+                    placeholder="Part No"
+                    name="part"
+                    value={formData.part}
+                    onChange={handleChange}
+                    required
+                    className="input"
+                    onKeyPress={handleKeyPress}
+                  />
                 </div>
+
+                {selectedContent?.value === "other" && (
+                   <input
+                   type="text"
+                   placeholder="Content type"
+                   name="OtherContentType"
+                   value={formData?.OtherContentType}
+                   onChange={handleChange}
+                   required
+                   className="input"
+                 />
+                )}
 
                 <div style={{ position: "relative", display: "inline-block" }}>
                   <input
