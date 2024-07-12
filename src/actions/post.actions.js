@@ -11,6 +11,18 @@ export const getAllPosts = (searchText) => async (dispatch) => {
     dispatch({ type: "FETCH_FAILED", data: error?.response?.data });
   }
 };
+export const getPostSeqwnces = () => async (dispatch) => {
+  console.log("calling");
+  dispatch({ type: "FETCH_SEQ_START" });
+  try {
+    const { data } = await PostApi.getPostSeqwnces()
+    console.log(data,"seq-data");
+    dispatch({ type: "FETCH_SEQ_SUCCESS", data: data?.data });
+  } catch (error) {
+    console.log(error, "errorrorrosss");
+    dispatch({ type: "FETCH_SEQ_FAILED", data: error?.response?.data });
+  }
+};
 export const getPostsByUser = (isDraft,searchText) => async (dispatch) => {
   dispatch({ type: "FETCH_START" });
   try {

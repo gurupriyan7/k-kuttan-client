@@ -8,19 +8,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getPreSignedUrlUtill } from "../../utils/s3.utils";
 import back from "../../img/wp4082523.webp";
-import { createPost } from "../../actions/post.actions";
+import { createPost, getPostSeqwnces } from "../../actions/post.actions";
 import { path } from "../../paths/paths";
 import { useSnackbar } from "notistack";
 import Select from "react-select";
 import Home from "../../img/home.png";
 import { Link } from "react-router-dom";
+import { PostCategoriesEnum } from "../../constants/PostEnum";
 
-const options = [
-  { value: "chocolate", label: "Chocolate" },
-  { value: "strawberry", label: "Strawberry" },
-  { value: "vanilla", label: "Vanilla" },
-  { value: "other", label: "Other" },
-];
+
 
 const AddPost = () => {
   const dispatch = useDispatch();
@@ -28,6 +24,8 @@ const AddPost = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedContent, setSelectedContent] = useState(null);
+  const { postSeq } = useSelector((state) => state.postReducer);
+  const [partSeqs, setPartSeqs] = useState([]);
 
   const [errorShow, setErrorShow] = useState(false);
 
@@ -39,8 +37,15 @@ const AddPost = () => {
       story: "",
     },
   ]);
+
   useEffect(() => {
-    console.log(storyCount, "storycountttttt", stories);
+    setPartSeqs(postSeq);
+  }, [postSeq]);
+
+  useEffect(() => {
+    dispatch(getPostSeqwnces());
+  }, []);
+  useEffect(() => {
   }, [storyCount, stories]);
   const [image, setImage] = useState(null);
   const imageRef = useRef();
@@ -48,10 +53,9 @@ const AddPost = () => {
     title: "",
     summary: "",
     image: null,
-    part: "",
-    contentType: "",
-    categoryType: "",
-    OtherContentType: "",
+    partNumber: "",
+    partName: "",
+    category: "",
   });
 
   const { error, isError, loading } = useSelector((state) => state.postReducer);
@@ -63,7 +67,6 @@ const AddPost = () => {
   };
 
   const findStoryByPage = (page) => {
-    // console.log(stories, "apple-orange-grapes");
     return stories.find((story) => story?.page === page);
   };
 
@@ -83,7 +86,6 @@ const AddPost = () => {
     if (stories?.length > 1) {
       const tempStories = stories;
       const data = await removeAndReindex(tempStories, index);
-      console.log(index, "indexxxx", tempStories, "temp", data);
       setStories(data);
       setStoryCount(storyCount - 1);
     }
@@ -139,7 +141,6 @@ const AddPost = () => {
       chunks.push({ page, story: currentWords.join(" ").trim() });
     }
 
-    console.log(chunks); // Output the chunks to console for verification
 
     return chunks;
   };
@@ -155,7 +156,6 @@ const AddPost = () => {
         ...formData,
         image: imageData ?? "",
       });
-      console.log(imageData, "image-image");
     }
   };
 
@@ -165,7 +165,7 @@ const AddPost = () => {
     //   ...formData,
     //   [name]: value,
     // });
-    if (name === "part") {
+    if (name === "partNumber") {
       const numberValue = Number(value);
       if (!isNaN(numberValue)) {
         setFormData({
@@ -182,7 +182,6 @@ const AddPost = () => {
       });
     }
   };
-  console.log(formData, "DATA1");
   const addStory = () => {
     setStories([...stories, { page: stories.length + 1, story: "" }]);
     setStoryCount(storyCount + 1);
@@ -190,7 +189,6 @@ const AddPost = () => {
 
   const handleInputChange = async (index, value = "") => {
     const wordCount = await countWords(value);
-    console.log(wordCount, "owrd");
     const pagefound = await findStoryByPage(index + 2);
     if (wordCount > 200 && !pagefound) {
       const tempChunks = splitTextIntoChunks(value, 200, index + 1);
@@ -263,12 +261,13 @@ const AddPost = () => {
     if (
       !formData?.title ||
       !formData?.summary ||
-      !formData?.contentType ||
-      !formData?.part ||
-      !formData?.categoryType
+      !formData?.category ||
+      !formData?.partName ||
+      !formData?.partNumber ||
+      formData?.partName==="other"
     ) {
       enqueueSnackbar(
-        "Title, summary, part ,category Type and content Type should not be empty!",
+        "Title, Summary, part Name ,Part Number and  category should not be empty!",
         {
           variant: "warning",
           autoHideDuration: 2000,
@@ -297,7 +296,6 @@ const AddPost = () => {
         },
       });
       navigate(path.home);
-      console.log(stories, "Form submitted:", formData);
     }
   };
 
@@ -359,7 +357,7 @@ const AddPost = () => {
                 <div>
                   <Select
                     className="text-[14px] cursor-pointer mt-[18px]"
-                    name="categoryType"
+                    name="category"
                     defaultValue={selectedCategory}
                     value={selectedCategory}
                     placeholder="select category"
@@ -368,10 +366,10 @@ const AddPost = () => {
                       setSelectedCategory(selectedOption);
                       setFormData((prevData) => ({
                         ...prevData,
-                        categoryType: selectedOption.value,
+                        category: selectedOption?.value,
                       }));
                     }}
-                    options={options}
+                    options={PostCategoriesEnum}
                     theme={(theme) => ({
                       ...theme,
                       borderRadius: 0,
@@ -420,19 +418,19 @@ const AddPost = () => {
                 <div className="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-[24px]">
                   <Select
                     className="text-[14px] cursor-pointer w-full lg:mt-[16px] pt-1"
-                    name="contentType"
+                    name="partName"
                     defaultValue={selectedContent}
                     value={selectedContent}
-                    placeholder="select content type"
+                    placeholder="select Part Name"
                     // onChange={setSelectedContent}
                     onChange={(selectedOption) => {
                       setSelectedContent(selectedOption);
                       setFormData((prevData) => ({
                         ...prevData,
-                        contentType: selectedOption.value,
+                        partName: selectedOption.value,
                       }));
                     }}
-                    options={options}
+                    options={partSeqs}
                     theme={(theme) => ({
                       ...theme,
                       borderRadius: 0,
@@ -482,8 +480,8 @@ const AddPost = () => {
                     type="number"
                     min={1}
                     placeholder="Part No"
-                    name="part"
-                    value={formData.part}
+                    name="partNumber"
+                    value={formData.partNumber}
                     onChange={handleChange}
                     required
                     className="input"
@@ -494,9 +492,9 @@ const AddPost = () => {
                 {selectedContent?.value === "other" && (
                   <input
                     type="text"
-                    placeholder="Content type"
-                    name="OtherContentType"
-                    value={formData?.OtherContentType}
+                    placeholder="Part Name"
+                    name="partName"
+                    value={formData?.partName}
                     onChange={handleChange}
                     required
                     className="input"

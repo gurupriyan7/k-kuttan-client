@@ -9,19 +9,28 @@ export const getAllPosts = async (searchText) => {
   try {
     const token = getLocalStorageItem("token");
     const userData = getLocalStorageItem("profile");
-    // const token = userData?.data?.token;
-    // alert("calling")
-    // console.log(token, "tokensssss");
 
-    // if (!userData) {
-    //   window.location.href = path.auth;
-    // }
     return await API.get(`/post?searchTerm=${searchText ?? ""}`, {
       ...(token && {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getPostSeqwnces = async () => {
+  try {
+    const token = getLocalStorageItem("token");
+
+    return await API.get(`/post/post-seq`,{
+      ...(token && {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
     });
   } catch (error) {
     console.log(error);
@@ -35,8 +44,8 @@ export const getPostsByUser = async (isDraft, searchText) => {
       `/post/user?isDraft=${isDraft}&searchTerm=${searchText ?? ""}`,
       {
         headers: {
-          Authorization: `Bearer ${token}` // Include the Bearer token in the Authorization header
-        }
+          Authorization: `Bearer ${token}`, // Include the Bearer token in the Authorization header
+        },
       }
     );
   } catch (error) {
@@ -45,16 +54,16 @@ export const getPostsByUser = async (isDraft, searchText) => {
 };
 export const getPostsByUserId = async (authorId, searchText) => {
   try {
-   const token = getLocalStorageItem("token");
+    const token = getLocalStorageItem("token");
     // const token = userData?.data?.token;
     return await API.get(
       `/post/user/${authorId}?searchTerm=${searchText ?? ""}`,
       {
         ...(token && {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
+            Authorization: `Bearer ${token}`,
+          },
+        }),
       }
     );
   } catch (error) {
@@ -68,9 +77,9 @@ export const getPostById = async ({ postId }) => {
     return await API.get(`/post/${postId}`, {
       ...(token && {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+          Authorization: `Bearer ${token}`,
+        },
+      }),
     });
   } catch (error) {
     console.log(error);
@@ -86,16 +95,16 @@ export const likeAndCommentPost = async (id, userId) => {
       `post/user/${id}`,
       {
         userId: userId,
-        like: true
+        like: true,
       },
       {
         headers: {
-          Authorization: `Bearer ${token}` // Include the Bearer token in the Authorization header
-        }
+          Authorization: `Bearer ${token}`, // Include the Bearer token in the Authorization header
+        },
       }
     );
   } catch (error) {
-    await authCheck(error)
+    await authCheck(error);
     console.log(error);
   }
 };
@@ -106,16 +115,16 @@ export const commentPost = async ({ id, comment }) => {
     return await API.patch(
       `post/user/${id}`,
       {
-        comment: comment
+        comment: comment,
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
   } catch (error) {
-    await authCheck(error)
+    await authCheck(error);
     console.log(error);
   }
 };
@@ -127,16 +136,16 @@ export const createPost = async (postData) => {
     return await API.post(
       `post`,
       {
-        ...postData
+        ...postData,
       },
       {
         headers: {
-          Authorization: `Bearer ${token}` // Include the Bearer token in the Authorization header
-        }
+          Authorization: `Bearer ${token}`, // Include the Bearer token in the Authorization header
+        },
       }
     );
   } catch (error) {
-    await authCheck(error)
+    await authCheck(error);
     console.log(error);
   }
 };
@@ -148,16 +157,16 @@ export const updatePayment = async (paymentData) => {
     return await API.post(
       `webHook`,
       {
-        ...paymentData
+        ...paymentData,
       },
       {
         headers: {
-          Authorization: `Bearer ${token}` // Include the Bearer token in the Authorization header
-        }
+          Authorization: `Bearer ${token}`, // Include the Bearer token in the Authorization header
+        },
       }
     );
   } catch (error) {
-    await authCheck(error)
+    await authCheck(error);
     console.log(error);
   }
 };
@@ -170,16 +179,16 @@ export const updatePost = async (id, userData) => {
     return await API.patch(
       `post/${id}`,
       {
-        ...userData
+        ...userData,
       },
       {
         headers: {
-          Authorization: `Bearer ${token}` // Include the Bearer token in the Authorization header
-        }
+          Authorization: `Bearer ${token}`, // Include the Bearer token in the Authorization header
+        },
       }
     );
   } catch (error) {
-    await authCheck(error)
+    await authCheck(error);
     console.log(error);
   }
 };
