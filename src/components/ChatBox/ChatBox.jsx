@@ -13,6 +13,7 @@ import { findChatById } from "../../api/chatRequest";
 import Profile from "../../img/profileImg.jpg";
 import { UilArrowLeft } from "@iconscout/react-unicons";
 import { useNavigate } from "react-router-dom";
+import back from '../../img/wp4082523.webp'
 const ChatBox = ({
   chatId,
   currentUser,
@@ -151,7 +152,7 @@ const ChatBox = ({
 
   return (
     <>
-      <div className="ChatBox-container w-full">
+      <div style={{ backgroundImage: isAdminRoom ? `URL(${back})` :""} } className="ChatBox-container w-full">
         {chat ? (
           <>
             <div className="chat-header">
@@ -159,7 +160,8 @@ const ChatBox = ({
                 <div>
                   <button
                     onClick={() => navigate(0)}
-                    className="mr-2 p-1 rounded-full hover:bg-gray-200"
+                    // className="mr-2 p-1 rounded-full hover:bg-gray-200"
+                    className={isAdminRoom ? "room-back mr-2 p-1 rounded-full hover:bg-gray-200":"mr-2 p-1 rounded-full hover:bg-gray-200"}
                   >
                     <UilArrowLeft size="24" />
                   </button>
@@ -176,14 +178,14 @@ const ChatBox = ({
                     />
                   )}
                   <div className="name" style={{ fontSize: "0.8rem" }}>
-                    <span>
+                    <span className={isAdminRoom ? "room-name":""}>
                       {room ? chatRoomName : chatUser?.firstName}
                       {/* {chatUser?.lastname} */}
                     </span>
                   </div>
                 </div>
               </div>
-              <hr style={{ width: "85%", border: "0.1px solid #ececec" }} />
+              <hr className={isAdminRoom ? "room-hr":""} style={{ width: "100%", border: "0.1px solid #ececec" }} />
             </div>
             {/* chat box message */}
             <div className="chat-body">

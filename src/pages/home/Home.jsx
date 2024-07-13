@@ -49,7 +49,7 @@ const Home = () => {
           postData={posts}
           isHome={true}
           setCategory={setCategory}
-          isCategory={true}
+          isCategory
         />
         <RightSide />
       </div>

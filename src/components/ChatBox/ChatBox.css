@@ -1,5 +1,5 @@
 .ChatBox-container {
-    background: var(--cardColor);
+    /* background: var(--cardColor); */
     border-radius: 1rem;
     display: grid;
     grid-template-rows: 14vh 60vh 13vh;
@@ -62,7 +62,7 @@
     align-self: end;
 }
 .admin-chat-sender{
-    background: #1514143d;
+    background: #15141469;
     display: flex;
     justify-content: center;
     height: 3.5rem;
@@ -70,6 +70,7 @@
     padding: 0.8rem;
     border-radius: 1rem;
     align-self: end;
+    color: orange;
 }
 .chat-sender>input{
     height: 70%;
@@ -117,4 +118,18 @@
 .react-input-emoji--input {
     width: 9rem!important; /* Set the desired fixed width */
     max-width:9rem!important ; /* Prevents the width from exceeding the specified value */
+  }
+
+  .room-name{
+    color:orange!important;
+    font-size: 16px;
+  }
+
+  .room-back{
+    color: orange!important;
+  }
+
+  .room-hr{
+    border:1px solid orange!important;
+
   }
