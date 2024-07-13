@@ -76,11 +76,11 @@ const SinglePost = (PostsData) => {
     process.env.REACT_APP_FRONTEND_URL
   );
 
-  useEffect(() => {
-    if (textContainerRef.current) {
-      textContainerRef.current.scrollTop = 0;
-    }
-  }, [page]);
+  // useEffect(() => {
+  //   if (textContainerRef.current) {
+  //     textContainerRef.current.scrollTop = 0;
+  //   }
+  // }, [page]);
 
   const handleLike = () => {
     if (userData?.data) {
@@ -103,6 +103,10 @@ const SinglePost = (PostsData) => {
       setPage(page + 1);
     } else {
       setPage(page - 1);
+    }
+    window.scrollTo(0, 0); 
+       if (textContainerRef.current) {
+      textContainerRef.current.scrollTo(0,0);
     }
   };
 
@@ -171,9 +175,9 @@ const SinglePost = (PostsData) => {
       });
     }
   };
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [page]);
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, [page]);
   useEffect(async () => {
     if (post?.createdBy?._id !== userData?.data?._id) {
       await handleSelect();
@@ -378,14 +382,14 @@ navigate(`/post-seq`,{
                 </div>
                 <h6 className="text-start "> {post?.createdBy?.userName}</h6>
               </Link>
-              <div className="max-h-[100vh] overflow-y-scroll  w-full mx-auto lg:mb-[2rem]">
+              <div  ref={textContainerRef} className="max-h-[100vh] overflow-y-scroll  w-full mx-auto lg:mb-[2rem]">
                 <div className="mx-auto w-full flex items-center justify-center">
                   <b className="mx-auto w-[250px] sm:w-[290px] md:w-[390px] lg:max-w-[450px] xl:w-[50vw] mb-2">
                     {post?.title}
                   </b>
                 </div>
                 <div
-                  ref={textContainerRef}
+                  // ref={textContainerRef}
                   className=" h-[50vh] md:h-[350px] lg:h-[60vh]  w-[35vh] sm:w-[290px] my-auto   md:w-[390px] lg:w-[480px]  xl:w-[50vw] mx-auto"
                 >
                   {formatText(post?.story[page - 1]?.story)}
