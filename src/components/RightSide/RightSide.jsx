@@ -24,7 +24,7 @@ const RightSide = () => {
 
   return (
     <div className="RightSide">
-      <div className="navIcons" style={{backgroundColor:" var(--cardColor)",padding:"1rem",borderRadius:"20px"}}>
+      <div className="hidden lg:flex justify-between mt-[1rem]" style={{backgroundColor:" var(--cardColor)",padding:"1rem",borderRadius:"20px"}}>
       <div className="tooltip">
               <Link to="../">
                 {' '}
@@ -53,7 +53,9 @@ const RightSide = () => {
              </div>
             </div>
 
+      <div className='mt-[1rem] lg:mt-0'>
       <TrendCard />
+      </div>
 
       <button
         style={{ color: 'black', display: `${isAuthor ? 'block' : 'none'}` }}

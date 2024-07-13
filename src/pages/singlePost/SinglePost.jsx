@@ -27,6 +27,7 @@ import PostShareModal from "../../components/PostShareModal/PostshareModal";
 import { PaymentStatusEnum } from "../../constants/paymentEnum";
 import { path } from "../../paths/paths";
 import PaymentFailModal from "../../components/PaymentFailedModal/PaymentFailedModal";
+import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 const SinglePost = (PostsData) => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -91,6 +92,7 @@ const SinglePost = (PostsData) => {
     }
   };
   const handleEdit = (e) => {
+  
     e.preventDefault();
     navigate(`${path?.editPost}/${post?._id}`);
   };
@@ -215,6 +217,12 @@ const SinglePost = (PostsData) => {
     });
   }
 
+  const handleOnPrevious=()=>{
+navigate(`/post-seq`,{
+    state: { authorId:post?.createdBy?._id, postId:post?._id } 
+})
+  }
+
   return (
     <>
       {load && <Preloader />}
@@ -228,11 +236,8 @@ const SinglePost = (PostsData) => {
           }}
         >
           {/* right side  */}
-          <div
-            style={{ backgroundColor: "" }}
-            className="soldier-2 absolute right-4 top-4"
-          >
-            {post?.createdBy?._id === userData?.data?._id && (
+          <div className="absolute right-4 top-4 z-100 cursor-pointer">
+          {post?.createdBy?._id === userData?.data?._id && (
               <div
                 onClick={handleEdit}
                 className="editBtn"
@@ -240,7 +245,22 @@ const SinglePost = (PostsData) => {
               >
                 Edit
               </div>
-            )}
+           )} 
+          </div>
+          
+          <div
+            style={{ backgroundColor: "" }}
+            className="soldier-2 absolute right-4 top-12"
+          >
+            {/* {post?.createdBy?._id === userData?.data?._id && (
+              <div
+                onClick={handleEdit}
+                className="editBtn"
+                style={{ zIndex: "2rem" }}
+              >
+                Edit
+              </div>
+            )} */}
             <img src={right} style={{ width: "20rem" }} alt="" />
           </div>
 
@@ -271,9 +291,21 @@ const SinglePost = (PostsData) => {
             }}
           >
             <div className="items-center flex flex-col gap-2 md:gap-4 justify-center w-full h-full">
-              <div class=" flex flex-col items-center justify-center  ">
+              <div class=" flex flex-col items-center justify-center    w-[75vw] sm:w-[60vh]   md:w-[390px] lg:w-[480px]  xl:w-[50vw] ">
                 {!post?.isDraft && (
-                  <div className="flex gap-4 md:gap-7 lg:mt-4">
+                  <div className="flex  justify-between w-full md:gap-7 mt-1 lg:mt-4">
+                    <div onClick={handleOnPrevious} className="cursor-pointer flex gap-1 p-1 border-2 border-gray-600  rounded-[8px] items-center">
+                      <KeyboardDoubleArrowLeftIcon fontSize="medium" />
+                      <span 
+                      className="hidden md:flex hover:text-gray-900 hover:font-[500]"
+                      style={{
+                        color: "var(--gray)",
+                        fontSize: "12px",
+                      }}>Previous story</span>
+                    </div>
+
+                    <div className="flex gap-2 sm:gap-4 lg:gap-8">
+
                     <div className="w-[34px] h-[34px] ">
                       <img
                         src={liked ? Heart : NotLike}
@@ -309,12 +341,18 @@ const SinglePost = (PostsData) => {
                       </span>
                     </div>
                     <img
-                      className=" w-[30px] h-[26px]"
+                      className=" w-[30px] h-[26px] "
                       src={Share}
                       alt=""
                       onClick={() => setShareModalOpened(true)}
                       style={{ cursor: "pointer" }}
                     />
+                    </div>
+
+                    <div className="flex mt-1 justify-center px-[9px] py-[4px] w-[80px] lg:w-fit rounded-[12px] bg-orange-500 text-white font-[500] text-[12px] h-fit ">
+                      <p>{post?.category}</p>
+                     
+                    </div>
                   </div>
                 )}
               </div>
@@ -342,7 +380,7 @@ const SinglePost = (PostsData) => {
               </Link>
               <div className="max-h-[100vh] overflow-y-scroll  w-full mx-auto lg:mb-[2rem]">
                 <div className="mx-auto w-full flex items-center justify-center">
-                  <b className="mx-auto w-[250px] sm:w-[290px] md:w-[390px] lg:max-w-[450px] mb-2">
+                  <b className="mx-auto w-[250px] sm:w-[290px] md:w-[390px] lg:max-w-[450px] xl:w-[50vw] mb-2">
                     {post?.title}
                   </b>
                 </div>
