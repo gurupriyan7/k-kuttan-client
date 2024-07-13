@@ -22,13 +22,13 @@ const PostSequence = () => {
   const [load, setLoad] = useState(false);
   const postData = useSelector((state) => state.postReducer.seqPosts);
   const postLoading = useSelector((state) => state.postReducer.loading);
-
+  console.log(postData, "userDataqwedfdfgvftyhbgy");
   useEffect(async () => {
     try {
       setLoad(true);
       const userData = await getAuthorUserProfile(authorId);
       setLoad(false);
-      console.log(userData?.data?.data, "userData");
+    
       setAuthorData(userData?.data?.data);
     } catch (error) {
       setLoad(false);
@@ -40,7 +40,7 @@ const PostSequence = () => {
   }, [searchText]);
 
   useEffect(() => {
-    setPosts(postData);
+    setPosts(postData?.data);
   }, [postData]);
 
   useEffect(() => {

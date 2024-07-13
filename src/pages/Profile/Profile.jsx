@@ -23,6 +23,7 @@ const Profile = () => {
   const [load, setLoad] = useState(false)
   const postData = useSelector((state) => state.postReducer.posts)
   const postLoading = useSelector((state) => state.postReducer.loading)
+  const [category,setCategory]=useState("")
 
   const authData = useSelector((state) => state.authReducer.authData)
 
@@ -34,8 +35,8 @@ const Profile = () => {
   }, [ ])
 
   useEffect(()=>{
-    dispatch(getPostsByUser(isDraft,searchText))
-  },[isDraft , searchText])
+    dispatch(getPostsByUser(isDraft,category,searchText))
+  },[isDraft , searchText,category])
 
   useEffect(() => {
     setPosts(postData[0]?.data)
@@ -77,6 +78,8 @@ const Profile = () => {
             searchText={searchText}
             setSearchText={setSearchText}
             postData={posts}
+            setCategory={setCategory}
+            isCategory={true}
           />
         </div>
 

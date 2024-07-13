@@ -5,7 +5,7 @@ import { path } from "../paths/paths";
 
 const API = axios.create({ baseURL: appConfig.apiUrl });
 
-export const getAllPosts = async (postId,category,searchText) => {
+export const getSeqencePosts = async (postId,category,searchText) => {
   try {
     const token = getLocalStorageItem("token");
 
@@ -20,7 +20,7 @@ export const getAllPosts = async (postId,category,searchText) => {
     console.log(error);
   }
 };
-export const getSeqencePosts = async (category,searchText) => {
+export const getAllPosts = async (category,searchText) => {
   try {
     const token = getLocalStorageItem("token");
     const userData = getLocalStorageItem("profile");
@@ -51,12 +51,12 @@ export const getPostSeqwnces = async () => {
     console.log(error);
   }
 };
-export const getPostsByUser = async (isDraft, searchText) => {
+export const getPostsByUser = async (isDraft,category, searchText) => {
   try {
     const token = getLocalStorageItem("token");
     // const token = userData?.data?.token;
     return await API.get(
-      `/post/user?isDraft=${isDraft}&searchTerm=${searchText ?? ""}`,
+      `/post/user?isDraft=${isDraft}&searchTerm=${searchText ?? ""}${category&&`&category=${category}`}`,
       {
         headers: {
           Authorization: `Bearer ${token}`, // Include the Bearer token in the Authorization header

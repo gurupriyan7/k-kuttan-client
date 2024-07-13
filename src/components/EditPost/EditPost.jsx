@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { getPreSignedUrlUtill } from "../../utils/s3.utils";
 import back from "../../img/wp4082523.webp";
-import { createPost, getPostById } from "../../actions/post.actions";
+import { createPost, getPostById, getPostSeqwnces } from "../../actions/post.actions";
 import { path } from "../../paths/paths";
 import { appConfig } from "../../config/appConfig";
 import { updatePost } from "../../api/postRequest";
@@ -36,8 +36,8 @@ const EditPost = () => {
       title: post?.title || "",
       summary: post?.summary || "",
       image: post?.image || "",
-      partNumber: "",
-      partName: "",
+      partNumber: post?.partNumber ||"",
+      partName:post?.partName || "",
       category: post?.category || "",
     });
 
@@ -51,9 +51,9 @@ const EditPost = () => {
   const [stories, setStories] = useState([{ story: "" }]);
   const [image, setImage] = useState(null);
   const imageRef = useRef();
-  const [selectedCategory, setSelectedCategory] = useState(post?.category);
-  console.log(selectedCategory,"SELECT")
-  const [selectedContent, setSelectedContent] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  console.log(selectedCategory,"SELECT",post)
+  const [selectedContent, setSelectedContent] = useState({label:post?.partName,value:post?.partName});
   const { postSeq } = useSelector((state) => state.postReducer);
   const [partSeqs, setPartSeqs] = useState([]);
   const [formData, setFormData] = useState({
@@ -64,6 +64,15 @@ const EditPost = () => {
     partName: "",
     category: "",
   });
+
+  useEffect(()=>{
+setPartSeqs(postSeq)
+  },[postSeq])
+
+
+  useEffect(() => {
+    dispatch(getPostSeqwnces());
+  }, []);
 
   const onImageChange = async (event) => {
     event.preventDefault();
@@ -233,7 +242,6 @@ const EditPost = () => {
                   <Select
                     className="text-[14px] cursor-pointer w-full lg:mt-[16px] pt-1"
                     name="partName"
-                    defaultValue={selectedContent}
                     value={selectedContent}
                     placeholder="select Part Name"
                     // onChange={setSelectedContent}

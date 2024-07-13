@@ -43,7 +43,8 @@ const PostShare = ({
   setSearchText,
   isHome = false,
   isAuthorProfile = false,
-  setCategory
+  setCategory,
+  isCategory=false
 }) => {
   const authData = useSelector((state) => state.authReducer.authData);
 
@@ -149,7 +150,7 @@ const PostShare = ({
         </div>
 
 <div className="flex justify-between w-full gap-4">
-        <Select
+       {isCategory&& <Select
           className="text-[14px] cursor-pointer w-full bg-transparent opacity-80 "
           name="categoryType"
           defaultValue={selectedCategory}
@@ -204,7 +205,7 @@ const PostShare = ({
             }),
           }}
           // unstyled
-        />
+        />}
         {authData?.data && isAuthor && !isAuthorProfile && (
           <button
             onClick={(e) => {

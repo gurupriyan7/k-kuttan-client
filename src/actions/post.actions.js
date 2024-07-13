@@ -34,10 +34,10 @@ export const getPostSeqwnces = () => async (dispatch) => {
     dispatch({ type: "FETCH_SEQ_FAILED", data: error?.response?.data });
   }
 };
-export const getPostsByUser = (isDraft,searchText) => async (dispatch) => {
+export const getPostsByUser = (isDraft,category,searchText) => async (dispatch) => {
   dispatch({ type: "FETCH_START" });
   try {
-    const { data } = await PostApi.getPostsByUser(isDraft,searchText);
+    const { data } = await PostApi.getPostsByUser(isDraft,category,searchText);
     dispatch({ type: "FETCH_SUCCESS", data: data?.data });
   } catch (error) {
     console.log(error, "errorrorrosss");

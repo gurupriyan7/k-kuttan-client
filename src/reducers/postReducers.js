@@ -65,16 +65,16 @@ const postReducer = (
       };
     case "FETCH_SEQ_FAILED":
       return { ...state, loading: false, error: true, isSuccess: false };
-      case "FETCH_SEQ_ˇSTART":
+      case "FETCH_SEQ_POST_START":
       return { ...state, error: false, loading: true };
-    case "FETCH_SEQ_ˇSUCCESS":
+    case "FETCH_SEQ_POST_SUCCESS":
       return {
         ...state,
         loading: false,
         seqPosts: action?.data,
         isSuccess: true
       };
-    case "FETCH_SEQ_ˇFAILED":
+    case "FETCH_SEQ_POST_FAILED":
       return { ...state, loading: false, error: true, isSuccess: false };
     default:
       return state;

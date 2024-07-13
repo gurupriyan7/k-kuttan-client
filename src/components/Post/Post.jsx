@@ -197,7 +197,7 @@ const Post = ({ data }) => {
 
       <div className="detail flex flex-col">
         <p className=" flex flex-col gap-1">
-          <b className="line-clamp-2">{data?.title}</b>
+          <b className="line-clamp-2">{`${data?.title} (${data?.partNumber})`}</b>
           <p className="line-clamp-4">{data?.summary}</p>
         </p>
 
