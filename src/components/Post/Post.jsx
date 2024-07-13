@@ -167,7 +167,7 @@ const Post = ({ data }) => {
             </div>
             <img src={Share} alt="" onClick={() => setShareModalOpened(true)} />
             <div className="px-[10px] py-[4px] rounded-[12px] bg-orange-500 text-white font-[500] text-[14px]">
-              <p>category</p>
+              <p>{data?.category}</p>
             </div>
           </div>
         )}

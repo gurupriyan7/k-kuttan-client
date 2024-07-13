@@ -16,6 +16,7 @@ import { path } from "../../paths/paths";
 import { appConfig } from "../../config/appConfig";
 import { UserRole } from "../../config/enums";
 import Select from "react-select";
+import { PostCategoriesEnum } from "../../constants/PostEnum";
 
 const options = [
   { value: "chocolate", label: "Chocolate" },
@@ -42,6 +43,7 @@ const PostShare = ({
   setSearchText,
   isHome = false,
   isAuthorProfile = false,
+  setCategory
 }) => {
   const authData = useSelector((state) => state.authReducer.authData);
 
@@ -52,6 +54,7 @@ const PostShare = ({
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
 
   const handleSearchText = async (e) => {
     setTimeout(() => {
@@ -152,8 +155,11 @@ const PostShare = ({
           defaultValue={selectedCategory}
           value={selectedCategory}
           placeholder="Select a category ?"
-          onChange={setSelectedCategory}
-          options={options}
+          onChange={(selecterOption)=>{
+            setSelectedCategory(selecterOption?.value)
+            setCategory(selecterOption?.value)
+          }}
+          options={PostCategoriesEnum}
           theme={(theme) => ({
             ...theme,
             borderRadius: "12px",

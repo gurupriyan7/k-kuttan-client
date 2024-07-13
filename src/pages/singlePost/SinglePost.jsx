@@ -216,6 +216,12 @@ const SinglePost = (PostsData) => {
     });
   }
 
+  const handleOnPrevious=()=>{
+navigate(`/post-seq`,{
+    state: { authorId:post?.createdBy?._id, postId:post?._id } 
+})
+  }
+
   return (
     <>
       {load && <Preloader />}
@@ -275,7 +281,7 @@ const SinglePost = (PostsData) => {
               <div class=" flex flex-col items-center justify-center    w-[75vw] sm:w-[60vh]   md:w-[390px] lg:w-[480px]  xl:w-[50vw] ">
                 {!post?.isDraft && (
                   <div className="flex  justify-between w-full md:gap-7 mt-1 lg:mt-4">
-                    <Link to={`/`} className="cursor-pointer flex gap-1 p-1 border-2 border-gray-600  rounded-[8px] items-center">
+                    <div onClick={handleOnPrevious} className="cursor-pointer flex gap-1 p-1 border-2 border-gray-600  rounded-[8px] items-center">
                       <KeyboardDoubleArrowLeftIcon fontSize="medium" />
                       <span 
                       className="hidden md:flex hover:text-gray-900 hover:font-[500]"
@@ -283,7 +289,7 @@ const SinglePost = (PostsData) => {
                         color: "var(--gray)",
                         fontSize: "12px",
                       }}>Previous story</span>
-                    </Link>
+                    </div>
 
                     <div className="flex gap-8">
 
@@ -330,8 +336,8 @@ const SinglePost = (PostsData) => {
                     />
                     </div>
 
-                    <div className="flex mt-1 justify-center  py-[4px] rounded-[4px]  text-white font-[500] text-[14px] h-fit">
-                      <p>category</p>
+                    <div className="flex mt-1 justify-center px-[10px] py-[4px] rounded-[12px] bg-orange-500 text-white font-[500] text-[14px] h-fit">
+                      <p>{post?.category}</p>
                     </div>
                   </div>
                 )}

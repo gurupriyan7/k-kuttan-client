@@ -25,6 +25,7 @@ import CancellationAndRefund from "./pages/CancellationAndRefund/CancellationAnd
 import ShippingAndDelivery from "./pages/ShippingAndDelivery/ShippingAndDelivery";
 import ContactUs from "./pages/ContactUs/ContactUs";
 import SingleUserProfile from "./pages/SingleUserProfile/SingleUserProfile";
+import PostSequence from "./components/PostSequence/PostSequence";
 
 function App() {
   const authData = useSelector((state) => state.authReducer.authData);
@@ -32,7 +33,8 @@ function App() {
   return (
     <SnackbarProvider
       maxSnack={1}
-      anchorOrigin={{ vertical: "top", horizontal: "left" }}>
+      anchorOrigin={{ vertical: "top", horizontal: "left" }}
+    >
       <div className="App">
         {/* <div className="blur" style={{ top: "-18%", right: "0" }}></div>
       <div className="blur" style={{ top: "36%", left: "-8rem" }}></div> */}
@@ -46,7 +48,10 @@ function App() {
           <Route path={path.room} element={<Room />} />
           <Route path={path.forgotPassword} element={<ForgotPassword />} />
           <Route path={path.resetPassword} element={<ResetPassword />} />
-          <Route path={`${path.authorPosts}/:authorId`} element={<SingleUserProfile />} />
+          <Route
+            path={`${path.authorPosts}/:authorId`}
+            element={<SingleUserProfile />}
+          />
           <Route path={`${path.singlePost}/:postId`} element={<SinglePost />} />
           {authData?.data && (
             <Route path={`${path.addPost}`} element={<AddPost />} />
@@ -58,10 +63,20 @@ function App() {
           <Route path={path.admin} element={<AdminAuth />} />
           <Route path={path.adminHome} element={<AdminHome />} />
           <Route path={path.privacyPolicy} element={<PrivacyPolicy />} />
-          <Route path={path.termsAndconditions} element={<TermsAndConditions />} />
-          <Route path={path.cancellationAndRefund} element={<CancellationAndRefund />} />
-          <Route path={path.shippingAndDelivery} element={<ShippingAndDelivery />} />
+          <Route
+            path={path.termsAndconditions}
+            element={<TermsAndConditions />}
+          />
+          <Route
+            path={path.cancellationAndRefund}
+            element={<CancellationAndRefund />}
+          />
+          <Route
+            path={path.shippingAndDelivery}
+            element={<ShippingAndDelivery />}
+          />
           <Route path={path.contactUs} element={<ContactUs />} />
+          <Route path={path.postSeq} element={<PostSequence />} />
         </Routes>
       </div>
     </SnackbarProvider>
