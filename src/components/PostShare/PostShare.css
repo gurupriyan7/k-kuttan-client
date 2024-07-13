@@ -79,6 +79,9 @@
   .option{
     display: none!important;
   }
+  .dropdown1{
+    display: none!important;
+  }
 }
 
 .option:hover {

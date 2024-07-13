@@ -2,6 +2,8 @@ const postReducer = (
   state = {
     posts: [],
     post: {},
+    postSeq:[],
+    seqPosts:[],
     loading: false,
     error: false,
     uploading: false,
@@ -51,6 +53,28 @@ const postReducer = (
         isSuccess: true
       };
     case "FETCH_POST_FAILED":
+      return { ...state, loading: false, error: true, isSuccess: false };
+      case "FETCH_SEQ_START":
+      return { ...state, error: false, loading: true };
+    case "FETCH_SEQ_SUCCESS":
+      return {
+        ...state,
+        loading: false,
+        postSeq: action?.data,
+        isSuccess: true
+      };
+    case "FETCH_SEQ_FAILED":
+      return { ...state, loading: false, error: true, isSuccess: false };
+      case "FETCH_SEQ_POST_START":
+      return { ...state, error: false, loading: true };
+    case "FETCH_SEQ_POST_SUCCESS":
+      return {
+        ...state,
+        loading: false,
+        seqPosts: action?.data,
+        isSuccess: true
+      };
+    case "FETCH_SEQ_POST_FAILED":
       return { ...state, loading: false, error: true, isSuccess: false };
     default:
       return state;

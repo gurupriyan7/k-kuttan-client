@@ -20,14 +20,15 @@ const Home = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [searchText, setSearchText] = useState('')
+  const [category, setCategory] = useState('')
 
   useEffect(() => {
     setPosts(postData[0]?.data)
   }, [postData])
 
   useEffect(async () => {
-    await dispatch(getAllPosts(searchText))
-  }, [searchText])
+    await dispatch(getAllPosts(category,searchText))
+  }, [searchText,category])
 
   useEffect(() => {
     if (postDataLoading) {
@@ -47,6 +48,8 @@ const Home = () => {
           setSearchText={setSearchText}
           postData={posts}
           isHome={true}
+          setCategory={setCategory}
+          isCategory={true}
         />
         <RightSide />
       </div>

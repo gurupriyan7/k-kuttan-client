@@ -1,20 +1,43 @@
 import * as PostApi from "../api/postRequest";
 
-export const getAllPosts = (searchText) => async (dispatch) => {
+export const getAllPosts = (category,searchText) => async (dispatch) => {
   console.log("calling");
   dispatch({ type: "FETCH_START" });
   try {
-    const { data } = await PostApi.getAllPosts(searchText);
+    const { data } = await PostApi.getAllPosts(category,searchText);
     dispatch({ type: "FETCH_SUCCESS", data: data?.data });
   } catch (error) {
     console.log(error, "errorrorrosss");
     dispatch({ type: "FETCH_FAILED", data: error?.response?.data });
   }
 };
-export const getPostsByUser = (isDraft,searchText) => async (dispatch) => {
+export const getSeqencePosts = (postId,category,searchText) => async (dispatch) => {
+  console.log("calling");
+  dispatch({ type: "FETCH_SEQ_POST_START" });
+  try {
+    const { data } = await PostApi.getSeqencePosts(postId,category,searchText);
+    dispatch({ type: "FETCH_SEQ_POST_SUCCESS", data: data?.data });
+  } catch (error) {
+    console.log(error, "errorrorrosss");
+    dispatch({ type: "FETCH_SEQ_POST_FAILED", data: error?.response?.data });
+  }
+};
+export const getPostSeqwnces = () => async (dispatch) => {
+  console.log("calling");
+  dispatch({ type: "FETCH_SEQ_START" });
+  try {
+    const { data } = await PostApi.getPostSeqwnces()
+    console.log(data,"seq-data");
+    dispatch({ type: "FETCH_SEQ_SUCCESS", data: data?.data });
+  } catch (error) {
+    console.log(error, "errorrorrosss");
+    dispatch({ type: "FETCH_SEQ_FAILED", data: error?.response?.data });
+  }
+};
+export const getPostsByUser = (isDraft,category,searchText) => async (dispatch) => {
   dispatch({ type: "FETCH_START" });
   try {
-    const { data } = await PostApi.getPostsByUser(isDraft,searchText);
+    const { data } = await PostApi.getPostsByUser(isDraft,category,searchText);
     dispatch({ type: "FETCH_SUCCESS", data: data?.data });
   } catch (error) {
     console.log(error, "errorrorrosss");

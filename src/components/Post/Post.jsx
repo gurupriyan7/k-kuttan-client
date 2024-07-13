@@ -5,7 +5,7 @@ import Comment from "../../img/comment.png";
 import Share from "../../img/share.png";
 import Heart from "../../img/like.png";
 import NotLike from "../../img/notlike.png";
-import defaultProfile from '../../img/default-profile.jpg'
+import defaultProfile from "../../img/default-profile.jpg";
 import { useSelector } from "react-redux";
 import { likeAndCommentPost, updatePayment } from "../../api/postRequest";
 import { appConfig } from "../../config/appConfig";
@@ -44,9 +44,9 @@ const Post = ({ data }) => {
   };
 
   const handleSelect = async (e) => {
-    if(data?.createdBy?._id === userData?.data?._id){
+    if (data?.createdBy?._id === userData?.data?._id) {
       navigate(`${path.singlePost}/${data?._id}`);
-    }else if (data?.isDraft && data?.createdBy?._id === userData?.data?._id) {
+    } else if (data?.isDraft && data?.createdBy?._id === userData?.data?._id) {
       navigate(`${path.editPost}/${data?._id}`);
     } else {
       if (!data?.isFree && !data?.isPaid && data?.amount > 0) {
@@ -126,6 +126,18 @@ const Post = ({ data }) => {
   const handleCommentClick = () => {
     setModalOpened(true);
   };
+
+  const formatPartNumber =(partNumber)=>{
+    const partNumberStr = partNumber.toString();
+
+    // If the length is 1, prepend '0'
+    if (partNumberStr.length === 1) {
+        return '0' + partNumberStr;
+    } else {
+        // Otherwise, return the exact value
+        return partNumberStr;
+    }
+  }
   return (
     <div className="Post">
       <img
@@ -166,6 +178,9 @@ const Post = ({ data }) => {
               </span>
             </div>
             <img src={Share} alt="" onClick={() => setShareModalOpened(true)} />
+            <div className="px-[10px] py-[4px] rounded-[12px] bg-orange-500 text-white font-[500] text-[14px]">
+              <p>{data?.category}</p>
+            </div>
           </div>
         )}
       {data?.approvalStatus !== PostApprovalStatus.APPROVED &&
@@ -194,7 +209,8 @@ const Post = ({ data }) => {
 
       <div className="detail flex flex-col">
         <p className=" flex flex-col gap-1">
-          <b className="line-clamp-2">{data?.title}</b>
+        <b className="line-clamp-1">{data?.partNumber ? `Part - (${formatPartNumber(data?.partNumber)})`:""}</b>
+          <b className="line-clamp-2">{`${data?.title}`}</b>
           <p className="line-clamp-4">{data?.summary}</p>
         </p>
 

@@ -8,14 +8,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getPreSignedUrlUtill } from "../../utils/s3.utils";
 import back from "../../img/wp4082523.webp";
-import { createPost } from "../../actions/post.actions";
+import { createPost, getPostSeqwnces } from "../../actions/post.actions";
 import { path } from "../../paths/paths";
 import { useSnackbar } from "notistack";
+import Select from "react-select";
+import Home from "../../img/home.png";
+import { Link } from "react-router-dom";
+import { PostCategoriesEnum } from "../../constants/PostEnum";
+
+
 
 const AddPost = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedContent, setSelectedContent] = useState(null);
+  const { postSeq } = useSelector((state) => state.postReducer);
+  const [partSeqs, setPartSeqs] = useState([]);
 
   const [errorShow, setErrorShow] = useState(false);
 
@@ -27,8 +37,17 @@ const AddPost = () => {
       story: "",
     },
   ]);
+
   useEffect(() => {
-    console.log(storyCount, "storycountttttt", stories);
+    setPartSeqs(postSeq);
+  }, [postSeq]);
+
+  console.log(partSeqs,"TEST2")
+
+  useEffect(() => {
+    dispatch(getPostSeqwnces());
+  }, []);
+  useEffect(() => {
   }, [storyCount, stories]);
   const [image, setImage] = useState(null);
   const imageRef = useRef();
@@ -36,6 +55,9 @@ const AddPost = () => {
     title: "",
     summary: "",
     image: null,
+    partNumber: "",
+    partName: "",
+    category: "",
   });
 
   const { error, isError, loading } = useSelector((state) => state.postReducer);
@@ -47,7 +69,6 @@ const AddPost = () => {
   };
 
   const findStoryByPage = (page) => {
-    // console.log(stories, "apple-orange-grapes");
     return stories.find((story) => story?.page === page);
   };
 
@@ -67,7 +88,6 @@ const AddPost = () => {
     if (stories?.length > 1) {
       const tempStories = stories;
       const data = await removeAndReindex(tempStories, index);
-      console.log(index, "indexxxx", tempStories, "temp", data);
       setStories(data);
       setStoryCount(storyCount - 1);
     }
@@ -123,7 +143,6 @@ const AddPost = () => {
       chunks.push({ page, story: currentWords.join(" ").trim() });
     }
 
-    console.log(chunks); // Output the chunks to console for verification
 
     return chunks;
   };
@@ -139,16 +158,31 @@ const AddPost = () => {
         ...formData,
         image: imageData ?? "",
       });
-      console.log(imageData, "image-image");
     }
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    // setFormData({
+    //   ...formData,
+    //   [name]: value,
+    // });
+    if (name === "partNumber") {
+      const numberValue = Number(value);
+      if (!isNaN(numberValue)) {
+        setFormData({
+          ...formData,
+          [name]: numberValue,
+        });
+      }
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+        // ["categoryType"]: selectedCategory?.value,
+        // ["contentType"]: selectedContent?.value,
+      });
+    }
   };
   const addStory = () => {
     setStories([...stories, { page: stories.length + 1, story: "" }]);
@@ -157,7 +191,6 @@ const AddPost = () => {
 
   const handleInputChange = async (index, value = "") => {
     const wordCount = await countWords(value);
-    console.log(wordCount, "owrd");
     const pagefound = await findStoryByPage(index + 2);
     if (wordCount > 200 && !pagefound) {
       const tempChunks = splitTextIntoChunks(value, 200, index + 1);
@@ -227,40 +260,62 @@ const AddPost = () => {
     e.preventDefault();
     setErrorShow(true);
 
-    if(!formData?.title || !formData?.summary){
-      enqueueSnackbar("Title and summary should not be empty!", {
-        variant: "warning",
+    if (
+      !formData?.title ||
+      !formData?.summary ||
+      !formData?.category ||
+      !formData?.partName ||
+      !formData?.partNumber ||
+      formData?.partName==="other"
+    ) {
+      enqueueSnackbar(
+        "Title, Summary, part Name ,Part Number and  category should not be empty!",
+        {
+          variant: "warning",
+          autoHideDuration: 2000,
+          ContentProps: {
+            style: { backgroundColor: "yellow" },
+          },
+        }
+      );
+    } else {
+      //  Handle form submission logic here
+      dispatch(
+        createPost({
+          ...formData,
+          part: Number(formData.part),
+          story: stories,
+          ...(isDraft && {
+            isDraft: isDraft,
+          }),
+        })
+      );
+      enqueueSnackbar("Post Added successfully !!", {
+        variant: "success",
         autoHideDuration: 2000,
         ContentProps: {
-          style: { backgroundColor: "yellow" },
+          style: { backgroundColor: "green" },
         },
       });
-    }else{
-  //  Handle form submission logic here
-   dispatch(
-    createPost({
-      ...formData,
-      story: stories,
-      ...(isDraft && {
-        isDraft: isDraft,
-      }),
-    })
-  );
-  enqueueSnackbar("Post Added successfully !!", {
-    variant: "success",
-    autoHideDuration: 2000,
-    ContentProps: {
-      style: { backgroundColor: "green" },
-    },
-  });
-  navigate(path.home);
-  console.log(stories, "Form submitted:", formData);
+      navigate(path.home);
     }
- 
+  };
+
+  const handleKeyPress = (event) => {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (charCode < 48 || charCode > 57) {
+      event.preventDefault();
+    }
   };
 
   return (
     <div className="main" style={{ backgroundImage: `URL(${back})` }}>
+      <div style={{ backgroundColor: "" }} className="absolute left-4 top-4">
+        <Link to="../">
+          {" "}
+          <img src={Home} style={{ width: "1.5rem" }} alt="" />
+        </Link>
+      </div>
       <div className="container">
         <div className="form-container">
           {/* <div className="left-container">
@@ -300,6 +355,154 @@ const AddPost = () => {
                   required
                   className="input"
                 />
+
+                <div>
+                  <Select
+                    className="text-[14px] cursor-pointer mt-[18px]"
+                    name="category"
+                    defaultValue={selectedCategory}
+                    value={selectedCategory}
+                    placeholder="select category"
+                    // onChange={setSelectedCategory}
+                    onChange={(selectedOption) => {
+                      setSelectedCategory(selectedOption);
+                      setFormData((prevData) => ({
+                        ...prevData,
+                        category: selectedOption?.value,
+                      }));
+                    }}
+                    options={PostCategoriesEnum}
+                    theme={(theme) => ({
+                      ...theme,
+                      borderRadius: 0,
+                      border: "none",
+                      padding: "4px",
+                      colors: {
+                        ...theme.colors,
+                        neutral0: "#D1D5DB", // Set the background color
+                        primary25: "#E5E7EB", // Option hover background color to gray-200
+                        primary: "#6B7280", // Option selected color to gray-500
+                      },
+                    })}
+                    styles={{
+                      control: (base) => ({
+                        ...base,
+                        cursor: "pointer",
+                        backgroundColor: "#EEEEEE", // gray-300
+                        borderColor: "#D1D5DB", // gray-300
+                        boxShadow: "none",
+                        "&:hover": {
+                          borderColor: "#6B7280", // gray-500
+                        },
+                      }),
+                      option: (base, state) => ({
+                        ...base,
+                        cursor: "pointer",
+                        backgroundColor: state.isFocused ? "#E5E7EB" : "white", // gray-200 on hover
+                        color: "black",
+                        "&:active": {
+                          backgroundColor: "#D1D5DB", // gray-300
+                        },
+                      }),
+                      menu: (base) => ({
+                        ...base,
+                        backgroundColor: "#D1D5DB", // gray-300 for the dropdown
+                      }),
+                      singleValue: (base) => ({
+                        ...base,
+                        color: "black",
+                      }),
+                    }}
+                    // unstyled
+                  />
+                </div>
+
+                <div className="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-[24px]">
+                  <Select
+                    className="text-[14px] cursor-pointer w-full lg:mt-[16px] pt-1"
+                    name="partName"
+                    defaultValue={selectedContent}
+                    value={selectedContent}
+                    placeholder="select Part Name"
+                    // onChange={setSelectedContent}
+                    onChange={(selectedOption) => {
+                      setSelectedContent(selectedOption);
+                      setFormData((prevData) => ({
+                        ...prevData,
+                        partName: selectedOption.value,
+                      }));
+                    }}
+                    options={partSeqs}
+                    theme={(theme) => ({
+                      ...theme,
+                      borderRadius: 0,
+                      border: "none",
+                      padding: "9px",
+                      colors: {
+                        ...theme.colors,
+                        neutral0: "#D1D5DB", // Set the background color
+                        primary25: "#E5E7EB", // Option hover background color to gray-200
+                        primary: "#6B7280", // Option selected color to gray-500
+                      },
+                    })}
+                    styles={{
+                      control: (base) => ({
+                        ...base,
+                        cursor: "pointer",
+                        backgroundColor: "#EEEEEE", // gray-300
+                        // borderColor: "#D1D5DB", // gray-300
+                        boxShadow: "none",
+                        padding: "2px",
+                        "&:hover": {
+                          borderColor: "#6B7280", // gray-500
+                        },
+                      }),
+                      option: (base, state) => ({
+                        ...base,
+                        cursor: "pointer",
+                        backgroundColor: state.isFocused ? "#E5E7EB" : "white", // gray-200 on hover
+                        color: "black",
+                        "&:active": {
+                          backgroundColor: "#D1D5DB", // gray-300
+                        },
+                      }),
+                      menu: (base) => ({
+                        ...base,
+                        backgroundColor: "#D1D5DB", // gray-300 for the dropdown
+                      }),
+                      singleValue: (base) => ({
+                        ...base,
+                        color: "black",
+                      }),
+                    }}
+                    // unstyled
+                  />
+
+                  <input
+                    type="number"
+                    min={1}
+                    placeholder="Part No"
+                    name="partNumber"
+                    value={formData.partNumber}
+                    onChange={handleChange}
+                    required
+                    className="input"
+                    onKeyPress={handleKeyPress}
+                  />
+                </div>
+
+                {selectedContent?.value === "other" && (
+                  <input
+                    type="text"
+                    placeholder="Part Name"
+                    name="partName"
+                    value={formData?.partName}
+                    onChange={handleChange}
+                    required
+                    className="input"
+                  />
+                )}
+
                 <div style={{ position: "relative", display: "inline-block" }}>
                   <input
                     type="file"

@@ -1,0 +1,31 @@
+
+.Profile {
+    position: relative;
+    display: flex;
+    grid-template-columns: 18rem auto 20rem;
+    gap: 6rem;
+    padding: 1rem;
+    justify-content: center;
+  }
+  
+  @media screen and (width<=648px) {
+    .Profile {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding-top: 3rem;
+    }
+  }
+  
+  .Profile-center {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .active {
+    cursor: pointer;
+    color: var(--orange);
+    background: transparent;
+    border: 2px solid var(--orange);
+  }
+  

@@ -18,5 +18,6 @@ export const path = {
   cancellationAndRefund:"cancellationandrefund",
   shippingAndDelivery:"shippinganddelivery",
   contactUs:"contactus",
-  authorPosts:"author-posts"
+  authorPosts:"author-posts",
+  postSeq:"post-seq"
 };
