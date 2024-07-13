@@ -162,6 +162,14 @@ const Room = () => {
     // joinRoom()
   }, [authData])
 
+  const checkIsAdminRoom =(sRoomId,roomN)=>{
+    if(appConfig?.adminRoomIds?.includes(sRoomId)){
+      console.log(sRoomId,"roomId",appConfig.adminRoomIds,"adminroomId",roomN);
+      return true;
+    }
+   return false;
+  }
+
   return (
     <>
       {isLoading && <Preloader />}
@@ -195,7 +203,7 @@ const Room = () => {
               {joinedList &&
                 joinedList?.map((list) => (
                   <div
-                    style={{ cursor: 'pointer' }}
+                  className={checkIsAdminRoom(list?._id,list?.name) ? "admin-room":"join-room-list"}
                     key={list?._id}
                     onClick={() => {
                       setCurrentChat(list?.chatId)

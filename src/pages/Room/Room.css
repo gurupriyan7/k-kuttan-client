@@ -1,0 +1,13 @@
+.join-room-list {
+  cursor: pointer;
+  background-color: #13131324;
+  padding: 0.4rem 0.4rem 0.4rem 1.6rem;
+  border-radius: 1rem;
+}
+
+.admin-room {
+    cursor: pointer;
+    background-color:orange!important;
+    padding: 0.4rem 0.4rem 0.4rem 1.6rem;
+    border-radius: 1rem;
+}
