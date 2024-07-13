@@ -42,6 +42,8 @@ const AddPost = () => {
     setPartSeqs(postSeq);
   }, [postSeq]);
 
+  console.log(partSeqs,"TEST2")
+
   useEffect(() => {
     dispatch(getPostSeqwnces());
   }, []);

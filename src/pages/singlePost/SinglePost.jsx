@@ -92,6 +92,7 @@ const SinglePost = (PostsData) => {
     }
   };
   const handleEdit = (e) => {
+  
     e.preventDefault();
     navigate(`${path?.editPost}/${post?._id}`);
   };
@@ -235,11 +236,8 @@ navigate(`/post-seq`,{
           }}
         >
           {/* right side  */}
-          <div
-            style={{ backgroundColor: "" }}
-            className="soldier-2 absolute right-4 top-4"
-          >
-            {post?.createdBy?._id === userData?.data?._id && (
+          <div className="absolute right-4 top-4 z-100 cursor-pointer">
+          {post?.createdBy?._id === userData?.data?._id && (
               <div
                 onClick={handleEdit}
                 className="editBtn"
@@ -247,7 +245,22 @@ navigate(`/post-seq`,{
               >
                 Edit
               </div>
-            )}
+           )} 
+          </div>
+          
+          <div
+            style={{ backgroundColor: "" }}
+            className="soldier-2 absolute right-4 top-12"
+          >
+            {/* {post?.createdBy?._id === userData?.data?._id && (
+              <div
+                onClick={handleEdit}
+                className="editBtn"
+                style={{ zIndex: "2rem" }}
+              >
+                Edit
+              </div>
+            )} */}
             <img src={right} style={{ width: "20rem" }} alt="" />
           </div>
 
@@ -291,7 +304,7 @@ navigate(`/post-seq`,{
                       }}>Previous story</span>
                     </div>
 
-                    <div className="flex gap-8">
+                    <div className="flex gap-2 sm:gap-4 lg:gap-8">
 
                     <div className="w-[34px] h-[34px] ">
                       <img
@@ -336,8 +349,9 @@ navigate(`/post-seq`,{
                     />
                     </div>
 
-                    <div className="flex mt-1 justify-center px-[10px] py-[4px] rounded-[12px] bg-orange-500 text-white font-[500] text-[14px] h-fit">
+                    <div className="flex mt-1 justify-center px-[9px] py-[4px] w-[80px] lg:w-fit rounded-[12px] bg-orange-500 text-white font-[500] text-[12px] h-fit ">
                       <p>{post?.category}</p>
+                     
                     </div>
                   </div>
                 )}
