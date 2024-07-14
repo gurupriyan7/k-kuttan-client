@@ -1,5 +1,21 @@
 import axios from "axios";
 import { getPreSignedUrl } from "../api/s3Request";
+
+
+
+const uploadImage = async(preSignedUrl,file,fileType)=>{
+  try {
+       // Make PUT request to upload image data to S3
+       return await axios.put(preSignedUrl, file, {
+        headers: {
+          "Content-Type": fileType // Adjust content type as per your image type
+        },
+        timeout: 10000,
+      });
+  } catch (error) {
+    console.log(error,"upload-image -error");
+  }
+}
  
 export const  getPreSignedUrlUtill = async (file) => {
   try {
@@ -14,15 +30,9 @@ export const  getPreSignedUrlUtill = async (file) => {
     const preSignedUrl = data?.data?.data[0]?.url;
     console.log(data?.data?.data[0], "data");
 
-    // Make PUT request to upload image data to S3
-    const response = await axios.put(preSignedUrl, file, {
-      headers: {
-        "Content-Type": file?.type // Adjust content type as per your image type
-      },
-      timeout: 10000,
-    });
+ 
     
-
+   const response =  await uploadImage(preSignedUrl,file,file?.type)
     console.log("Upload response:", response.data);
     return data?.data?.data[0]?.file_name; // Return S3 response if needed
   } catch (error) {
