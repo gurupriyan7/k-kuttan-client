@@ -145,3 +145,11 @@ button:hover {
 form p {
   text-align: left;
 }
+
+
+.disabled {
+  /* color: gray; */
+  background-color: rgb(164 155 155 / 66%);
+  pointer-events: none; /* Prevents any mouse interactions */
+  border: none;
+}

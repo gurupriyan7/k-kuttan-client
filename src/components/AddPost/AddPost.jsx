@@ -15,8 +15,7 @@ import Select from "react-select";
 import Home from "../../img/home.png";
 import { Link } from "react-router-dom";
 import { PostCategoriesEnum } from "../../constants/PostEnum";
-
-
+import Preloader from "../Preloader/Preloader";
 
 const AddPost = () => {
   const dispatch = useDispatch();
@@ -26,6 +25,11 @@ const AddPost = () => {
   const [selectedContent, setSelectedContent] = useState(null);
   const { postSeq } = useSelector((state) => state.postReducer);
   const [partSeqs, setPartSeqs] = useState([]);
+  const [imageUploading, setImageUploading] = useState(false);
+  const [resonseD, setResponseD] = useState({
+    type: "",
+    message: "",
+  });
 
   const [errorShow, setErrorShow] = useState(false);
 
@@ -42,13 +46,12 @@ const AddPost = () => {
     setPartSeqs(postSeq);
   }, [postSeq]);
 
-  console.log(partSeqs,"TEST2")
+  console.log(partSeqs, "TEST2");
 
   useEffect(() => {
     dispatch(getPostSeqwnces());
   }, []);
-  useEffect(() => {
-  }, [storyCount, stories]);
+  useEffect(() => {}, [storyCount, stories]);
   const [image, setImage] = useState(null);
   const imageRef = useRef();
   const [formData, setFormData] = useState({
@@ -59,6 +62,7 @@ const AddPost = () => {
     partName: "",
     category: "",
   });
+  const [otherPartName, setOtherPartName] = useState("");
 
   const { error, isError, loading } = useSelector((state) => state.postReducer);
 
@@ -143,7 +147,6 @@ const AddPost = () => {
       chunks.push({ page, story: currentWords.join(" ").trim() });
     }
 
-
     return chunks;
   };
 
@@ -153,7 +156,9 @@ const AddPost = () => {
       let img = event.target.files[0];
       setImage(URL.createObjectURL(img));
 
-      const imageData = await getPreSignedUrlUtill(img);
+      const imageData = await getPreSignedUrlUtill(
+        img
+      );
       setFormData({
         ...formData,
         image: imageData ?? "",
@@ -266,7 +271,7 @@ const AddPost = () => {
       !formData?.category ||
       !formData?.partName ||
       !formData?.partNumber ||
-      formData?.partName==="other"
+      formData?.partName === "other"
     ) {
       enqueueSnackbar(
         "Title, Summary, part Name ,Part Number and  category should not be empty!",
@@ -308,17 +313,27 @@ const AddPost = () => {
     }
   };
 
+  const handlePartNamecChange = (e) => {
+    setOtherPartName(e?.target?.value);
+    setFormData({
+      ...formData,
+      partName: e?.target?.value,
+    });
+  };
+
   return (
-    <div className="main" style={{ backgroundImage: `URL(${back})` }}>
-      <div style={{ backgroundColor: "" }} className="absolute left-4 top-4">
-        <Link to="../">
-          {" "}
-          <img src={Home} style={{ width: "1.5rem" }} alt="" />
-        </Link>
-      </div>
-      <div className="container">
-        <div className="form-container">
-          {/* <div className="left-container">
+    <>
+      {/* {imageUploading && <Preloader />} */}
+      <div className="main" style={{ backgroundImage: `URL(${back})` }}>
+        <div style={{ backgroundColor: "" }} className="absolute left-4 top-4">
+          <Link to="../">
+            {" "}
+            <img src={Home} style={{ width: "1.5rem" }} alt="" />
+          </Link>
+        </div>
+        <div className="container">
+          <div className="form-container">
+            {/* <div className="left-container">
           <div className="left-inner-container">
             <h2>Let's Chat</h2>
             <p>Whether you have a question, want to start a project or simply want to connect.</p>
@@ -326,286 +341,309 @@ const AddPost = () => {
             <p>Feel free to send me a message in the contact form</p>
           </div>
         </div> */}
-          <div className="right-container">
-            <div className="right-inner-container">
-              <form action="#">
-                <h2 className="lg-view">Add Post</h2>
-                <h2 className="sm-view">Add Post</h2>
-                {/* <p>* Required</p> */}
-                {/* <div className="social-container">
+            <div className="right-container">
+              <div className="right-inner-container">
+                <form action="#">
+                  <h2 className="lg-view">Add Post</h2>
+                  <h2 className="sm-view">Add Post</h2>
+                  {/* <p>* Required</p> */}
+                  {/* <div className="social-container">
                 <a href="#" className="social"><i className="fab fa-facebook-f"></i></a>
                 <a href="#" className="social"><i className="fab fa-google-plus-g"></i></a>
                 <a href="#" className="social"><i className="fab fa-linkedin-in"></i></a>
               </div> */}
-                <input
-                  type="text"
-                  placeholder="Title *"
-                  name="title"
-                  value={formData.title}
-                  onChange={handleChange}
-                  required
-                  className="input"
-                />
-                <input
-                  type="text"
-                  placeholder="Summary *"
-                  name="summary"
-                  value={formData.summary}
-                  onChange={handleChange}
-                  required
-                  className="input"
-                />
-
-                <div>
-                  <Select
-                    className="text-[14px] cursor-pointer mt-[18px]"
-                    name="category"
-                    defaultValue={selectedCategory}
-                    value={selectedCategory}
-                    placeholder="select category"
-                    // onChange={setSelectedCategory}
-                    onChange={(selectedOption) => {
-                      setSelectedCategory(selectedOption);
-                      setFormData((prevData) => ({
-                        ...prevData,
-                        category: selectedOption?.value,
-                      }));
-                    }}
-                    options={PostCategoriesEnum}
-                    theme={(theme) => ({
-                      ...theme,
-                      borderRadius: 0,
-                      border: "none",
-                      padding: "4px",
-                      colors: {
-                        ...theme.colors,
-                        neutral0: "#D1D5DB", // Set the background color
-                        primary25: "#E5E7EB", // Option hover background color to gray-200
-                        primary: "#6B7280", // Option selected color to gray-500
-                      },
-                    })}
-                    styles={{
-                      control: (base) => ({
-                        ...base,
-                        cursor: "pointer",
-                        backgroundColor: "#EEEEEE", // gray-300
-                        borderColor: "#D1D5DB", // gray-300
-                        boxShadow: "none",
-                        "&:hover": {
-                          borderColor: "#6B7280", // gray-500
-                        },
-                      }),
-                      option: (base, state) => ({
-                        ...base,
-                        cursor: "pointer",
-                        backgroundColor: state.isFocused ? "#E5E7EB" : "white", // gray-200 on hover
-                        color: "black",
-                        "&:active": {
-                          backgroundColor: "#D1D5DB", // gray-300
-                        },
-                      }),
-                      menu: (base) => ({
-                        ...base,
-                        backgroundColor: "#D1D5DB", // gray-300 for the dropdown
-                      }),
-                      singleValue: (base) => ({
-                        ...base,
-                        color: "black",
-                      }),
-                    }}
-                    // unstyled
-                  />
-                </div>
-
-                <div className="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-[24px]">
-                  <Select
-                    className="text-[14px] cursor-pointer w-full lg:mt-[16px] pt-1"
-                    name="partName"
-                    defaultValue={selectedContent}
-                    value={selectedContent}
-                    placeholder="select Part Name"
-                    // onChange={setSelectedContent}
-                    onChange={(selectedOption) => {
-                      setSelectedContent(selectedOption);
-                      setFormData((prevData) => ({
-                        ...prevData,
-                        partName: selectedOption.value,
-                      }));
-                    }}
-                    options={partSeqs}
-                    theme={(theme) => ({
-                      ...theme,
-                      borderRadius: 0,
-                      border: "none",
-                      padding: "9px",
-                      colors: {
-                        ...theme.colors,
-                        neutral0: "#D1D5DB", // Set the background color
-                        primary25: "#E5E7EB", // Option hover background color to gray-200
-                        primary: "#6B7280", // Option selected color to gray-500
-                      },
-                    })}
-                    styles={{
-                      control: (base) => ({
-                        ...base,
-                        cursor: "pointer",
-                        backgroundColor: "#EEEEEE", // gray-300
-                        // borderColor: "#D1D5DB", // gray-300
-                        boxShadow: "none",
-                        padding: "2px",
-                        "&:hover": {
-                          borderColor: "#6B7280", // gray-500
-                        },
-                      }),
-                      option: (base, state) => ({
-                        ...base,
-                        cursor: "pointer",
-                        backgroundColor: state.isFocused ? "#E5E7EB" : "white", // gray-200 on hover
-                        color: "black",
-                        "&:active": {
-                          backgroundColor: "#D1D5DB", // gray-300
-                        },
-                      }),
-                      menu: (base) => ({
-                        ...base,
-                        backgroundColor: "#D1D5DB", // gray-300 for the dropdown
-                      }),
-                      singleValue: (base) => ({
-                        ...base,
-                        color: "black",
-                      }),
-                    }}
-                    // unstyled
-                  />
-
-                  <input
-                    type="number"
-                    min={1}
-                    placeholder="Part No"
-                    name="partNumber"
-                    value={formData.partNumber}
-                    onChange={handleChange}
-                    required
-                    className="input"
-                    onKeyPress={handleKeyPress}
-                  />
-                </div>
-
-                {selectedContent?.value === "other" && (
                   <input
                     type="text"
-                    placeholder="Part Name"
-                    name="partName"
-                    value={formData?.partName}
+                    placeholder="Title *"
+                    name="title"
+                    value={formData.title}
                     onChange={handleChange}
                     required
                     className="input"
                   />
-                )}
-
-                <div style={{ position: "relative", display: "inline-block" }}>
                   <input
-                    type="file"
-                    ref={imageRef}
-                    onChange={onImageChange}
+                    type="text"
+                    placeholder="Summary *"
+                    name="summary"
+                    value={formData.summary}
+                    onChange={handleChange}
+                    required
                     className="input"
-                    style={{
-                      cursor: "pointer",
-                      color: "var(--photo)",
-                      width: "100%", // Ensure the input takes the full width
-                      opacity: 0, // Hide the input
-                      position: "absolute", // Overlay the input on top of the button
-                      left: 0,
-                      top: 0,
-                      height: "100%", // Ensure the input takes the full height of the container
-                    }}
                   />
-                  <span
-                    onClick={() => imageRef.current.click()}
-                    style={{
-                      cursor: "pointer",
-                      color: "var(--photo)",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
+
+                  <div>
+                    <Select
+                      className="text-[14px] cursor-pointer mt-[18px]"
+                      name="category"
+                      defaultValue={selectedCategory}
+                      value={selectedCategory}
+                      placeholder="select category"
+                      // onChange={setSelectedCategory}
+                      onChange={(selectedOption) => {
+                        setSelectedCategory(selectedOption);
+                        setFormData((prevData) => ({
+                          ...prevData,
+                          category: selectedOption?.value,
+                        }));
+                      }}
+                      options={PostCategoriesEnum}
+                      theme={(theme) => ({
+                        ...theme,
+                        borderRadius: 0,
+                        border: "none",
+                        padding: "4px",
+                        colors: {
+                          ...theme.colors,
+                          neutral0: "#D1D5DB", // Set the background color
+                          primary25: "#E5E7EB", // Option hover background color to gray-200
+                          primary: "#6B7280", // Option selected color to gray-500
+                        },
+                      })}
+                      styles={{
+                        control: (base) => ({
+                          ...base,
+                          cursor: "pointer",
+                          backgroundColor: "#EEEEEE", // gray-300
+                          borderColor: "#D1D5DB", // gray-300
+                          boxShadow: "none",
+                          "&:hover": {
+                            borderColor: "#6B7280", // gray-500
+                          },
+                        }),
+                        option: (base, state) => ({
+                          ...base,
+                          cursor: "pointer",
+                          backgroundColor: state.isFocused
+                            ? "#E5E7EB"
+                            : "white", // gray-200 on hover
+                          color: "black",
+                          "&:active": {
+                            backgroundColor: "#D1D5DB", // gray-300
+                          },
+                        }),
+                        menu: (base) => ({
+                          ...base,
+                          backgroundColor: "#D1D5DB", // gray-300 for the dropdown
+                        }),
+                        singleValue: (base) => ({
+                          ...base,
+                          color: "black",
+                        }),
+                      }}
+                      // unstyled
+                    />
+                  </div>
+
+                  <div className="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-[24px]">
+                    <Select
+                      className="text-[14px] cursor-pointer w-full lg:mt-[16px] pt-1"
+                      name="partName"
+                      defaultValue={selectedContent}
+                      value={selectedContent}
+                      placeholder="select Part Name"
+                      // onChange={setSelectedContent}
+                      onChange={(selectedOption) => {
+                        setSelectedContent(selectedOption);
+                        setFormData((prevData) => ({
+                          ...prevData,
+                          partName: selectedOption.value,
+                        }));
+                      }}
+                      options={partSeqs}
+                      theme={(theme) => ({
+                        ...theme,
+                        borderRadius: 0,
+                        border: "none",
+                        padding: "9px",
+                        colors: {
+                          ...theme.colors,
+                          neutral0: "#D1D5DB", // Set the background color
+                          primary25: "#E5E7EB", // Option hover background color to gray-200
+                          primary: "#6B7280", // Option selected color to gray-500
+                        },
+                      })}
+                      styles={{
+                        control: (base) => ({
+                          ...base,
+                          cursor: "pointer",
+                          backgroundColor: "#EEEEEE", // gray-300
+                          // borderColor: "#D1D5DB", // gray-300
+                          boxShadow: "none",
+                          padding: "2px",
+                          "&:hover": {
+                            borderColor: "#6B7280", // gray-500
+                          },
+                        }),
+                        option: (base, state) => ({
+                          ...base,
+                          cursor: "pointer",
+                          backgroundColor: state.isFocused
+                            ? "#E5E7EB"
+                            : "white", // gray-200 on hover
+                          color: "black",
+                          "&:active": {
+                            backgroundColor: "#D1D5DB", // gray-300
+                          },
+                        }),
+                        menu: (base) => ({
+                          ...base,
+                          backgroundColor: "#D1D5DB", // gray-300 for the dropdown
+                        }),
+                        singleValue: (base) => ({
+                          ...base,
+                          color: "black",
+                        }),
+                      }}
+                      // unstyled
+                    />
+
+                    <input
+                      type="number"
+                      min={1}
+                      placeholder="Part No"
+                      name="partNumber"
+                      value={formData.partNumber}
+                      onChange={handleChange}
+                      required
+                      className="input"
+                      onKeyPress={handleKeyPress}
+                    />
+                  </div>
+
+                  {selectedContent?.value === "other" && (
+                    <input
+                      type="text"
+                      placeholder="Part Name"
+                      name="partName"
+                      value={otherPartName}
+                      onChange={handlePartNamecChange}
+                      required
+                      className="input"
+                    />
+                  )}
+
+                  <div
+                    style={{ position: "relative", display: "inline-block" }}
                   >
-                    <UilScenery /> Photo
-                  </span>
-                </div>
-                {image && (
-                  <div className="previewImage">
-                    <UilTimes
-                      onClick={() => {
-                        setImage(null),
-                          setFormData({ ...formData, image: null });
+                    <input
+                      type="file"
+                      ref={imageRef}
+                      onChange={onImageChange}
+                      className="input"
+                      style={{
+                        cursor: "pointer",
+                        color: "var(--photo)",
+                        width: "100%", // Ensure the input takes the full width
+                        opacity: 0, // Hide the input
+                        position: "absolute", // Overlay the input on top of the button
+                        left: 0,
+                        top: 0,
+                        height: "100%", // Ensure the input takes the full height of the container
                       }}
                     />
-                    <img src={image} alt="sdfsf" />
-                  </div>
-                )}
-                {stories?.map((story, index) => (
-                  <div style={{ position: "relative" }}>
-                    <textarea
-                      rows="8"
-                      placeholder={`Page ${index + 1}`}
-                      name="story"
-                      value={story?.story}
-                      onChange={(e) => handleInputChange(index, e.target.value)}
-                      className="input"
-                    ></textarea>
                     <span
+                      onClick={() => imageRef.current.click()}
                       style={{
-                        position: "absolute",
-                        top: "5px",
-                        right: "5px",
                         cursor: "pointer",
-                        color: "red", // Adjust color as needed
-                        zIndex: 1, // Ensure it's above the textarea content
+                        color: "var(--photo)",
+                        display: "flex",
+                        alignItems: "center",
                       }}
-                      onClick={() => handleClearStory(index)}
                     >
-                      &#x2715; {/* Unicode for cross icon */}
+                      <UilScenery /> Photo
                     </span>
                   </div>
-                ))}
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    gap: "1rem",
-                  }}
-                >
-                  <span
-                    onClick={removeStory}
-                    className="next-btn"
-                    style={{ display: storyCount <= 1 && "none" }}
+                  {image && (
+                    <div className="previewImage">
+                      <UilTimes
+                        onClick={() => {
+                          setImage(null),
+                            setFormData({ ...formData, image: null });
+                        }}
+                      />
+                      <img src={image} alt="sdfsf" />
+                    </div>
+                  )}
+                  {stories?.map((story, index) => (
+                    <div style={{ position: "relative" }}>
+                      <textarea
+                        rows="8"
+                        placeholder={`Page ${index + 1}`}
+                        name="story"
+                        value={story?.story}
+                        onChange={(e) =>
+                          handleInputChange(index, e.target.value)
+                        }
+                        className="input"
+                      ></textarea>
+                      <span
+                        style={{
+                          position: "absolute",
+                          top: "5px",
+                          right: "5px",
+                          cursor: "pointer",
+                          color: "red", // Adjust color as needed
+                          zIndex: 1, // Ensure it's above the textarea content
+                        }}
+                        onClick={() => handleClearStory(index)}
+                      >
+                        &#x2715; {/* Unicode for cross icon */}
+                      </span>
+                    </div>
+                  ))}
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      gap: "1rem",
+                    }}
                   >
-                    Remove page
-                  </span>
-                  <span onClick={addStory} className="next-btn">
-                    Next page
-                  </span>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    gap: "1rem",
-                  }}
-                >
-                  <span onClick={(e) => handleSubmit(e, true)} className="btn">
-                    Save Draft
-                  </span>
-                  <span onClick={(e) => handleSubmit(e, false)} className="btn">
-                    Add Post
-                  </span>
-                </div>
-              </form>
+                    <span
+                      onClick={removeStory}
+                      className="next-btn"
+                      style={{ display: storyCount <= 1 && "none" }}
+                    >
+                      Remove page
+                    </span>
+                    <span onClick={addStory} className="next-btn">
+                      Next page
+                    </span>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      gap: "1rem",
+                    }}
+                  >
+                    <span
+                      onClick={(e) => {
+                        if (!imageUploading) {
+                          handleSubmit(e, true);
+                        }
+                      }}
+                      className={`btn ${imageUploading ? "disabled" : ""}`}
+                    >
+                      "Save Draft"
+                    </span>
+                    <span
+                      onClick={(e) => {
+                        if (!imageUploading) {
+                          handleSubmit(e, false);
+                        }
+                      }}
+                      className={`btn ${imageUploading ? "disabled" : ""}`}
+                    >
+                      Add Post
+                    </span>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

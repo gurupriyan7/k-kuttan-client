@@ -10,7 +10,7 @@ const uploadImage = async(preSignedUrl,file,fileType)=>{
         headers: {
           "Content-Type": fileType // Adjust content type as per your image type
         },
-        timeout: 10000,
+        timeout: 100000,
       });
   } catch (error) {
     console.log(error,"upload-image -error");
@@ -23,6 +23,7 @@ export const  getPreSignedUrlUtill = async (file) => {
     //   throw new Error("Invalid file object");
     // }
 
+// setImageLoading(true)
     const data = await getPreSignedUrl({
       file_names: [file?.name]
     });
@@ -34,8 +35,10 @@ export const  getPreSignedUrlUtill = async (file) => {
     
    const response =  await uploadImage(preSignedUrl,file,file?.type)
     console.log("Upload response:", response.data);
+    // setImageLoading(false)
     return data?.data?.data[0]?.file_name; // Return S3 response if needed
   } catch (error) {
+    // setImageLoading(false)
     console.error("Error uploading image:", error?.message);
     // throw error; // Propagate error for handling
   }
