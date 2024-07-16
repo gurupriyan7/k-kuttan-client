@@ -39,9 +39,9 @@ const PostSequence = () => {
     dispatch(getSeqencePosts(postId,category, searchText));
   }, [searchText]);
 
-  useEffect(() => {
-    setPosts(postData?.data);
-  }, [postData]);
+  // useEffect(() => {
+  //   setPosts(postData?.data);
+  // }, [postData]);
 
   useEffect(() => {
     if (postLoading) {
@@ -70,7 +70,7 @@ const PostSequence = () => {
           <PostSide
             searchText={searchText}
             setSearchText={setSearchText}
-            postData={posts}
+            postData={postData}
             isAuthorProfile={true}
             setCategory={setCategory}
           />

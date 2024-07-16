@@ -41,9 +41,9 @@ const SingleUserProfile = () => {
     dispatch(getPostsByUserId(authorId, searchText));
   }, [searchText]);
 
-  useEffect(() => {
-    setPosts(postData[0]?.data);
-  }, [postData]);
+  // useEffect(() => {
+  //   setPosts(postData[0]?.data);
+  // }, [postData]);
 
   useEffect(() => {
     if (postLoading) {
@@ -74,7 +74,7 @@ const SingleUserProfile = () => {
           <PostSide
             searchText={searchText}
             setSearchText={setSearchText}
-            postData={posts}
+            postData={postData}
             isAuthorProfile={true}
           />
         </div>

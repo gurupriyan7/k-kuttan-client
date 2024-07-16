@@ -20,12 +20,13 @@ export const getSeqencePosts = async (postId,category,searchText) => {
     console.log(error);
   }
 };
-export const getAllPosts = async (category,searchText) => {
+export const getAllPosts = async (category,searchText,page = 1, limit = 5) => {
   try {
     const token = getLocalStorageItem("token");
     const userData = getLocalStorageItem("profile");
 
-    return await API.get(`/post?searchTerm=${searchText ?? ""}${category&&`&category=${category}`}`, {
+    return await API.get(
+    `/post?searchTerm=${searchText ?? ""}${category ? `&category=${category}` : ""}&page=${page}&limit=${limit}`, {
       ...(token && {
         headers: {
           Authorization: `Bearer ${token}`,

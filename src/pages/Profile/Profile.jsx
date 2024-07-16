@@ -38,9 +38,9 @@ const Profile = () => {
     dispatch(getPostsByUser(isDraft,category,searchText))
   },[isDraft , searchText,category])
 
-  useEffect(() => {
-    setPosts(postData[0]?.data)
-  }, [postData])
+  // useEffect(() => {
+  //   setPosts(postData[0]?.data)
+  // }, [postData])
 
   useEffect(() => {
     if (postLoading) {
@@ -77,7 +77,7 @@ const Profile = () => {
           <PostSide
             searchText={searchText}
             setSearchText={setSearchText}
-            postData={posts}
+            postData={postData}
             setCategory={setCategory}
             isCategory={true}
           />

@@ -6,6 +6,7 @@ import Post from '../Post/Post'
 const Posts = ({post}) => {
   // const postData = useSelector((state) => state.postReducer.posts)
 console.log(post,"totalPOst");
+console.log("JDDJ", new Error("sample error"))
   return (
     <div className="Posts">
       {post?.map((post, id) => {

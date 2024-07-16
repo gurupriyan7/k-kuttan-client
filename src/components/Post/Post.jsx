@@ -18,6 +18,7 @@ import postImage from "../../img/authback.png";
 import { PostApprovalStatus } from "../../constants/PostEnum";
 import { useSnackbar } from "notistack";
 
+
 const Post = ({ data }) => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();

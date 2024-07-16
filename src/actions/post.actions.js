@@ -1,11 +1,12 @@
 import * as PostApi from "../api/postRequest";
 
-export const getAllPosts = (category,searchText) => async (dispatch) => {
+export const getAllPosts = async(category,searchText, dispatch,  page = 1, limit = 5) => {
   console.log("calling");
   dispatch({ type: "FETCH_START" });
   try {
-    const { data } = await PostApi.getAllPosts(category,searchText);
-    dispatch({ type: "FETCH_SUCCESS", data: data?.data });
+    const { data } = await PostApi.getAllPosts(category,searchText,page,limit);
+    console.log("FetchData",data.data.data)
+    dispatch({ type: page===1?"FETCH_SUCCESS":"FETCH_SUCCESS_NEXT_PAGE", data: data?.data.data });
   } catch (error) {
     console.log(error, "errorrorrosss");
     dispatch({ type: "FETCH_FAILED", data: error?.response?.data });

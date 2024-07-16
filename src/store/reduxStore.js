@@ -1,7 +1,7 @@
 import {
   legacy_createStore as createStore,
   applyMiddleware,
-  compose
+  compose,
 } from "redux";
 import thunk from "redux-thunk";
 import { reducers } from "../reducers";

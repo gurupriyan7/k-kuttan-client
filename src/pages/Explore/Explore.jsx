@@ -40,7 +40,7 @@ const Explore = () => {
   }
 
   useEffect(() => {
-    setPosts(postData[0]?.data)
+    setPosts(postData)
   }, [postData])
 
   console.log(postData, 'postssssssssssssssssss')
@@ -53,7 +53,7 @@ const Explore = () => {
           console.log(a?.likes, 'likes', b?.likes)
           return b.likes - a.likes
         })
-        console.log(posts, 'actual')
+        // console.log(posts, 'actual')
         console.log(sortData, 'sort')
         setPosts(sortData)
       }
@@ -94,7 +94,7 @@ const Explore = () => {
         <div className="Movie">
           <Container>
             <div className="trending">
-              <ExploreSingle postData={posts} />
+              <ExploreSingle postData={[posts]} />
             </div>
 
             {/* <CustomPagination setPage={setPage} noOfPages={10}/> */}
