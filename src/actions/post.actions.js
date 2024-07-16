@@ -1,6 +1,6 @@
 import * as PostApi from "../api/postRequest";
 
-export const getAllPosts = async(category,searchText, dispatch,  page = 1, limit = 5) => {
+export const getAllPosts = async (category,searchText, dispatch,  page = 1, limit = 5) => {
   console.log("calling");
   dispatch({ type: "FETCH_START" });
   try {
@@ -55,6 +55,7 @@ export const getPostsByUser = (isDraft,category,searchText) => async (dispatch) 
   }
 };
 export const getPostById = (postId) => async (dispatch) => {
+  // export const getPostById = async (postId ,dispatch) => {
   dispatch({ type: "FETCH_POST_START" });
   try {
     const { data } = await PostApi.getPostById(postId); // Assuming there's a method like getPostById in your API

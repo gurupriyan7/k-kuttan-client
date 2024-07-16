@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import PostSide from "../../components/PostSide/PostSide";
 import ProfileSide from "../../components/profileSide/ProfileSide";
 import RightSide from "../../components/RightSide/RightSide";
@@ -15,6 +15,7 @@ import { useInView } from "react-intersection-observer";
 const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
+
   const [posts, setPosts] = useState([]);
   const postData = useSelector((state) => state.postReducer.posts);
   const postDataLoading = useSelector((state) => state.postReducer.loading);
@@ -23,13 +24,15 @@ const Home = () => {
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
   const [category, setCategory] = useState("");
-  const [fetchingMore, setFetchingMore] = useState(false);
+  
+  const fetchingMoreRef = useRef(false)
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         setIsLoading(true);
-        await getAllPosts(category, searchText, dispatch, page);
+        await getAllPosts(category, searchText, dispatch, 1);
+        setPage(1)
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching posts:", error);
@@ -39,27 +42,24 @@ const Home = () => {
     fetchPosts();
   }, [searchText, category, dispatch]);
 
-  // useEffect(() => {
-  //   if (postData.length > 0) {
-  //     setPosts(postData.map((post) => post.data).flat());
-  //   }
-  // }, [postData]);
 
-  // const loadMorePosts = () => {
-  //   setPage((prevPage) => prevPage + 1);
-  // };
 
   const loadMorePosts = async () => {
-    if (!fetchingMore) {
-      // Check if a fetch request is not already in progress
-      setFetchingMore(true); // Set fetching state to true
-      setPage((prevPage) => prevPage + 1);
+    if (!fetchingMoreRef.current) {
+      fetchingMoreRef.current = true;
+  
+      const nextPage = page + 1;
+      
       try {
-        await getAllPosts(category, searchText, dispatch, page + 1);
+        await getAllPosts(category, searchText, dispatch, nextPage);
+        console.log("OK",nextPage)
+        
+        setPage(nextPage)      
       } catch (error) {
         console.error("Error fetching more posts:", error);
       } finally {
-        setFetchingMore(false); // Reset fetching state to false
+        
+        fetchingMoreRef.current = false;
       }
     }
   };

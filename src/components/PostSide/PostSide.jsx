@@ -18,14 +18,15 @@ const PostSide = ({ postData, searchText, setSearchText, isHome = false ,isAutho
     if (inView && isHome) {
       onLoadMore(); 
     }
-  }, [inView, onLoadMore]); 
-  console.log(postData,"POST DATA")
+  }, [inView]); 
+  console.log(postData,"POST DATA1")
 
   return (
     <div className="PostSide">
       <PostShare searchText={searchText} setSearchText={setSearchText} isAuthorProfile={isAuthorProfile} isHome={isHome} setCategory={setCategory} isCategory={isCategory}/>
       {(isAuthor || isHome || isAuthorProfile) && <Posts post={postData || []} />}
-      <div ref={ref}></div> 
+      <div ref={ref}>
+      {postData.length > 0 && <span className='text-white ml-2'>Loading more posts...</span>}</div> 
     </div>
   )
 }

@@ -46,9 +46,9 @@ const Post = ({ data }) => {
 
   const handleSelect = async (e) => {
     if (data?.createdBy?._id === userData?.data?._id) {
-      navigate(`${path.singlePost}/${data?._id}`);
+      navigate(`${path?.singlePost}/${data?._id}`);
     } else if (data?.isDraft && data?.createdBy?._id === userData?.data?._id) {
-      navigate(`${path.editPost}/${data?._id}`);
+      navigate(`${path?.editPost}/${data?._id}`);
     } else {
       if (!data?.isFree && !data?.isPaid && data?.amount > 0) {
         e.preventDefault();
@@ -70,7 +70,7 @@ const Post = ({ data }) => {
                 status: PaymentStatusEnum.SUCCESS,
                 postId: data?._id,
               });
-              navigate(`${path.singlePost}/${data?._id}`);
+              navigate(`${path?.singlePost}/${data?._id}`);
             },
             prefill: {
               name: "Your Name",
