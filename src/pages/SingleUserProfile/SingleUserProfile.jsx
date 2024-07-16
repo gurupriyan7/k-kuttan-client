@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { useEffect, useState ,useRef } from "react";
 import PostSide from "../../components/PostSide/PostSide";
 import ProfileCard from "../../components/ProfileCard.jsx/ProfileCard";
 import back from "../../img/wp4082523.webp";
@@ -20,11 +20,11 @@ const SingleUserProfile = () => {
   const [searchText, setSearchText] = useState("");
   const { authorId } = useParams();
   const [authorData, setAuthorData] = useState({});
-
+  const [page, setPage] = useState(1);
   const [load, setLoad] = useState(false);
   const postData = useSelector((state) => state.postReducer.posts);
   const postLoading = useSelector((state) => state.postReducer.loading);
-
+  const fetchingMoreRef = useRef(false);
   useEffect(async () => {
     try {
       setLoad(true);
@@ -38,12 +38,12 @@ const SingleUserProfile = () => {
   }, [authorId]);
 
   useEffect(() => {
-    dispatch(getPostsByUserId(authorId, searchText));
+    dispatch(getPostsByUserId(authorId, searchText, page));
   }, [searchText]);
 
-  useEffect(() => {
-    setPosts(postData[0]?.data);
-  }, [postData]);
+  // useEffect(() => {
+  //   setPosts(postData[0]?.data);
+  // }, [postData]);
 
   useEffect(() => {
     if (postLoading) {
@@ -52,19 +52,28 @@ const SingleUserProfile = () => {
       setLoad(false);
     }
   }, [postLoading]);
+
+  const onLoadMore = () => {
+    if (!fetchingMoreRef.current) {
+      fetchingMoreRef.current = true;
+
+      const nextPage = page + 1;
+      setPage(nextPage);
+      dispatch(getPostsByUserId(authorId, searchText, nextPage));
+      fetchingMoreRef.current = false;
+    }
+  };
+
   return (
     <>
       {load && <Preloader />}
       <div className="Profile" style={{ backgroundImage: `URL(${back})` }}>
-      <div
-            style={{ backgroundColor: "" }}
-            className="absolute left-4 top-4"
-          >
-            <Link to="../">
-              {" "}
-              <img src={Home} style={{ width: "1.5rem" }} alt="" />
-            </Link>
-          </div>
+        <div style={{ backgroundColor: "" }} className="absolute left-4 top-4">
+          <Link to="../">
+            {" "}
+            <img src={Home} style={{ width: "1.5rem" }} alt="" />
+          </Link>
+        </div>
         <div className="Profile-center">
           <ProfileCard
             isProfile={true}
@@ -74,8 +83,10 @@ const SingleUserProfile = () => {
           <PostSide
             searchText={searchText}
             setSearchText={setSearchText}
-            postData={posts}
+            postData={postData.data}
+            totalPost={postData?.totalCount}
             isAuthorProfile={true}
+            onLoadMore={onLoadMore}
           />
         </div>
       </div>

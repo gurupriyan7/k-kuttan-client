@@ -18,6 +18,7 @@ import postImage from "../../img/authback.png";
 import { PostApprovalStatus } from "../../constants/PostEnum";
 import { useSnackbar } from "notistack";
 
+
 const Post = ({ data }) => {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -45,9 +46,9 @@ const Post = ({ data }) => {
 
   const handleSelect = async (e) => {
     if (data?.createdBy?._id === userData?.data?._id) {
-      navigate(`${path.singlePost}/${data?._id}`);
+      navigate(`${path?.singlePost}/${data?._id}`);
     } else if (data?.isDraft && data?.createdBy?._id === userData?.data?._id) {
-      navigate(`${path.editPost}/${data?._id}`);
+      navigate(`${path?.editPost}/${data?._id}`);
     } else {
       if (!data?.isFree && !data?.isPaid && data?.amount > 0) {
         e.preventDefault();
@@ -69,7 +70,7 @@ const Post = ({ data }) => {
                 status: PaymentStatusEnum.SUCCESS,
                 postId: data?._id,
               });
-              navigate(`${path.singlePost}/${data?._id}`);
+              navigate(`${path?.singlePost}/${data?._id}`);
             },
             prefill: {
               name: "Your Name",
@@ -139,7 +140,7 @@ const Post = ({ data }) => {
     }
   }
   return (
-    <div className="Post">
+    <div className="Post max-w-[770px] w-full">
       <img
         onClick={handleSelect}
         src={

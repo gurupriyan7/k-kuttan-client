@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { getAuthorUserProfile } from "../../api/userRequest";
@@ -12,6 +12,7 @@ const PostSequence = () => {
   const dispatch = useDispatch();
 
   const [posts, setPosts] = useState([]);
+  const [page, setPage] = useState(1);
   const [searchText, setSearchText] = useState("");
   const location = useLocation();
   const { authorId, postId } = location.state || {};
@@ -21,27 +22,59 @@ const PostSequence = () => {
 
   const [load, setLoad] = useState(false);
   const postData = useSelector((state) => state.postReducer.seqPosts);
+  
   const postLoading = useSelector((state) => state.postReducer.loading);
   console.log(postData, "userDataqwedfdfgvftyhbgy");
-  useEffect(async () => {
-    try {
-      setLoad(true);
-      const userData = await getAuthorUserProfile(authorId);
-      setLoad(false);
+  const fetchingMoreRef = useRef(false)
+  // useEffect(async () => {
+  //   try {
+  //     setLoad(true);
+  //     const userData = await getAuthorUserProfile(authorId);
+  //     setLoad(false);
     
-      setAuthorData(userData?.data?.data);
-    } catch (error) {
-      setLoad(false);
-    }
+  //     setAuthorData(userData?.data?.data);
+  //   } catch (error) {
+  //     setLoad(false);
+  //   }
+  // }, [authorId]);
+  useEffect(() => {
+    const fetchAuthorData = async () => {
+      try {
+        setLoad(true);
+        const userData = await getAuthorUserProfile(authorId);
+        setLoad(false);
+        setAuthorData(userData?.data?.data);
+      } catch (error) {
+        setLoad(false);
+        console.error("Error fetching author data:", error);
+      }
+    };
+    fetchAuthorData();
   }, [authorId]);
 
   useEffect(() => {
-    dispatch(getSeqencePosts(postId,category, searchText));
+    dispatch(getSeqencePosts(postId,category, searchText,page));
   }, [searchText]);
 
-  useEffect(() => {
-    setPosts(postData?.data);
-  }, [postData]);
+  // useEffect(() => {
+  //   setPosts(postData?.data);
+  // }, [postData]);
+
+  const loadMorePosts = async () => {
+    if (!fetchingMoreRef.current) {
+      fetchingMoreRef.current = true;
+      const nextPage = page + 1;
+      setPage(nextPage);
+      try {
+        await dispatch(getSeqencePosts(postId, category, searchText, nextPage));
+      } catch (error) {
+        console.error("Error fetching more posts:", error);
+      } finally {
+        fetchingMoreRef.current = false;
+      }
+    }
+  };
+
 
   useEffect(() => {
     if (postLoading) {
@@ -70,9 +103,11 @@ const PostSequence = () => {
           <PostSide
             searchText={searchText}
             setSearchText={setSearchText}
-            postData={posts}
+            postData={postData.data}
+            totalPost={postData?.totalCount}
             isAuthorProfile={true}
             setCategory={setCategory}
+            onLoadMore={loadMorePosts}
           />
         </div>
       </div>

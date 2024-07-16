@@ -39,8 +39,10 @@ const Explore = () => {
     return array
   }
 
+  console.log("VVV",value)
+
   useEffect(() => {
-    setPosts(postData[0]?.data)
+    setPosts(postData.data)
   }, [postData])
 
   console.log(postData, 'postssssssssssssssssss')
@@ -53,7 +55,7 @@ const Explore = () => {
           console.log(a?.likes, 'likes', b?.likes)
           return b.likes - a.likes
         })
-        console.log(posts, 'actual')
+        // console.log(posts, 'actual')
         console.log(sortData, 'sort')
         setPosts(sortData)
       }
@@ -65,7 +67,7 @@ const Explore = () => {
       setPosts(sortData)
     } else {
       const postDatas = await shuffleArray(posts)
-      setPosts(postDatas)
+      setPosts(postDatas.data)
     }
   }, [value])
 
@@ -74,7 +76,8 @@ const Explore = () => {
     const fetchData = async () => {
       console.log('hello')
       try {
-        await dispatch(getAllPosts())
+        // await dispatch(getAllPosts())
+        await getAllPosts(undefined, undefined, dispatch, 1, 30);
         // await dispatch(findUserProfile())
         setIsLoading(false)
       } catch (error) {

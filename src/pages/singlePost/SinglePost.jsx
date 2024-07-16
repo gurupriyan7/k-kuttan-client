@@ -42,6 +42,7 @@ const SinglePost = (PostsData) => {
   console.log(postId, "postIdsss");
   const [load, setLoad] = useState(false);
   const post = useSelector((state) => state.postReducer.post);
+  console.log(post,"POST1")
   const postLoading = useSelector((state) => state.postReducer.loading);
   console.log("postLoading", postLoading);
   const userData = useSelector((state) => state.authReducer.authData);
