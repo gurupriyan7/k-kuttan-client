@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import Razorpay from 'razorpay'
 import "./Post.css";
 import Comment from "../../img/comment.png";
@@ -28,6 +28,7 @@ const Post = ({ data }) => {
   const [likes, setLikes] = useState(data?.liked?.length);
   const [modalOpened, setModalOpened] = useState(false);
   const [shareModalOpened, setShareModalOpened] = useState(false);
+  const [comments,setCommments]=useState([])
 
   const ProfileImage = ({ src }) => {
     const handleError = (event) => {
@@ -43,6 +44,10 @@ const Post = ({ data }) => {
       />
     );
   };
+
+  useEffect(()=>{
+setCommments(data?.comments)
+  },[data])
 
   const handleSelect = async (e) => {
     if (data?.createdBy?._id === userData?.data?._id) {
@@ -125,6 +130,7 @@ const Post = ({ data }) => {
   };
 
   const handleCommentClick = () => {
+    setCommments(data?.comments)
     setModalOpened(true);
   };
 
@@ -173,7 +179,7 @@ const Post = ({ data }) => {
               </span>
             </div>
             <div>
-              <img onClick={() => setModalOpened(true)} src={Comment} alt="" />
+              <img onClick={handleCommentClick} src={Comment} alt="" />
               <span className="items-center flex justify-center pt-1 text-gray-500 text-[12px]">
                 {data?.comments?.length}
               </span>
@@ -244,7 +250,7 @@ const Post = ({ data }) => {
         <CommentModel
           modalOpened={modalOpened}
           setModalOpened={setModalOpened}
-          comments={data?.comments}
+          comments={comments}
           postId={data?._id}
         />
         <PostShareModal

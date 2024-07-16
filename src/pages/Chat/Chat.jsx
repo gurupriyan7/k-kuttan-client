@@ -96,7 +96,7 @@ const Chat = () => {
 
   return (
     <>
-      {isLoading && <Preloader />}
+      {/* {isLoading && <Preloader />} */}
 
       <div className=" grid md:grid-cols-[22%_auto] gap-4  relative overflow-hidden">
         {/* left side */}

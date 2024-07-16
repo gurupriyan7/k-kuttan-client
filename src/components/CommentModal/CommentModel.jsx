@@ -9,13 +9,17 @@ import { addComment } from "../../actions/post.actions";
 
 import defaultProfile from "../../img/default-profile.jpg";
 
-function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
+function CommentModel({ modalOpened, setModalOpened, comments=[], postId }) {
   const theme = useMantineTheme();
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const [visibleItems, setVisibleItems] = useState(3);
   const [commentData, setCommentData] = useState(comments);
   const userData = useSelector((state) => state.authReducer.authData);
+
+  useEffect(()=>{
+setCommentData(comments)
+  },[comments])
 
   const ProfileImage = ({ src }) => {
     const handleError = (event) => {
@@ -115,7 +119,9 @@ function CommentModel({ modalOpened, setModalOpened, comments, postId }) {
       overlayBlur={3}
       size="90%"
       opened={modalOpened}
-      onClose={() => setModalOpened(false)}
+      onClose={() => {
+        // setCommentData([])
+        setModalOpened(false)}}
     >
       <div className="a-right">
         <form onSubmit={handleSubmit}>
