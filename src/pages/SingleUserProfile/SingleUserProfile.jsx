@@ -74,7 +74,7 @@ const SingleUserProfile = () => {
           <PostSide
             searchText={searchText}
             setSearchText={setSearchText}
-            postData={postData}
+            postData={postData.data}
             isAuthorProfile={true}
           />
         </div>

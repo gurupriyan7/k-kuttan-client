@@ -1,6 +1,9 @@
 const postReducer = (
   state = {
-    posts: [],
+    posts: {
+      data: [],
+      totalCount: 0,
+    },
     post: {},
     postSeq: [],
     seqPosts: [],
@@ -47,7 +50,8 @@ const postReducer = (
       return {
         ...state,
         loading: false,
-        posts: [...state.posts, ...action.data],
+        // posts: [...state.posts, ...action.data],
+        posts: {data:[...state.posts.data, ...action.data.data], totalCount: action.data.totalCount},
         isSuccess: true,
       };
     case "FETCH_FAILED":

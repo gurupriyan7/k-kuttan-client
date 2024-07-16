@@ -39,8 +39,10 @@ const Explore = () => {
     return array
   }
 
+  console.log("VVV",value)
+
   useEffect(() => {
-    setPosts(postData)
+    setPosts(postData.data)
   }, [postData])
 
   console.log(postData, 'postssssssssssssssssss')
@@ -65,7 +67,7 @@ const Explore = () => {
       setPosts(sortData)
     } else {
       const postDatas = await shuffleArray(posts)
-      setPosts(postDatas)
+      setPosts(postDatas.data)
     }
   }, [value])
 
@@ -74,7 +76,8 @@ const Explore = () => {
     const fetchData = async () => {
       console.log('hello')
       try {
-        await dispatch(getAllPosts())
+        // await dispatch(getAllPosts())
+        await getAllPosts(undefined, undefined, dispatch, 1);
         // await dispatch(findUserProfile())
         setIsLoading(false)
       } catch (error) {
@@ -94,7 +97,7 @@ const Explore = () => {
         <div className="Movie">
           <Container>
             <div className="trending">
-              <ExploreSingle postData={[posts]} />
+              <ExploreSingle postData={posts} />
             </div>
 
             {/* <CustomPagination setPage={setPage} noOfPages={10}/> */}

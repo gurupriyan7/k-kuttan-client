@@ -6,7 +6,7 @@ export const getAllPosts = async (category,searchText, dispatch,  page = 1, limi
   try {
     const { data } = await PostApi.getAllPosts(category,searchText,page,limit);
     console.log("FetchData",data.data.data)
-    dispatch({ type: page===1?"FETCH_SUCCESS":"FETCH_SUCCESS_NEXT_PAGE", data: data?.data.data });
+    dispatch({ type: page===1?"FETCH_SUCCESS":"FETCH_SUCCESS_NEXT_PAGE", data: data?.data });
   } catch (error) {
     console.log(error, "errorrorrosss");
     dispatch({ type: "FETCH_FAILED", data: error?.response?.data });

@@ -72,7 +72,7 @@ const Home = () => {
         <PostSide
           searchText={searchText}
           setSearchText={setSearchText}
-          postData={postData}
+          postData={postData.data}
           isHome={true}
           setCategory={setCategory}
           isCategory={true}

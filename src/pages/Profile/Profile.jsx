@@ -77,7 +77,7 @@ const Profile = () => {
           <PostSide
             searchText={searchText}
             setSearchText={setSearchText}
-            postData={postData}
+            postData={postData.data}
             setCategory={setCategory}
             isCategory={true}
           />
