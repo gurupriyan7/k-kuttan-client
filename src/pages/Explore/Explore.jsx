@@ -77,7 +77,7 @@ const Explore = () => {
       console.log('hello')
       try {
         // await dispatch(getAllPosts())
-        await getAllPosts(undefined, undefined, dispatch, 1);
+        await getAllPosts(undefined, undefined, dispatch, 1, 30);
         // await dispatch(findUserProfile())
         setIsLoading(false)
       } catch (error) {

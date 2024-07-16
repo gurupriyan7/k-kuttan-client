@@ -45,7 +45,7 @@ export const getPostsByUser = (isDraft,category,searchText, page = 1, limit = 10
     dispatch({ type: "FETCH_FAILED", data: error?.response?.data });
   }
 };
-export const getPostsByUserId= (authorId,searchText, page = 1, limit = 3) => async (dispatch) => {
+export const getPostsByUserId= (authorId,searchText, page = 1, limit = 10) => async (dispatch) => {
   dispatch({ type: "FETCH_START" });
   try {
     const { data } = await PostApi.getPostsByUserId(authorId,searchText, page, limit);
