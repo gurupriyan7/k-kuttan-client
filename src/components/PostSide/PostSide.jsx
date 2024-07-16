@@ -26,7 +26,7 @@ const PostSide = ({
   const { ref, inView } = useInView();
 
   useEffect(() => {
-    if (inView && onLoadMore && postData.length < totalPost) {
+    if (inView && onLoadMore && postData?.length < totalPost) {
       onLoadMore();
     }
   }, [inView]);
@@ -48,7 +48,7 @@ const PostSide = ({
       )}
       
       <div ref={ref}  className="flex justify-center items-center">
-        {postData.length < totalPost && postData.length > 0 && (
+        {postData?.length < totalPost && postData?.length > 0 && (
           // <span className="text-white text-center font-[700]  text-[16px] md:text-[24px] my-[20px]">Loading more posts...</span>
           <PostSkeleton />
         )}
