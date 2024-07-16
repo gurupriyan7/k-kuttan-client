@@ -47,7 +47,7 @@ const authReducer = (
 
       return {
         ...state,
-        adminData: action.data,
+        adminData: action?.data,
         isLoading: false,
         isError: false,
         error: null
@@ -167,11 +167,13 @@ const authReducer = (
     case "LOGOUT":
       localStorage.removeItem("profile");
       localStorage.removeItem("token");
+      localStorage.clear()
 
       return { ...state, authData: null, isLoading: false, isError: false };
     case "ADMIN_LOGOUT":
       localStorage.removeItem("admin-profile");
       localStorage.removeItem("admin-token");
+      localStorage.clear()
 
       return { ...state, adminData: null, isLoading: false, isError: false };
 
