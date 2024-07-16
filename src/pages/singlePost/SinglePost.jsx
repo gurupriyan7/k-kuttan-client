@@ -106,8 +106,8 @@ const SinglePost = (PostsData) => {
       setPage(page - 1);
     }
     window.scrollTo(0, 0); 
-       if (textContainerRef.current) {
-      textContainerRef.current.scrollTo(0,0);
+       if (textContainerRef?.current) {
+      textContainerRef?.current.scrollTo(0,0);
     }
   };
 
@@ -212,7 +212,7 @@ const SinglePost = (PostsData) => {
   }, []);
 
   function formatText(text) {
-    return text.split("\n").map((item, key) => {
+    return text?.split("\n").map((item, key) => {
       return (
         <span key={key}>
           {item}
@@ -363,7 +363,7 @@ navigate(`/post-seq`,{
               </div>
 
               <Link
-                to={`/${path.authorPosts}/${post?.createdBy?._id}`}
+                to={`/${path?.authorPosts}/${post?.createdBy?._id}`}
                 className="absolute top-2 left-12 flex gap-2 items-center cursor-pointer rounded-[12px] px-[20px] py-1 bg-gray-300 "
               >
                 <div className="rounded-full  items-center w-[44px] h-[44px]">
