@@ -22,6 +22,7 @@ const PostSequence = () => {
 
   const [load, setLoad] = useState(false);
   const postData = useSelector((state) => state.postReducer.seqPosts);
+  
   const postLoading = useSelector((state) => state.postReducer.loading);
   console.log(postData, "userDataqwedfdfgvftyhbgy");
   const fetchingMoreRef = useRef(false)
@@ -102,7 +103,7 @@ const PostSequence = () => {
           <PostSide
             searchText={searchText}
             setSearchText={setSearchText}
-            postData={postData}
+            postData={postData.data}
             isAuthorProfile={true}
             setCategory={setCategory}
             onLoadMore={loadMorePosts}

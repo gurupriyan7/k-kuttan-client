@@ -73,6 +73,7 @@ const Home = () => {
           searchText={searchText}
           setSearchText={setSearchText}
           postData={postData.data}
+          totalPost={postData?.totalCount}
           isHome={true}
           setCategory={setCategory}
           isCategory={true}

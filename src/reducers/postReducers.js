@@ -6,7 +6,10 @@ const postReducer = (
     },
     post: {},
     postSeq: [],
-    seqPosts: [],
+    seqPosts: {
+      data: [],
+      totalCount: 0,
+    },
     loading: false,
     error: false,
     uploading: false,

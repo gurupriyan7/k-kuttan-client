@@ -1,6 +1,6 @@
 import * as PostApi from "../api/postRequest";
 
-export const getAllPosts = async (category,searchText, dispatch,  page = 1, limit = 5) => {
+export const getAllPosts = async (category,searchText, dispatch,  page = 1, limit = 10) => {
   console.log("calling");
   dispatch({ type: "FETCH_START" });
   try {
@@ -35,20 +35,21 @@ export const getPostSeqwnces = () => async (dispatch) => {
     dispatch({ type: "FETCH_SEQ_FAILED", data: error?.response?.data });
   }
 };
-export const getPostsByUser = (isDraft,category,searchText) => async (dispatch) => {
+export const getPostsByUser = (isDraft,category,searchText, page = 1, limit = 10) => async (dispatch) => {
   dispatch({ type: "FETCH_START" });
   try {
-    const { data } = await PostApi.getPostsByUser(isDraft,category,searchText);
-    dispatch({ type: "FETCH_SUCCESS", data: data?.data });
+    const { data } = await PostApi.getPostsByUser(isDraft,category,searchText, page, limit);
+    dispatch({ type: page===1?"FETCH_SUCCESS":"FETCH_SUCCESS_NEXT_PAGE", data: data?.data });
   } catch (error) {
     console.log(error, "errorrorrosss");
     dispatch({ type: "FETCH_FAILED", data: error?.response?.data });
   }
-};export const getPostsByUserId= (authorId,searchText) => async (dispatch) => {
+};
+export const getPostsByUserId= (authorId,searchText, page = 1, limit = 3) => async (dispatch) => {
   dispatch({ type: "FETCH_START" });
   try {
-    const { data } = await PostApi.getPostsByUserId(authorId,searchText);
-    dispatch({ type: "FETCH_SUCCESS", data: data?.data });
+    const { data } = await PostApi.getPostsByUserId(authorId,searchText, page, limit);
+    dispatch({ type: page===1?"FETCH_SUCCESS":"FETCH_SUCCESS_NEXT_PAGE", data: data?.data });
   } catch (error) {
     console.log(error, "errorrorrosss");
     dispatch({ type: "FETCH_FAILED", data: error?.response?.data });
