@@ -90,6 +90,13 @@ const postReducer = (
         seqPosts: action?.data,
         isSuccess: true,
       };
+    case "FETCH_SEQ_POST_SUCCESS_NEXT_PAGE":
+      return {
+        ...state,
+        loading: false,
+        seqPosts: {data:[...state.seqPosts.data, ...action.data.data], totalCount: action.data.totalCount},
+        isSuccess: true,
+      };
     case "FETCH_SEQ_POST_FAILED":
       return { ...state, loading: false, error: true, isSuccess: false };
     default:

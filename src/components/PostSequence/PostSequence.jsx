@@ -53,7 +53,7 @@ const PostSequence = () => {
   }, [authorId]);
 
   useEffect(() => {
-    dispatch(getSeqencePosts(postId,category, searchText));
+    dispatch(getSeqencePosts(postId,category, searchText,page));
   }, [searchText]);
 
   // useEffect(() => {
@@ -104,6 +104,7 @@ const PostSequence = () => {
             searchText={searchText}
             setSearchText={setSearchText}
             postData={postData.data}
+            totalPost={postData?.totalCount}
             isAuthorProfile={true}
             setCategory={setCategory}
             onLoadMore={loadMorePosts}

@@ -5,11 +5,11 @@ import { path } from "../paths/paths";
 
 const API = axios.create({ baseURL: appConfig.apiUrl });
 
-export const getSeqencePosts = async (postId,category,searchText) => {
+export const getSeqencePosts = async (postId,category,searchText, page=1, limit=10) => {
   try {
     const token = getLocalStorageItem("token");
 
-    return await API.get(`/post/seq/${postId}?searchTerm=${searchText ?? ""}${category&&`&category=${category}`}`, {
+    return await API.get(`/post/seq/${postId}?searchTerm=${searchText ?? ""}${category&&`&category=${category}`}&page=${page}&limit=${limit}`, {
       ...(token && {
         headers: {
           Authorization: `Bearer ${token}`,

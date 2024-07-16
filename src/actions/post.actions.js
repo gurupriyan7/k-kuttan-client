@@ -12,12 +12,12 @@ export const getAllPosts = async (category,searchText, dispatch,  page = 1, limi
     dispatch({ type: "FETCH_FAILED", data: error?.response?.data });
   }
 };
-export const getSeqencePosts = (postId,category,searchText) => async (dispatch) => {
+export const getSeqencePosts = (postId,category,searchText, page = 1, limit = 10) => async (dispatch) => {
   console.log("calling");
   dispatch({ type: "FETCH_SEQ_POST_START" });
   try {
-    const { data } = await PostApi.getSeqencePosts(postId,category,searchText);
-    dispatch({ type: "FETCH_SEQ_POST_SUCCESS", data: data?.data });
+    const { data } = await PostApi.getSeqencePosts(postId,category,searchText, page, limit);
+    dispatch({ type: page===1?"FETCH_SEQ_POST_SUCCESS":"FETCH_SEQ_POST_SUCCESS_NEXT_PAGE", data: data?.data });
   } catch (error) {
     console.log(error, "errorrorrosss");
     dispatch({ type: "FETCH_SEQ_POST_FAILED", data: error?.response?.data });

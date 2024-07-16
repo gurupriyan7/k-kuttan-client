@@ -140,7 +140,7 @@ const Post = ({ data }) => {
     }
   }
   return (
-    <div className="Post">
+    <div className="Post max-w-[770px] w-full">
       <img
         onClick={handleSelect}
         src={
