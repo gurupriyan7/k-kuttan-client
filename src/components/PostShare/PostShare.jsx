@@ -194,6 +194,7 @@ const PostShare = ({
               "&:active": {
                 backgroundColor: "#D1D5DB", // gray-300
               },
+              fontWeight:"bold"
             }),
             menu: (base) => ({
               ...base,
