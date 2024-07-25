@@ -29,6 +29,9 @@
   outline: none;
   flex-grow: 1;
 }
+.post-input::placeholder{
+  color: black;
+}
 
 .postOptions {
   display: flex;
