@@ -55,6 +55,7 @@ const SinglePost = (PostsData) => {
     post?.isFree || post?.isPaid
   );
 
+
   useEffect(() => {
     if (postLoading) {
       setLoad(true);
@@ -211,7 +212,7 @@ const SinglePost = (PostsData) => {
     };
   }, []);
 
-  function formatText(text) {
+  function formatText(text ="") {
     return text?.split("\n").map((item, key) => {
       return (
         <span key={key}>
@@ -393,7 +394,7 @@ navigate(`/post-seq`,{
                   // ref={textContainerRef}
                   className=" h-[50vh] md:h-[350px] lg:h-[60vh]  w-[35vh] sm:w-[290px] my-auto   md:w-[390px] lg:w-[480px]  xl:w-[50vw] mx-auto"
                 >
-                  {formatText(post?.story[page - 1]?.story)}
+                  {post&&post?.story&&formatText(post?.story[page - 1]?.story ?? "")}
                 </div>
               </div>
             </div>
