@@ -38,19 +38,19 @@ const ChatBox = ({
 
   const isRoom = room ? true : false;
   const isAdminRoom = appConfig?.adminRoomIds?.includes(roomId);
-  const isAdmin = appConfig.adminId === String( authData?.data?._id)
+  const isAdmin = appConfig.adminId === String(authData?.data?._id)
   const handleChange = (newMessage) => {
     setNewMessage(newMessage);
   };
   //fetching data for header of chat box
 
-  console.log(messages,"messagesss-messagess");
+  console.log(messages, "messagesss-messagess");
 
   useEffect(async () => {
     const chatData = await findChatById(chatId, isRoom);
     setChat(chatData?.data);
   }, [chatId]);
-  console.log(isAdmin,"damin",isAdminRoom,"aaaaa",appConfig?.adminRoomIds,"bbb",roomId);
+  console.log(isAdmin, "damin", isAdminRoom, "aaaaa", appConfig?.adminRoomIds, "bbb", roomId);
 
   useEffect(() => {
     if (!room) {
@@ -121,7 +121,7 @@ const ChatBox = ({
       // await addMessage(message)
       setMessages([...messages, message]);
       setNewMessage("");
-    
+
     } catch (error) {
       console.log(error);
     }
@@ -142,8 +142,25 @@ const ChatBox = ({
     }
   };
   useEffect(() => {
+    console.log(recieveMessage, "receive messages", chat);
     if (recieveMessage !== null && recieveMessage?.chatId === chat?._id) {
-      setMessages([...messages, recieveMessage]);
+      if (room) {
+        const senderData = chat?.members?.find((member) => {
+        return  member?._id === recieveMessage?.senderId
+        })
+        console.log(senderData,"senderData--------");
+        const senderDatas = {
+          senderId:senderData,
+          chatId:recieveMessage?.chatId,
+          text:recieveMessage?.text,
+          recieverId:recieveMessage?.recieverId
+        }
+        console.log(senderDatas,"send-----apple--orange");
+        setMessages([...messages, senderDatas]);
+      }else{
+
+        setMessages([...messages, recieveMessage]);
+      }
     }
   }, [recieveMessage]);
 
@@ -152,7 +169,7 @@ const ChatBox = ({
 
   return (
     <>
-      <div style={{ backgroundImage: isAdminRoom ? `URL(${back})` :""} } className="ChatBox-container w-full">
+      <div style={{ backgroundImage: isAdminRoom ? `URL(${back})` : "" }} className="ChatBox-container w-full">
         {chat ? (
           <>
             <div className="chat-header">
@@ -161,7 +178,7 @@ const ChatBox = ({
                   <button
                     onClick={() => navigate(0)}
                     // className="mr-2 p-1 rounded-full hover:bg-gray-200"
-                    className={isAdminRoom ? "room-back mr-2 p-1 rounded-full hover:bg-gray-200":"mr-2 p-1 rounded-full hover:bg-gray-200"}
+                    className={isAdminRoom ? "room-back mr-2 p-1 rounded-full hover:bg-gray-200" : "mr-2 p-1 rounded-full hover:bg-gray-200"}
                   >
                     <UilArrowLeft size="24" />
                   </button>
@@ -178,14 +195,14 @@ const ChatBox = ({
                     />
                   )}
                   <div className="name" style={{ fontSize: "0.8rem" }}>
-                    <span className={isAdminRoom ? "room-name":""}>
+                    <span className={isAdminRoom ? "room-name" : ""}>
                       {room ? chatRoomName : chatUser?.firstName}
                       {/* {chatUser?.lastname} */}
                     </span>
                   </div>
                 </div>
               </div>
-              <hr className={isAdminRoom ? "room-hr":""} style={{ width: "100%", border: "0.1px solid #ececec" }} />
+              <hr className={isAdminRoom ? "room-hr" : ""} style={{ width: "100%", border: "0.1px solid #ececec" }} />
             </div>
             {/* chat box message */}
             <div className="chat-body">
@@ -195,7 +212,7 @@ const ChatBox = ({
                     ref={scroll}
                     className={
                       message?.senderId?._id === currentUser ||
-                      message?.senderId === currentUser
+                        message?.senderId === currentUser
                         ? "message own"
                         : "message"
                     }
@@ -231,24 +248,24 @@ const ChatBox = ({
                 </>
               ))}
             </div>
-            { 
-           ( isAdminRoom&&isAdmin || !isAdminRoom) ?
-              (<div className="chat-sender">
-                <div>+</div>
-                <InputEmoji style={{width:"9rem!important"}}  value={newMessage} onChange={handleChange} />
-                <div className="send-button button" onClick={handleSend}>
-                  Send
-                </div>
-              </div>) :(
-                <div className="admin-chat-sender">
-                  <div>Only Admin can send messages</div>
-                {/* <div>+</div> */}
-                {/* <InputEmoji value={newMessage} onChange={handleChange} /> */}
-                {/* <div className="send-button button" onClick={handleSend}>
+            {
+              (isAdminRoom && isAdmin || !isAdminRoom) ?
+                (<div className="chat-sender">
+                  <div>+</div>
+                  <InputEmoji style={{ width: "9rem!important" }} value={newMessage} onChange={handleChange} />
+                  <div className="send-button button" onClick={handleSend}>
+                    Send
+                  </div>
+                </div>) : (
+                  <div className="admin-chat-sender">
+                    <div>Only Admin can send messages</div>
+                    {/* <div>+</div> */}
+                    {/* <InputEmoji value={newMessage} onChange={handleChange} /> */}
+                    {/* <div className="send-button button" onClick={handleSend}>
                   sorry
                 </div> */}
-              </div>
-              )
+                  </div>
+                )
             }
           </>
         ) : (
