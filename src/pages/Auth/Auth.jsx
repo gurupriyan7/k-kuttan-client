@@ -234,7 +234,15 @@ function SignUp({ setIsLogin, errorMessage, setErrorMessage }) {
           style: { backgroundColor: 'yellow' },
         },
       })
-    } else {
+    }else if(signUpdata?.userName?.trim()?.length<1 || signUpdata?.firstName?.trim()?.length < 1 ||signUpdata?.lastName?.trim()?.length < 1){
+      enqueueSnackbar('firstName ,lastName,userName and Email should not be empty', {
+        variant: 'warning',
+        ContentProps: {
+          style: { backgroundColor: 'yellow' },
+        },
+      })
+    }  
+    else {
       await dispatch(
         signUp({
           ...signUpdata,

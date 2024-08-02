@@ -232,13 +232,15 @@ const ChatBox = ({
                         />
                       )} */}
                       <span className="chat-name">
-                        {message?.senderId && message?.senderId?.userName
-                          ? message?.senderId?.userName
-                          : userData?.userName}
+                      {
+  message?.senderId?.userName?.length === 0
+    ? "Unknown"
+    : message?.senderId?.userName || userData?.userName
+}
                       </span>
                     </div>
                     <span>
-                      {message?.text}
+                      {message?.text}{message?.senderId?.userName}as
                       {room}
                     </span>
                     <span className="chat-time">

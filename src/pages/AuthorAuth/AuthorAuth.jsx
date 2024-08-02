@@ -231,6 +231,7 @@ function SignUp({ setIsLogin, errorMessage, setErrorMessage }) {
 
   const handleSignUp = async (e) => {
     e.preventDefault()
+    console.log(signUpdata?.firstName?.length,"signUPdata---------");
     if (signUpdata?.password?.length < 4) {
       enqueueSnackbar('Password must be min 4 characters', {
         variant: 'warning',
@@ -238,12 +239,19 @@ function SignUp({ setIsLogin, errorMessage, setErrorMessage }) {
           style: { backgroundColor: 'yellow' },
         },
       })
+    }else if(signUpdata?.userName?.trim()?.length<1 || signUpdata?.firstName?.trim()?.length < 1 ||signUpdata?.lastName?.trim()?.length < 1){
+      enqueueSnackbar('firstName ,lastName,userName and Email should not be empty', {
+        variant: 'warning',
+        ContentProps: {
+          style: { backgroundColor: 'yellow' },
+        },
+      })
     } else {
-      await dispatch(
-        AuthorSignUp({
-          ...signUpdata,
-        }),
-      )
+      // await dispatch(
+      //   AuthorSignUp({
+      //     ...signUpdata,
+      //   }),
+      // )
     }
     console.log(signUpdata, 'signUPdata')
   }
@@ -334,7 +342,7 @@ function SignUp({ setIsLogin, errorMessage, setErrorMessage }) {
         </div>
         <div>
           <input
-            type="text"
+            type="email"
             placeholder="Email"
             className="infoInput placeholder-gray-600"
             name="email"
