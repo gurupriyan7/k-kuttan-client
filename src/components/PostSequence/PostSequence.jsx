@@ -103,7 +103,7 @@ const PostSequence = () => {
           <PostSide
             searchText={searchText}
             setSearchText={setSearchText}
-            postData={postData.data}
+            postData={postData?.data}
             totalPost={postData?.totalCount}
             isAuthorProfile={true}
             setCategory={setCategory}
