@@ -247,11 +247,11 @@ function SignUp({ setIsLogin, errorMessage, setErrorMessage }) {
         },
       })
     } else {
-      // await dispatch(
-      //   AuthorSignUp({
-      //     ...signUpdata,
-      //   }),
-      // )
+      await dispatch(
+        AuthorSignUp({
+          ...signUpdata,
+        }),
+      )
     }
     console.log(signUpdata, 'signUPdata')
   }
