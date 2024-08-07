@@ -240,7 +240,7 @@ const ChatBox = ({
                       </span>
                     </div>
                     <span>
-                      {message?.text}{message?.senderId?.userName}as
+                      {message?.text}
                       {room}
                     </span>
                     <span className="chat-time">
