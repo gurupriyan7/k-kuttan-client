@@ -58,7 +58,7 @@ h2 {
   background-color: #ffffff;
   justify-content: center;
   align-items: center;
-padding-top:2rem;
+  padding-top: 2rem;
 }
 
 .left-container p {
@@ -107,19 +107,20 @@ padding-top:2rem;
   margin-bottom: 22px;
   /* width: 100%; */
 }
-.next-btn{
-          border-radius: 20px;
-          border: 1px solid #fca61f;
-          background-color: #fca61f;
-          color: #FFFFFF;
-          font-size: 8px;
-          font-weight: bold;
-          padding: 10px 17px;
-          letter-spacing: 1px;
-          text-transform: uppercase;
-          transition: transform 80ms ease-in;
-          cursor: pointer;
-          margin-bottom: 22px;
+
+.next-btn {
+  border-radius: 20px;
+  border: 1px solid #fca61f;
+  background-color: #fca61f;
+  color: #FFFFFF;
+  font-size: 8px;
+  font-weight: bold;
+  padding: 10px 17px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 80ms ease-in;
+  cursor: pointer;
+  margin-bottom: 22px;
 }
 
 button:hover {
@@ -129,8 +130,9 @@ button:hover {
 @media only screen and (max-width: 600px) {
   .left-container {
     display: none;
-    
+
   }
+
   .lg-view {
     display: none;
   }
@@ -150,6 +152,21 @@ form p {
 .disabled {
   /* color: gray; */
   background-color: rgb(164 155 155 / 66%);
-  pointer-events: none; /* Prevents any mouse interactions */
+  pointer-events: none;
+  /* Prevents any mouse interactions */
   border: none;
+}
+
+
+.rules {
+  white-space: pre-wrap;
+  /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap;
+  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;
+  /* Opera 4-6 */
+  white-space: -o-pre-wrap;
+  /* Opera 7 */
+  word-wrap: break-word;
+  /* Internet Explorer 5.5+ */
 }
