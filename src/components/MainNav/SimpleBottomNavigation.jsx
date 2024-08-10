@@ -23,8 +23,8 @@ export default function SimpleBottomNavigation({ value, setValue }) {
           width: '100%',
           position: 'fixed',
           bottom: 0,
-          left:0,
-          right:0,
+          left: 0,
+          right: 0,
           zIndex: 100,
           backgroundColor: `red`,
         }}
@@ -50,37 +50,37 @@ export default function SimpleBottomNavigation({ value, setValue }) {
             }
           }}
         >
-          <BottomNavigationAction
-            sx={{
-              ...(value === 0 && {
-                backgroundColor: 'orange',
-              }),
-            }}
-            label="Trending"
-            icon={<WhatshotIcon />}
-          />
-          <BottomNavigationAction  sx={{
-              ...(value === 1 && {
-                backgroundColor: 'orange',
-              }),
-            }} label="Recent" icon={<MovieIcon />} />
-          <BottomNavigationAction  sx={{
-              ...(value === 2 && {
-                backgroundColor: 'orange',
-              }),
-            }} label="Most liked" icon={<TvIcon />} />
-          <BottomNavigationAction  sx={{
-              ...(value === 3 && {
-                backgroundColor: 'orange',
-              }),
-            }} label="Suggested" icon={<SearchIcon />} />
-          <BottomNavigationAction  sx={{
-              ...(value === 4 && {
-                backgroundColor: 'orange',
-              }),
-            }} label="home" icon={<HomeIcon />} />
+          {/* <BottomNavigationAction */}
+          {/*   sx={{ */}
+          {/*     ...(value === 0 && { */}
+          {/*       backgroundColor: 'orange', */}
+          {/*     }), */}
+          {/*   }} */}
+          {/*   label="Trending" */}
+          {/*   icon={<WhatshotIcon />} */}
+          {/* /> */}
+          {/* <BottomNavigationAction  sx={{ */}
+          {/*     ...(value === 1 && { */}
+          {/*       backgroundColor: 'orange', */}
+          {/*     }), */}
+          {/*   }} label="Recent" icon={<MovieIcon />} /> */}
+          {/* <BottomNavigationAction  sx={{ */}
+          {/*     ...(value === 2 && { */}
+          {/*       backgroundColor: 'orange', */}
+          {/*     }), */}
+          {/*   }} label="Most liked" icon={<TvIcon />} /> */}
+          <BottomNavigationAction sx={{
+            ...(value === 3 && {
+              backgroundColor: 'orange',
+            }),
+          }} label="Suggested" icon={<SearchIcon />} onClick={() => navigate(path.explore)} />
+          <BottomNavigationAction sx={{
+            ...(value === 4 && {
+              backgroundColor: 'orange',
+            }),
+          }} label="home" icon={<HomeIcon />} onClick={() => navigate(path.home)} />
         </BottomNavigation>
       </Box>
-    </div> 
+    </div>
   )
 }

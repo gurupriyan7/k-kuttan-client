@@ -44,7 +44,7 @@ const PostShare = ({
   isHome = false,
   isAuthorProfile = false,
   setCategory,
-  isCategory=false
+  isCategory = false
 }) => {
   const authData = useSelector((state) => state.authReducer.authData);
 
@@ -111,7 +111,7 @@ const PostShare = ({
           disabled={!isAuthor && !isHome}
           onChange={handleSearchText}
         />
-      
+
       </div>
       <div className="postOptions">
         <div className="tooltip">
@@ -149,76 +149,76 @@ const PostShare = ({
           </div>
         </div>
 
-<div className="flex justify-between w-full gap-4">
-       {isCategory&& <Select
-          className="text-[14px] cursor-pointer w-full bg-transparent opacity-80 "
-          name="categoryType"
-          defaultValue={selectedCategory}
-          value={selectedCategory}
-          placeholder="Select a category ?"
-          onChange={(selecterOption)=>{
-            setSelectedCategory(selecterOption?.value)
-            setCategory(selecterOption?.value)
-          }}
-          options={PostCategoriesEnum}
-          theme={(theme) => ({
-            ...theme,
-            borderRadius: "12px",
-            border: "none",
-            paddingTop: "10px",
-            colors: {
-              ...theme.colors,
-              neutral0: "#D1D5DB", // Set the background color
-              primary25: "#E5E7EB", // Option hover background color to gray-200
-              primary: "#6B7280", // Option selected color to gray-500
-            },
-          })}
-          styles={{
-            control: (base) => ({
-              ...base,
-              cursor: 'pointer',
-              paddingTop: "7px",
-              paddingBottom: "7px",
-              backgroundColor: "#EEEEEE", // gray-300
-              borderColor: "#D1D5DB", // gray-300
-              boxShadow: "none",
-              "&:hover": {
-                borderColor: "#6B7280", // gray-500
-              },
-            }),
-            option: (base, state) => ({
-              ...base,
-              cursor: 'pointer',
-              backgroundColor: state.isFocused ? "#E5E7EB" : "white", // gray-200 on hover
-              color: "black",
-              "&:active": {
-                backgroundColor: "#D1D5DB", // gray-300
-              },
-              fontWeight:"bold"
-            }),
-            menu: (base) => ({
-              ...base,
-              backgroundColor: "#D1D5DB", // gray-300 for the dropdown
-            }),
-            singleValue: (base) => ({
-              ...base,
-              color: "black",
-            }),
-          }}
-          // unstyled
-        />}
-        {authData?.data && isAuthor && !isAuthorProfile && (
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              navigate(path.addPost);
+        <div className="flex justify-between w-full gap-4">
+          {isCategory && <Select
+            className="text-[14px] cursor-pointer w-full bg-transparent opacity-80 "
+            name="categoryType"
+            defaultValue={selectedCategory}
+            value={selectedCategory}
+            placeholder="Select a category ?"
+            onChange={(selecterOption) => {
+              setSelectedCategory(selecterOption?.value)
+              setCategory(selecterOption?.value)
             }}
-            style={{ color: "black" }}
-            className="button ps-button"
-          >
-            Share
-          </button>
-        )}
+            options={PostCategoriesEnum}
+            theme={(theme) => ({
+              ...theme,
+              borderRadius: "12px",
+              border: "none",
+              paddingTop: "10px",
+              colors: {
+                ...theme.colors,
+                neutral0: "#D1D5DB", // Set the background color
+                primary25: "#E5E7EB", // Option hover background color to gray-200
+                primary: "#6B7280", // Option selected color to gray-500
+              },
+            })}
+            styles={{
+              control: (base) => ({
+                ...base,
+                cursor: 'pointer',
+                paddingTop: "7px",
+                paddingBottom: "7px",
+                backgroundColor: "#EEEEEE", // gray-300
+                borderColor: "#D1D5DB", // gray-300
+                boxShadow: "none",
+                "&:hover": {
+                  borderColor: "#6B7280", // gray-500
+                },
+              }),
+              option: (base, state) => ({
+                ...base,
+                cursor: 'pointer',
+                backgroundColor: state.isFocused ? "#E5E7EB" : "white", // gray-200 on hover
+                color: "black",
+                "&:active": {
+                  backgroundColor: "#D1D5DB", // gray-300
+                },
+                fontWeight: "bold"
+              }),
+              menu: (base) => ({
+                ...base,
+                backgroundColor: "#D1D5DB", // gray-300 for the dropdown
+              }),
+              singleValue: (base) => ({
+                ...base,
+                color: "black",
+              }),
+            }}
+          // unstyled
+          />}
+          {authData?.data && isAuthor && !isAuthorProfile && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(path.addPost);
+              }}
+              style={{ color: "black" }}
+              className="button ps-button shrink-0"
+            >
+              Post you story
+            </button>
+          )}
         </div>
         <div style={{ display: "none" }}>
           <input

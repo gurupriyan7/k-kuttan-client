@@ -28,7 +28,7 @@ const Post = ({ data }) => {
   const [likes, setLikes] = useState(data?.liked?.length);
   const [modalOpened, setModalOpened] = useState(false);
   const [shareModalOpened, setShareModalOpened] = useState(false);
-  const [comments,setCommments]=useState([])
+  const [comments, setCommments] = useState([])
 
   const ProfileImage = ({ src }) => {
     const handleError = (event) => {
@@ -45,9 +45,10 @@ const Post = ({ data }) => {
     );
   };
 
-  useEffect(()=>{
-setCommments(data?.comments)
-  },[data])
+  useEffect(() => {
+    setCommments(data?.comments)
+    console.log("comments", data?.comments)
+  }, [data])
 
   const handleSelect = async (e) => {
     if (data?.createdBy?._id === userData?.data?._id) {
@@ -93,7 +94,7 @@ setCommments(data?.comments)
           const rzp = new window.Razorpay(options);
           rzp.open();
 
-          rzp.on("payment.failed", async function (response) {
+          rzp.on("payment.failed", async function(response) {
             console.log(response, "payment failed response");
             await updatePayment({
               transactionId: response?.razorpay_payment_id,
@@ -134,15 +135,15 @@ setCommments(data?.comments)
     setModalOpened(true);
   };
 
-  const formatPartNumber =(partNumber)=>{
+  const formatPartNumber = (partNumber) => {
     const partNumberStr = partNumber.toString();
 
     // If the length is 1, prepend '0'
     if (partNumberStr.length === 1) {
-        return '0' + partNumberStr;
+      return '0' + partNumberStr;
     } else {
-        // Otherwise, return the exact value
-        return partNumberStr;
+      // Otherwise, return the exact value
+      return partNumberStr;
     }
   }
   return (
@@ -216,7 +217,7 @@ setCommments(data?.comments)
 
       <div className="detail flex flex-col">
         <p className=" flex flex-col gap-1">
-        <b className="line-clamp-1">{data?.partNumber ? `Part - (${formatPartNumber(data?.partNumber)})`:""}</b>
+          <b className="line-clamp-1">{data?.partNumber ? `Part - (${formatPartNumber(data?.partNumber)})` : ""}</b>
           <b className="line-clamp-2">{`${data?.title}`}</b>
           <p className="line-clamp-4">{data?.summary}</p>
         </p>
