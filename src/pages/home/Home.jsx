@@ -11,6 +11,7 @@ import { getAllPosts } from "../../actions/post.actions";
 import { useNavigate } from "react-router-dom";
 import Preloader from "../../components/Preloader/Preloader";
 import { useInView } from "react-intersection-observer";
+import { KeyboardArrowUp } from "@mui/icons-material";
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,13 +20,15 @@ const Home = () => {
   const [posts, setPosts] = useState([]);
   const postData = useSelector((state) => state.postReducer.posts);
   const postDataLoading = useSelector((state) => state.postReducer.loading);
-  console.log("ddadtaad",postData)
+  console.log("ddadtaad", postData)
 
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
   const [category, setCategory] = useState("");
-  
+
   const fetchingMoreRef = useRef(false)
+
+  const containerRef = useRef(null)
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -47,27 +50,33 @@ const Home = () => {
   const loadMorePosts = async () => {
     if (!fetchingMoreRef.current) {
       fetchingMoreRef.current = true;
-  
+
       const nextPage = page + 1;
-      
+
       try {
         await getAllPosts(category, searchText, dispatch, nextPage);
-        console.log("OK",nextPage)
-        
-        setPage(nextPage)      
+        console.log("OK", nextPage)
+
+        setPage(nextPage)
       } catch (error) {
         console.error("Error fetching more posts:", error);
       } finally {
-        
+
         fetchingMoreRef.current = false;
       }
     }
   };
 
+
+  const handleScrollToTop = () => {
+    if (containerRef.current)
+      containerRef.current.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+  }
+
   return (
     <>
       {isLoading && <Preloader />}
-      <div className="Home" style={{ backgroundImage: `URL(${back})` }}>
+      <div ref={containerRef} className="Home relative overflow-y-auto max-h-screen" style={{ backgroundImage: `URL(${back})` }}>
         <ProfileSide isHome={true} />
         <PostSide
           searchText={searchText}
@@ -80,6 +89,16 @@ const Home = () => {
           onLoadMore={loadMorePosts} // Pass down loadMore function to handle infinite scrolling
         />
         <RightSide />
+
+
+        <button
+          onClick={handleScrollToTop}
+          title="Scroll to top"
+          className="flex justify-center items-center h-10 w-10 bg-gray-100 text-black rounded-full mr-4 sm:mr-6 md:mr-8 sm:mb-10 md:mb-12 mb-8 lg:mr-[15vw] 2xl:mr-[20vw] fixed right-0 bottom-0"
+        >
+          <KeyboardArrowUp />
+        </button>
+
       </div>
     </>
   );

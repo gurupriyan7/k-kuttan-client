@@ -8,21 +8,23 @@ import { path } from '../../paths/paths'
 import { appConfig } from '../../config/appConfig'
 import defaultProfile from '../../img/default-profile.jpg'
 import defaultCover from '../../img/post-default.png'
-const ProfileCard = ({ isProfile = false,authorData,isAuthorProfile=false}) => {
+import UsersList from '../UsersList/UsersList'
+const ProfileCard = ({ isProfile = false, authorData, isAuthorProfile = false }) => {
   const navigate = useNavigate()
   const authData = useSelector((state) => state.authReducer.authData)
   const ProfilePage = true
+  const [list, setList] = useState(null)
 
-  const [userData,setUserData]=useState({});
-  useEffect(()=>{
-if( isAuthorProfile&&authorData ){
-  setUserData(authorData)
-}else{
-  setUserData(authData?.data)
-}
-  },[authorData,authData])
+  const [userData, setUserData] = useState({});
+  useEffect(() => {
+    if (isAuthorProfile && authorData) {
+      setUserData(authorData)
+    } else {
+      setUserData(authData?.data)
+    }
+  }, [authorData, authData])
   const handleClick = () => {
-    if (authData?.data&&!isAuthorProfile) {
+    if (authData?.data && !isAuthorProfile) {
       navigate(path.profile)
     }
   }
@@ -41,7 +43,7 @@ if( isAuthorProfile&&authorData ){
     return <img src={src} alt="Follower" onError={handleError} />
   }
   // alert(authData?.data?.ProfileImage)
-  console.log(userData?.profileImage,"auth-data-auth");
+  console.log(userData?.profileImage, "auth-data-auth");
   return (
     <div
       onClick={handleClick}
@@ -73,15 +75,15 @@ if( isAuthorProfile&&authorData ){
       <div className="followStatus">
         <hr />
         <div>
-          <div className="follow">
+          <button onClick={() => setList({ label: 'Followings', data: userData?.followings })} className="follow">
             <span>{userData?.followings?.length ?? 0}</span>
             <span>Followings</span>
-          </div>
+          </button>
           <div className="vl"></div>
-          <div className="follow">
+          <button onClick={() => setList({ label: "Followers", data: userData?.followers })} className="follow">
             <span>{userData?.followers?.length ?? 0}</span>
             <span>Followers</span>
-          </div>
+          </button>
 
           {ProfilePage && (
             <>
@@ -96,6 +98,8 @@ if( isAuthorProfile&&authorData ){
         <hr />
       </div>
       {ProfilePage ? '' : <span>My Profile</span>}
+
+      {list && <UsersList list={list.data} label={list.label} close={() => setList(null)} />}
     </div>
   )
 }

@@ -5,11 +5,11 @@ import { path } from "../paths/paths";
 
 const API = axios.create({ baseURL: appConfig.apiUrl });
 
-export const getSeqencePosts = async (postId,category,searchText, page=1, limit=10) => {
+export const getSeqencePosts = async (postId, category, searchText, page = 1, limit = 10) => {
   try {
     const token = getLocalStorageItem("token");
 
-    return await API.get(`/post/seq/${postId}?searchTerm=${searchText ?? ""}${category&&`&category=${category}`}&page=${page}&limit=${limit}`, {
+    return await API.get(`/post/seq/${postId}?searchTerm=${searchText ?? ""}${category && `&category=${category}`}&page=${page}&limit=${limit}`, {
       ...(token && {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -20,13 +20,13 @@ export const getSeqencePosts = async (postId,category,searchText, page=1, limit=
     console.log(error);
   }
 };
-export const getAllPosts = async (category,searchText,page = 1, limit = 20) => {
+export const getAllPosts = async (category, searchText, page = 1, limit = 20) => {
   try {
     const token = getLocalStorageItem("token");
     const userData = getLocalStorageItem("profile");
 
     return await API.get(
-    `/post?searchTerm=${searchText ?? ""}${category ? `&category=${category}` : ""}&page=${page}&limit=${limit}`, {
+      `/post?searchTerm=${searchText ?? ""}${category ? `&category=${category}` : ""}&page=${page}&limit=${limit}`, {
       ...(token && {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -41,7 +41,7 @@ export const getPostSeqwnces = async () => {
   try {
     const token = getLocalStorageItem("token");
 
-    return await API.get(`/post/post-seq`,{
+    return await API.get(`/post/post-seq`, {
       ...(token && {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -52,12 +52,12 @@ export const getPostSeqwnces = async () => {
     console.log(error);
   }
 };
-export const getPostsByUser = async (isDraft,category, searchText, page, limit) => {
+export const getPostsByUser = async (isDraft, category, searchText, page, limit) => {
   try {
     const token = getLocalStorageItem("token");
     // const token = userData?.data?.token;
     return await API.get(
-      `/post/user?isDraft=${isDraft}&searchTerm=${searchText ?? ""}${category&&`&category=${category}`}&page=${page}&limit=${limit}`,
+      `/post/user?isDraft=${isDraft}&searchTerm=${searchText ?? ""}${category && `&category=${category}`}&page=${page}&limit=${limit}`,
       {
         headers: {
           Authorization: `Bearer ${token}`, // Include the Bearer token in the Authorization header
@@ -68,7 +68,7 @@ export const getPostsByUser = async (isDraft,category, searchText, page, limit) 
     console.log(error);
   }
 };
-export const getPostsByUserId = async (authorId, searchText, page, limit ) => {
+export const getPostsByUserId = async (authorId, searchText, page, limit) => {
   try {
     const token = getLocalStorageItem("token");
     // const token = userData?.data?.token;
@@ -124,14 +124,14 @@ export const likeAndCommentPost = async (id, userId) => {
     console.log(error);
   }
 };
-export const commentPost = async ({ id, comment }) => {
+export const commentPost = async ({ id, comment, commentType = "main", commentId = undefined }) => {
   try {
     const token = getLocalStorageItem("token");
 
     return await API.patch(
       `post/user/${id}`,
       {
-        comment: comment,
+        comment: comment, commentType, commentId
       },
       {
         headers: {

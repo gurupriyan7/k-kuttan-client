@@ -245,13 +245,18 @@ const SinglePost = (PostsData) => {
     }
 
     return pages.map((p) => (
-      <button
-        key={`pagination-${p}`}
-        onClick={(event) => handlePagination(event, p)}
-        className=" bg-white px-2 py-1 text-black"
+      <div key={`pagination-${p}`}
+        className="flex gap-4"
       >
-        {p}
-      </button>
+        <p className="-mx-2 text-white">...</p>
+
+        <button
+          onClick={(event) => handlePagination(event, p)}
+          className=" bg-white px-2 py-1 text-black"
+        >
+          {p}
+        </button>
+      </div>
     ))
   }
 
@@ -264,13 +269,18 @@ const SinglePost = (PostsData) => {
     }
 
     return pages.map((p) => (
-      <button
-        key={`pagination-${p}`}
-        onClick={(event) => handlePagination(event, p)}
-        className=" bg-white px-2 py-1 text-black"
+      <div key={`pagination-${p}`}
+        className="flex gap-4"
       >
-        {p}
-      </button>
+        <button
+          onClick={(event) => handlePagination(event, p)}
+          className=" bg-white px-2 py-1 text-black"
+        >
+          {p}
+        </button>
+
+        <p className="-mx-2 text-white">...</p>
+      </div>
     ))
   }
 
@@ -462,8 +472,9 @@ const SinglePost = (PostsData) => {
             </div>
           </div>
 
-          <div className="py-[20px] -translate-y-20">
+          <div className="py-[20px] -translate-y-24">
             <div
+              className="flex-wrap"
               style={{
                 display: "flex",
                 justifyContent: "center",
@@ -491,6 +502,9 @@ const SinglePost = (PostsData) => {
 
               {getPrevIntervals()}
 
+              {post?.story?.length > 2 && page !== 1 &&
+                <p className="-mx-2 text-white">...</p>}
+
               {page - 1 < post?.story?.length && page > 2 &&
                 <button
                   onClick={(event) => handlePagination(event, page - 1)}
@@ -516,7 +530,12 @@ const SinglePost = (PostsData) => {
                 </button>
               }
 
+              {page !== post?.story?.length && page !== post?.story?.length - 1 && post?.story?.length > 2 &&
+                <p className="-mx-2 text-white">...</p>}
+
               {getNextIntervals()}
+
+
 
               <div
                 className={`flex gap-2 ${page === post?.story?.length || post?.story?.length < 2

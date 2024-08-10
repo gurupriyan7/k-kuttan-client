@@ -3,14 +3,14 @@ import './Posts.css'
 // import { PostsData } from '../../Data/PostsData'
 import Post from '../Post/Post'
 // import { useSelector } from 'react-redux'
-const Posts = ({post}) => {
+const Posts = ({ post }) => {
   // const postData = useSelector((state) => state.postReducer.posts)
-console.log(post,"totalPOst");
-console.log("JDDJ", new Error("sample error"))
+  console.log(post, "totalPOst");
+  console.log("JDDJ", new Error("sample error"))
   return (
     <div className="Posts">
       {post?.map((post, id) => {
-        return <Post data={post} id={id} />
+        return <Post key={post?._id} data={post} id={id} />
       })}
     </div>
   )

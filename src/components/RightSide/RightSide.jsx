@@ -24,31 +24,40 @@ const RightSide = () => {
 
   return (
     <div className="RightSide">
-      <div className="hidden lg:flex justify-between mt-[1rem]" style={{ backgroundColor: " var(--cardColor)", padding: "1rem", borderRadius: "20px" }}>
+      <div className="hidden lg:flex justify-between gap-3 items-end mt-[1rem]" style={{ backgroundColor: " var(--cardColor)", padding: "1rem", paddingBottom: '0.5rem', borderRadius: "20px" }}>
         <div className="tooltip">
-          <Link to="../">
-            {' '}
+          <Link to="../" className='flex flex-col justify-center items-center gap-0.5'>
             <img src={Home} style={{ width: "1.5rem" }} alt="" />
             <span class="tooltiptext">Home</span>
+            <p className='text-xs font-medium sm:text-sm'>Home</p>
           </Link>
         </div>
         <div className="tooltip">
-          <Link to="../explore">
+          <Link to="../explore" className='flex flex-col justify-center items-center gap-0.5'>
+
             {' '}
             <span class="tooltiptext">Explore</span>
             <WhatshotIcon />
+            <p className='text-xs font-medium sm:text-sm'>Explore</p>
+
           </Link>
         </div>
         <div className="tooltip">
-          <Link to={authData?.data && "../chat"}>
+          <Link to={authData?.data && "../chat"} className='flex flex-col justify-center items-center gap-0.5'>
+
             <img src={Comment} alt="" />
             <span class="tooltiptext">Chat</span>
+            <p className='text-xs font-medium sm:text-sm'>Chat</p>
+
           </Link>
         </div>
         <div className="tooltip1">
-          <Link to={authData?.data && "../room"}>
+          <Link to={authData?.data && "../room"} className='flex flex-col justify-center items-center gap-0.5'>
+
             <MeetingRoomIcon />
             <span class="tooltiptext1">Room</span>
+            <p className='text-xs font-medium sm:text-sm'>Room</p>
+
           </Link>
         </div>
       </div>
