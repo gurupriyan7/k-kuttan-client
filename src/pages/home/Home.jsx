@@ -69,15 +69,17 @@ const Home = () => {
 
 
   const handleScrollToTop = () => {
-    if (containerRef.current)
-      containerRef.current.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    if (containerRef.current){
+      containerRef.current.scrollTop=0;
+    }
   }
 
   return (
     <>
       {isLoading && <Preloader />}
-      <div ref={containerRef} className="Home relative overflow-y-auto max-h-screen" style={{ backgroundImage: `URL(${back})` }}>
+      <div ref={containerRef}  className="Home relative overflow-y-auto max-h-screen" style={{ backgroundImage: `URL(${back})` }}>
         <ProfileSide isHome={true} />
+        <div ref={containerRef} >
         <PostSide
           searchText={searchText}
           setSearchText={setSearchText}
@@ -88,6 +90,7 @@ const Home = () => {
           isCategory={true}
           onLoadMore={loadMorePosts} // Pass down loadMore function to handle infinite scrolling
         />
+        </div>
         <RightSide />
 
 

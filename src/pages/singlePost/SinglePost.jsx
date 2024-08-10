@@ -464,6 +464,7 @@ const SinglePost = (PostsData) => {
                   onClick={handleScrollToTop}
                   title="Scroll to top"
                   className="flex justify-center items-center h-9 w-9 bg-gray-100 text-black rounded-full absolute right-0 bottom-0"
+                  style={{zIndex:"9"}}
                 >
                   <KeyboardArrowUp />
                 </button>
