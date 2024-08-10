@@ -525,8 +525,8 @@ const AddPost = () => {
                   {selectedContent?.value === "new-story" && (
                     <input
                       type="text"
-                      placeholder="Part Name"
-                      name="New Story"
+                      placeholder="New Story"
+                      name="partName"
                       value={otherPartName}
                       onChange={handlePartNamecChange}
                       required
