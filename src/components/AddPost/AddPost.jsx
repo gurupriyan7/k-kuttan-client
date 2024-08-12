@@ -16,6 +16,7 @@ import Home from "../../img/home.png";
 import { Link } from "react-router-dom";
 import { PostCategoriesEnum } from "../../constants/PostEnum";
 import Preloader from "../Preloader/Preloader";
+import { rules } from "../../constants/rules";
 
 const AddPost = () => {
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ const AddPost = () => {
     type: "",
     message: "",
   });
-
+  const [showMore, setShowMore] = useState(false)
   const [errorShow, setErrorShow] = useState(false);
 
   const [storyCount, setStoryCount] = useState(1);
@@ -51,7 +52,7 @@ const AddPost = () => {
   useEffect(() => {
     dispatch(getPostSeqwnces());
   }, []);
-  useEffect(() => {}, [storyCount, stories]);
+  useEffect(() => { }, [storyCount, stories]);
   const [image, setImage] = useState(null);
   const imageRef = useRef();
   const [formData, setFormData] = useState({
@@ -271,7 +272,7 @@ const AddPost = () => {
       !formData?.category ||
       !formData?.partName ||
       !formData?.partNumber ||
-      formData?.partName === "other"
+      formData?.partName === "new-part"
     ) {
       enqueueSnackbar(
         "Title, Summary, part Name ,Part Number and  category should not be empty!",
@@ -346,6 +347,17 @@ const AddPost = () => {
                 <form action="#">
                   <h2 className="lg-view">Add Post</h2>
                   <h2 className="sm-view">Add Post</h2>
+
+
+                  <div classname="py-2 my-2 text-left">
+                    <h5 className="text-base sm:text-lg font-medium text-left">Rules</h5>
+                    <p className="text-xs sm:text-sm overflow-hidden" style={{ maxHeight: !showMore ? '60px' : '100%' }}>
+                      <pre className="rules">
+                        {rules}
+                      </pre>
+                    </p>
+                    <button className="text-blue-700 font-medium" onClick={() => setShowMore(prev => !prev)}>{showMore ? "Show less" : "Show more"}</button>
+                  </div>
                   {/* <p>* Required</p> */}
                   {/* <div className="social-container">
                 <a href="#" className="social"><i className="fab fa-facebook-f"></i></a>
@@ -430,7 +442,7 @@ const AddPost = () => {
                           color: "black",
                         }),
                       }}
-                      // unstyled
+                    // unstyled
                     />
                   </div>
 
@@ -494,7 +506,7 @@ const AddPost = () => {
                           color: "black",
                         }),
                       }}
-                      // unstyled
+                    // unstyled
                     />
 
                     <input
@@ -510,10 +522,10 @@ const AddPost = () => {
                     />
                   </div>
 
-                  {selectedContent?.value === "other" && (
+                  {selectedContent?.value === "new-story" && (
                     <input
                       type="text"
-                      placeholder="Part Name"
+                      placeholder="New Story Name"
                       name="partName"
                       value={otherPartName}
                       onChange={handlePartNamecChange}

@@ -4,9 +4,9 @@ import Logo from "../../img/logo.png"
 const Header = () => {
   return (
     <>
-   
-  
-    <span onClick={()=>window.scroll(0,0)} className='Header w-full py-[20px]'> <img src={Logo} alt="" style={{width:"4rem",height:"4rem"}} /> <h6 className='mt-4' style={{marginLeft:"-1rem"}}>AMBIKUTTAPPAN </h6> </span>
+
+
+      <span onClick={() => window.scroll(0, 0)} className='Header w-full py-[20px]'> <h6 className='mt-4' ><span className='text-orange-400 font-bold -mr-1'>K</span> AMBIKUTTAPPAN </h6> </span>
     </>
   )
 }

@@ -28,6 +28,10 @@ import { PaymentStatusEnum } from "../../constants/paymentEnum";
 import { path } from "../../paths/paths";
 import PaymentFailModal from "../../components/PaymentFailedModal/PaymentFailedModal";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { KeyboardArrowUp } from "@mui/icons-material";
+
+
 const SinglePost = (PostsData) => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -42,7 +46,7 @@ const SinglePost = (PostsData) => {
   console.log(postId, "postIdsss");
   const [load, setLoad] = useState(false);
   const post = useSelector((state) => state.postReducer.post);
-  console.log(post,"POST1")
+  console.log(post, "POST1")
   const postLoading = useSelector((state) => state.postReducer.loading);
   console.log("postLoading", postLoading);
   const userData = useSelector((state) => state.authReducer.authData);
@@ -54,6 +58,7 @@ const SinglePost = (PostsData) => {
   const [paymentStatus, setPaymentStatus] = useState(
     post?.isFree || post?.isPaid
   );
+
 
 
   useEffect(() => {
@@ -94,21 +99,22 @@ const SinglePost = (PostsData) => {
     }
   };
   const handleEdit = (e) => {
-  
+
     e.preventDefault();
     navigate(`${path?.editPost}/${post?._id}`);
   };
 
-  const handlePagination = (event, isNext) => {
+  const handlePagination = (event, direction) => {
     event.preventDefault();
-    if (isNext) {
+    if (direction === "next") {
       setPage(page + 1);
-    } else {
+    } else if (direction === 'prev') {
       setPage(page - 1);
-    }
-    window.scrollTo(0, 0); 
-       if (textContainerRef?.current) {
-      textContainerRef?.current.scrollTo(0,0);
+    } else setPage(direction)
+    window.scrollTo(0, 0);
+    if (textContainerRef?.current) {
+      textContainerRef?.current.scrollTo(0, 0);
+      textContainerRef.current.scrollTop = 0;
     }
   };
 
@@ -162,7 +168,7 @@ const SinglePost = (PostsData) => {
       rzp.open();
 
       // alert('need to pay')
-      rzp.on("payment.failed", async function (response) {
+      rzp.on("payment.failed", async function(response) {
         console.log(response, "payment failed response");
         setPaymentStatus(false);
         await updatePayment({
@@ -212,7 +218,7 @@ const SinglePost = (PostsData) => {
     };
   }, []);
 
-  function formatText(text ="") {
+  function formatText(text = "") {
     return text?.split("\n").map((item, key) => {
       return (
         <span key={key}>
@@ -223,10 +229,65 @@ const SinglePost = (PostsData) => {
     });
   }
 
-  const handleOnPrevious=()=>{
-navigate(`/post-seq`,{
-    state: { authorId:post?.createdBy?._id, postId:post?._id } 
-})
+  const handleOnPrevious = () => {
+    navigate(`/post-seq`, {
+      state: { authorId: post?.createdBy?._id, postId: post?._id }
+    })
+  }
+
+
+  const getPrevIntervals = () => {
+    const pages = []
+    let i = 10
+    while (i < page - 1) {
+      pages.push(i)
+      i += 10
+    }
+
+    return pages.map((p) => (
+      <div key={`pagination-${p}`}
+        className="flex gap-4"
+      >
+        <p className="-mx-2 text-white">...</p>
+
+        <button
+          onClick={(event) => handlePagination(event, p)}
+          className=" bg-white px-2 py-1 text-black"
+        >
+          {p}
+        </button>
+      </div>
+    ))
+  }
+
+  const getNextIntervals = () => {
+    const pages = []
+    let i = 10
+    while (i < post?.story?.length) {
+      if (i > page + 1) pages.push(i)
+      i += 10
+    }
+
+    return pages.map((p) => (
+      <div key={`pagination-${p}`}
+        className="flex gap-4"
+      >
+        <button
+          onClick={(event) => handlePagination(event, p)}
+          className=" bg-white px-2 py-1 text-black"
+        >
+          {p}
+        </button>
+
+        <p className="-mx-2 text-white">...</p>
+      </div>
+    ))
+  }
+
+  const handleScrollToTop = () => {
+    if (textContainerRef?.current) {
+      textContainerRef.current.scrollTop = 0;
+    }
   }
 
   return (
@@ -234,7 +295,7 @@ navigate(`/post-seq`,{
       {load && <Preloader />}
       {paymentStatus ? (
         <div
-          className="min-h-screen relative"
+          className="h-full max-h-screen relative"
           style={{
             backgroundImage: `URL(${back})`,
             backgroundPosition: "center",
@@ -243,7 +304,7 @@ navigate(`/post-seq`,{
         >
           {/* right side  */}
           <div className="absolute right-4 top-4 z-100 cursor-pointer">
-          {post?.createdBy?._id === userData?.data?._id && (
+            {post?.createdBy?._id === userData?.data?._id && (
               <div
                 onClick={handleEdit}
                 className="editBtn"
@@ -251,9 +312,9 @@ navigate(`/post-seq`,{
               >
                 Edit
               </div>
-           )} 
+            )}
           </div>
-          
+
           <div
             style={{ backgroundColor: "" }}
             className="soldier-2 absolute right-4 top-12"
@@ -302,62 +363,62 @@ navigate(`/post-seq`,{
                   <div className="flex  justify-between w-full md:gap-7 mt-1 lg:mt-4">
                     <div onClick={handleOnPrevious} className="cursor-pointer flex gap-1 p-1 border-2 border-gray-600  rounded-[8px] items-center">
                       <KeyboardDoubleArrowLeftIcon fontSize="medium" />
-                      <span 
-                      className="hidden md:flex hover:text-gray-900 hover:font-[500]"
-                      style={{
-                        color: "var(--gray)",
-                        fontSize: "12px",
-                      }}>Previous story</span>
+                      <span
+                        className="hidden md:flex hover:text-gray-900 hover:font-[500]"
+                        style={{
+                          color: "var(--gray)",
+                          fontSize: "12px",
+                        }}>Previous story</span>
                     </div>
 
                     <div className="flex gap-2 sm:gap-4 lg:gap-8">
 
-                    <div className="w-[34px] h-[34px] ">
+                      <div className="w-[34px] h-[34px] ">
+                        <img
+                          src={liked ? Heart : NotLike}
+                          alt=""
+                          onClick={handleLike}
+                          style={{ cursor: "pointer" }}
+                          className="items-center  mx-auto w-[30px] h-[26px]"
+                        />
+                        {!post?.isDraft && (
+                          <p
+                            className="w-full item-center flex justify-center font-[500] mt-1"
+                            style={{
+                              color: "var(--gray)",
+                              fontSize: "12px",
+                              display: "flex",
+                              // display:"none"
+                            }}
+                          >
+                            {likes} <span>likes</span>
+                          </p>
+                        )}
+                      </div>
+                      <div>
+                        <img
+                          className=" w-[30px] h-[26px]"
+                          onClick={() => setModalOpened(true)}
+                          src={Comment}
+                          alt=""
+                          style={{ cursor: "pointer" }}
+                        />
+                        <span className="items-center flex justify-center text-gray-600 mt-1 text-[12px]">
+                          {post?.comments?.length}
+                        </span>
+                      </div>
                       <img
-                        src={liked ? Heart : NotLike}
+                        className=" w-[30px] h-[26px] "
+                        src={Share}
                         alt=""
-                        onClick={handleLike}
-                        style={{ cursor: "pointer" }}
-                        className="items-center  mx-auto w-[30px] h-[26px]"
-                      />
-                      {!post?.isDraft && (
-                        <p
-                          className="w-full item-center flex justify-center font-[500] mt-1"
-                          style={{
-                            color: "var(--gray)",
-                            fontSize: "12px",
-                            display: "flex",
-                            // display:"none"
-                          }}
-                        >
-                          {likes} <span>likes</span>
-                        </p>
-                      )}
-                    </div>
-                    <div>
-                      <img
-                        className=" w-[30px] h-[26px]"
-                        onClick={() => setModalOpened(true)}
-                        src={Comment}
-                        alt=""
+                        onClick={() => setShareModalOpened(true)}
                         style={{ cursor: "pointer" }}
                       />
-                      <span className="items-center flex justify-center text-gray-600 mt-1 text-[12px]">
-                        {post?.comments?.length}
-                      </span>
-                    </div>
-                    <img
-                      className=" w-[30px] h-[26px] "
-                      src={Share}
-                      alt=""
-                      onClick={() => setShareModalOpened(true)}
-                      style={{ cursor: "pointer" }}
-                    />
                     </div>
 
                     <div className="flex mt-1 justify-center px-[9px] py-[4px] w-[80px] lg:w-fit rounded-[12px] bg-orange-500 text-white font-[500] text-[12px] h-fit ">
                       <p>{post?.category}</p>
-                     
+
                     </div>
                   </div>
                 )}
@@ -384,24 +445,37 @@ navigate(`/post-seq`,{
                 </div>
                 <h6 className="text-start "> {post?.createdBy?.userName}</h6>
               </Link>
-              <div  ref={textContainerRef} className="max-h-[100vh] overflow-y-scroll  w-full mx-auto lg:mb-[2rem]">
+              <div ref={textContainerRef} className="max-h-[100vh] overflow-y-scroll  w-full mx-auto lg:mb-[2rem]">
                 <div className="mx-auto w-full flex items-center justify-center">
                   <b className="mx-auto w-[250px] sm:w-[290px] md:w-[390px] lg:max-w-[450px] xl:w-[50vw] mb-2">
                     {post?.title}
                   </b>
                 </div>
                 <div
-                  // ref={textContainerRef}
-                  className=" h-[50vh] md:h-[350px] lg:h-[60vh]  w-[35vh] sm:w-[290px] my-auto   md:w-[390px] lg:w-[480px]  xl:w-[50vw] mx-auto"
+                  ref={textContainerRef}
+                  className=" h-[50vh] md:h-[350px] lg:h-[60vh]  w-[35vh] sm:w-[290px] my-auto   md:w-[390px] lg:w-[480px]  xl:w-[50vw] mx-auto relative"
                 >
-                  {post&&post?.story&&formatText(post?.story[page - 1]?.story ?? "")}
+                  {post && post?.story && formatText(post?.story[page - 1]?.story ?? "")}
                 </div>
+
               </div>
+              <div className="w-[35vh] sm:w-[290px] md:w-[390px] lg:w-[480px] xl:w-[50vw] mx-auto relative">
+                <button
+                  onClick={handleScrollToTop}
+                  title="Scroll to top"
+                  className="flex justify-center items-center h-9 w-9 bg-gray-100 text-black rounded-full absolute right-0 bottom-0"
+                  style={{zIndex:"9"}}
+                >
+                  <KeyboardArrowUp />
+                </button>
+              </div>
+
             </div>
           </div>
 
-          <div className="py-[20px]">
+          <div className="py-[20px] -translate-y-24">
             <div
+              className="flex-wrap"
               style={{
                 display: "flex",
                 justifyContent: "center",
@@ -410,60 +484,94 @@ navigate(`/post-seq`,{
             >
               {page > 1 && (
                 <button
-                  onClick={(event) => handlePagination(event, false)}
+                  onClick={(event) => handlePagination(event, 'prev')}
                   className="pagination-byn"
                 >
                   previous
                 </button>
               )}
+
+
+              {page !== 1 &&
+                <button
+                  onClick={(event) => handlePagination(event, 1)}
+                  className=" bg-white px-2 py-1 text-black"
+                >
+                  1
+                </button>
+              }
+
+              {getPrevIntervals()}
+
+              {post?.story?.length > 2 && page !== 1 &&
+                <p className="-mx-2 text-white">...</p>}
+
+              {page - 1 < post?.story?.length && page > 2 &&
+                <button
+                  onClick={(event) => handlePagination(event, page - 1)}
+                  className=" bg-white px-2 py-1 text-black"
+                >
+                  {page - 1}
+                </button>
+              }
+
+
               <span
-                style={{
-                  color: "black",
-                  backgroundColor: "white",
-                  width: "1rem",
-                  display: "flex",
-                  justifyContent: "center",
-                }}
+                className=" bg-gray-300 px-2 py-1 text-black"
               >
                 {page}
               </span>
 
-              {
-                <div
-                  className={`flex gap-2 ${
-                    page === post?.story?.length || post?.story?.length < 2
-                      ? "hidden"
-                      : "flex"
-                  } `}
+              {page + 1 < post?.story?.length &&
+                <button
+                  onClick={(event) => handlePagination(event, page + 1)}
+                  className=" bg-white px-2 py-1 text-black"
                 >
-                  {post?.story?.length > 2 && (
-                    <span
-                      className="font-[700] px-2"
-                      style={{
-                        color: "black",
-                        backgroundColor: "white",
-                        width: "1rem",
-                        display: "flex",
-                        gap: "4px",
-                        justifyContent: "center",
-                      }}
-                    >
-                      ...
-                    </span>
-                  )}
-
-                  <button
-                    // onClick={(event) => handlePagination(event, post?.story?.length)}
-                    className=" bg-white px-2 py-1"
-                  >
-                    {post?.story?.length}
-                  </button>
-                </div>
+                  {page + 1}
+                </button>
               }
+
+              {page !== post?.story?.length && page !== post?.story?.length - 1 && post?.story?.length > 2 &&
+                <p className="-mx-2 text-white">...</p>}
+
+              {getNextIntervals()}
+
+
+
+              <div
+                className={`flex gap-2 ${page === post?.story?.length || post?.story?.length < 2
+                  ? "hidden"
+                  : "flex"
+                  } `}
+              >
+                {/* {post?.story?.length > 2 && ( */}
+                {/*   <span */}
+                {/*     className="font-[700] px-2" */}
+                {/*     style={{ */}
+                {/*       color: "black", */}
+                {/*       backgroundColor: "white", */}
+                {/*       width: "1rem", */}
+                {/*       display: "flex", */}
+                {/*       gap: "4px", */}
+                {/*       justifyContent: "center", */}
+                {/*     }} */}
+                {/*   > */}
+                {/*     ... */}
+                {/*   </span> */}
+                {/* )} */}
+
+                <button
+                  onClick={(event) => handlePagination(event, post?.story?.length)}
+                  className=" bg-white px-2 py-1 text-black"
+                >
+                  {post?.story?.length}
+                </button>
+              </div>
+
 
               {page < post?.story?.length && (
                 <button
-                  onClick={(event) => handlePagination(event, true)}
+                  onClick={(event) => handlePagination(event, 'next')}
                   className="pagination-byn"
                 >
                   Next

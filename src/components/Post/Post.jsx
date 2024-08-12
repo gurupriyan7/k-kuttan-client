@@ -28,7 +28,7 @@ const Post = ({ data }) => {
   const [likes, setLikes] = useState(data?.liked?.length);
   const [modalOpened, setModalOpened] = useState(false);
   const [shareModalOpened, setShareModalOpened] = useState(false);
-  const [comments,setCommments]=useState([])
+  const [comments, setCommments] = useState([])
 
   const ProfileImage = ({ src }) => {
     const handleError = (event) => {
@@ -45,9 +45,10 @@ const Post = ({ data }) => {
     );
   };
 
-  useEffect(()=>{
-setCommments(data?.comments)
-  },[data])
+  useEffect(() => {
+    setCommments(data?.comments)
+    console.log("comments", data?.comments)
+  }, [data])
 
   const handleSelect = async (e) => {
     if (data?.createdBy?._id === userData?.data?._id) {
@@ -93,7 +94,7 @@ setCommments(data?.comments)
           const rzp = new window.Razorpay(options);
           rzp.open();
 
-          rzp.on("payment.failed", async function (response) {
+          rzp.on("payment.failed", async function(response) {
             console.log(response, "payment failed response");
             await updatePayment({
               transactionId: response?.razorpay_payment_id,
@@ -134,15 +135,15 @@ setCommments(data?.comments)
     setModalOpened(true);
   };
 
-  const formatPartNumber =(partNumber)=>{
+  const formatPartNumber = (partNumber) => {
     const partNumberStr = partNumber.toString();
 
     // If the length is 1, prepend '0'
     if (partNumberStr.length === 1) {
-        return '0' + partNumberStr;
+      return '0' + partNumberStr;
     } else {
-        // Otherwise, return the exact value
-        return partNumberStr;
+      // Otherwise, return the exact value
+      return partNumberStr;
     }
   }
   return (
@@ -216,7 +217,7 @@ setCommments(data?.comments)
 
       <div className="detail flex flex-col">
         <p className=" flex flex-col gap-1">
-        <b className="line-clamp-1">{data?.partNumber ? `Part - (${formatPartNumber(data?.partNumber)})`:""}</b>
+          <b className="line-clamp-1">{data?.partNumber ? `Part - (${formatPartNumber(data?.partNumber)})` : ""}</b>
           <b className="line-clamp-2">{`${data?.title}`}</b>
           <p className="line-clamp-4">{data?.summary}</p>
         </p>
@@ -226,17 +227,25 @@ setCommments(data?.comments)
           {data?.comments?.slice(0, 3).map((comment, index) => (
             <div className="" key={index}>
               {/* <p className='line-clamp-1 text-[14px]'>{comment?.comment}</p> */}
-              <div className="comment">
+              <div className="comment relative">
                 <ProfileImage
                   src={`${appConfig?.awsBucketUrl}/${comment?.userId?.profileImage}`}
                 />
-                <div className="comment-details">
+                <div className="comment-details w-full">
                   <h4 className="comment-name">{comment?.userId?.userName}</h4>
-                  <p className="comment-text line-clamp-1">
-                    {comment?.comment}
-                  </p>
+                  <div className="flex justify-between w-full items-end">
+                    <p className="comment-text line-clamp-1">
+                      {comment?.comment}
+                    </p>
+
+                  </div>
                 </div>
+
+                {comment?.replyIds && comment?.replyIds?.length > 0 && <button onClick={handleCommentClick} className="text-xs absolute right-4 bottom-3 font-bold sm:text-sm">Read replies
+                </button>}
+
               </div>
+
             </div>
           ))}
           <span
