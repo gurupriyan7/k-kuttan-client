@@ -58,6 +58,22 @@ export const getAllAvailableChatUsers = async (searchTeam) => {
     console.log(error);
   }
 };
+export const getFollowersFollowings = async (isFollowers) => {
+  try {
+    const token = getLocalStorageItem("token");
+    const data = await API.get(`/user/followers?isFollowers=${isFollowers}`, {
+      headers: {
+        Authorization: `Bearer ${token}` // Include the Bearer token in the Authorization header
+      }
+    })
+
+    console.log(data, "usersssssssssssssssss");
+    return data?.data
+  } catch (error) {
+    await authCheck(error);
+    console.log(error);
+  }
+};
 
 export const updateUser = async (userData) => {
   try {

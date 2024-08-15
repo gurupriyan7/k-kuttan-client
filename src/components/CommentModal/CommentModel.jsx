@@ -18,6 +18,7 @@ function CommentModel({ modalOpened, setModalOpened, comments = [], postId }) {
   const userData = useSelector((state) => state.authReducer.authData);
   const [replyComment, setReply] = useState(null)
   const commentBox = useRef(null)
+  const [unfold, setUnfold] = useState(null)
 
   useEffect(() => {
     setCommentData(comments)
@@ -209,33 +210,56 @@ function CommentModel({ modalOpened, setModalOpened, comments = [], postId }) {
                       setReply(replyComment && replyComment?.id === comment._id ? null : { id: comment?._id, user: comment.userId, comment: comment?.comment })
                       if (commentBox?.current && !replyComment) commentBox.current.scrollIntoView({ behavior: 'smooth' })
                     }}
-                    className="font-medium -translate-y-2 px-6 py-1.5 bg-black text-white text-xs sm:text-sm rounded-md"
+                    className="font-medium bg-gradient-to-br from-[#f9a125] to-[#f96035] -translate-y-2 px-6 py-1.5 bg-black text-white text-xs sm:text-sm rounded-md"
                   >
                     {replyComment && comment?._id === replyComment?.id ? "Cancel" : "Reply"}
                   </button>
 
                   {comment?.replyIds && comment?.replyIds.length > 0 ?
                     <div className="mt-6">
-                      {comment.replyIds.map((reply, index) => (
-                        <div key={`${reply.commentId}-reply-${index}`} className="comment ml-6">
-                          <ProfileImage
-                            src={`${appConfig?.awsBucketUrl}/${reply?.userId?.profileImage}`}
-                          />
-                          {/* <img
+                      {unfold === comment?._id ?
+                        comment.replyIds.map((reply, index) => (
+                          <div key={`${reply.commentId}-reply-${index}`} className="comment ml-6">
+                            <ProfileImage
+                              src={`${appConfig?.awsBucketUrl}/${reply?.userId?.profileImage}`}
+                            />
+                            {/* <img
                       src={`${appConfig.awsBucketUrl}/${comment?.userId?.profileImage}`}
                       alt="story"
                       className="profile-image"
                     /> */}
-                          <div className="comment-details">
-                            <h4 className="comment-name">
-                              {reply?.userId?.userName}
-                            </h4>
-                            <p className="comment-text">{reply?.comment}</p>
+                            <div className="comment-details">
+                              <h4 className="comment-name">
+                                {reply?.userId?.userName}
+                              </h4>
+                              <p className="comment-text">{reply?.comment}</p>
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        )) :
+                        comment.replyIds.slice(0, 2).map((reply, index) => (
+                          <div key={`${reply.commentId}-reply-${index}`} className="comment ml-6">
+                            <ProfileImage
+                              src={`${appConfig?.awsBucketUrl}/${reply?.userId?.profileImage}`}
+                            />
+                            {/* <img
+                      src={`${appConfig.awsBucketUrl}/${comment?.userId?.profileImage}`}
+                      alt="story"
+                      className="profile-image"
+                    /> */}
+                            <div className="comment-details">
+                              <h4 className="comment-name">
+                                {reply?.userId?.userName}
+                              </h4>
+                              <p className="comment-text">{reply?.comment}</p>
+                            </div>
+                          </div>
+                        ))}
                     </div>
                     : null}
+
+                  <div className="flex justify-end">
+                    <button type="button" onClick={() => setUnfold(prev => prev === comment?._id ? null : comment?._id)} className="text-xs sm:text-sm font-bold">{unfold === comment?._id ? "Show less" : "Show more"}</button>
+                  </div>
                 </div>
               );
             })}

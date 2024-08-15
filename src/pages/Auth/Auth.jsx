@@ -122,7 +122,7 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
   return (
     <div className="a-right" style={{ color: 'black' }}>
       <form onSubmit={loginSubmit} className="infoForm authForm">
-        <h3>Log In</h3>
+        <h3>Log in</h3>
         <div>
           <input
             type="email"
@@ -189,7 +189,7 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
             </span>
           </span>
           <span style={{ fontSize: '12px' }}>
-            If you are an Author?
+            If you are an Author? 
             <span
               onClick={(e) => {
                 e.preventDefault()
@@ -197,7 +197,7 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
               }}
               className="linkText"
             >
-              signIn
+              Sign In
             </span>
           </span>
         </div>

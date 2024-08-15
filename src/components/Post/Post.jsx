@@ -227,17 +227,25 @@ const Post = ({ data }) => {
           {data?.comments?.slice(0, 3).map((comment, index) => (
             <div className="" key={index}>
               {/* <p className='line-clamp-1 text-[14px]'>{comment?.comment}</p> */}
-              <div className="comment">
+              <div className="comment relative">
                 <ProfileImage
                   src={`${appConfig?.awsBucketUrl}/${comment?.userId?.profileImage}`}
                 />
-                <div className="comment-details">
+                <div className="comment-details w-full">
                   <h4 className="comment-name">{comment?.userId?.userName}</h4>
-                  <p className="comment-text line-clamp-1">
-                    {comment?.comment}
-                  </p>
+                  <div className="flex justify-between w-full items-end">
+                    <p className="comment-text line-clamp-1">
+                      {comment?.comment}
+                    </p>
+
+                  </div>
                 </div>
+
+                {comment?.replyIds && comment?.replyIds?.length > 0 && <button onClick={handleCommentClick} className="text-xs absolute right-4 bottom-3 font-bold sm:text-sm">Read replies
+                </button>}
+
               </div>
+
             </div>
           ))}
           <span

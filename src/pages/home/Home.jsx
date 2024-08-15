@@ -20,22 +20,22 @@ const Home = () => {
   const [posts, setPosts] = useState([]);
   const postData = useSelector((state) => state.postReducer.posts);
   const postDataLoading = useSelector((state) => state.postReducer.loading);
-  console.log("ddadtaad", postData)
+  console.log("ddadtaad", postData);
 
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
   const [category, setCategory] = useState("");
 
-  const fetchingMoreRef = useRef(false)
+  const fetchingMoreRef = useRef(false);
 
-  const containerRef = useRef(null)
+  const containerRef = useRef(null);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         setIsLoading(true);
         await getAllPosts(category, searchText, dispatch, 1);
-        setPage(1)
+        setPage(1);
         setIsLoading(false);
       } catch (error) {
         console.error("Error fetching posts:", error);
@@ -45,8 +45,6 @@ const Home = () => {
     fetchPosts();
   }, [searchText, category, dispatch]);
 
-
-
   const loadMorePosts = async () => {
     if (!fetchingMoreRef.current) {
       fetchingMoreRef.current = true;
@@ -55,44 +53,45 @@ const Home = () => {
 
       try {
         await getAllPosts(category, searchText, dispatch, nextPage);
-        console.log("OK", nextPage)
+        console.log("OK", nextPage);
 
-        setPage(nextPage)
+        setPage(nextPage);
       } catch (error) {
         console.error("Error fetching more posts:", error);
       } finally {
-
         fetchingMoreRef.current = false;
       }
     }
   };
 
-
   const handleScrollToTop = () => {
-    if (containerRef.current){
-      containerRef.current.scrollTop=0;
+    if (containerRef.current) {
+      containerRef.current.scrollTop = 0;
     }
-  }
+  };
 
   return (
     <>
       {isLoading && <Preloader />}
-      <div ref={containerRef}  className="Home relative overflow-y-auto max-h-screen" style={{ backgroundImage: `URL(${back})` }}>
+      <div
+        ref={containerRef}
+        className="Home relative overflow-y-auto max-h-screen"
+        style={{ backgroundImage: `URL(${back})` }}
+      >
         <ProfileSide isHome={true} />
-        <div ref={containerRef} >
-        <PostSide
-          searchText={searchText}
-          setSearchText={setSearchText}
-          postData={postData.data}
-          totalPost={postData?.totalCount}
-          isHome={true}
-          setCategory={setCategory}
-          isCategory={true}
-          onLoadMore={loadMorePosts} // Pass down loadMore function to handle infinite scrolling
-        />
+        <div ref={containerRef}>
+          <PostSide
+            searchText={searchText}
+            setSearchText={setSearchText}
+            postData={postData.data}
+            totalPost={postData?.totalCount}
+            isHome={true}
+            setCategory={setCategory}
+            isCategory={true}
+            onLoadMore={loadMorePosts} // Pass down loadMore function to handle infinite scrolling
+          />
         </div>
         <RightSide />
-
 
         <button
           onClick={handleScrollToTop}
@@ -101,10 +100,10 @@ const Home = () => {
         >
           <KeyboardArrowUp />
         </button>
-
       </div>
     </>
   );
 };
 
 export default Home;
+

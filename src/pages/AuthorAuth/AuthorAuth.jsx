@@ -166,7 +166,7 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
 
         <div>
           <span style={{ fontSize: '12px' }}>
-            Don't have an account ?
+            Don't have an account ? 
             <span
               onClick={(e) => {
                 e.preventDefault()
@@ -174,7 +174,7 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
               }}
               className="linkText"
             >
-              SignUp
+              Sign Up
             </span>
           </span>
           <button className="button infoButton">
@@ -203,7 +203,7 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
               }}
               className="linkText"
             >
-              signIn
+              Sign In
             </span>
           </span>
         </div>
@@ -286,7 +286,7 @@ function SignUp({ setIsLogin, errorMessage, setErrorMessage }) {
   return (
     <div className="a-right" style={{ color: 'black' }}>
       <form onSubmit={handleSignUp} className="infoForm authForm">
-        <h3>Author SignUp</h3>
+        <h3>Author Sign Up</h3>
         {/* <h4 style={{ color: 'red' }}>{errorMessage}</h4> */}
 
         <div>
@@ -403,7 +403,7 @@ function SignUp({ setIsLogin, errorMessage, setErrorMessage }) {
               }}
               className="linkText"
             >
-              SignIn
+               Sign In
             </span>
           </span>
           <button className="button infoButton">SignUp</button>

@@ -216,7 +216,7 @@ const PostShare = ({
               style={{ color: "black" }}
               className="button ps-button shrink-0"
             >
-              Post you story
+              Post your story
             </button>
           )}
         </div>
@@ -244,3 +244,4 @@ const PostShare = ({
 };
 
 export default PostShare;
+

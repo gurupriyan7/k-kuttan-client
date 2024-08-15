@@ -525,7 +525,7 @@ const AddPost = () => {
                   {selectedContent?.value === "new-story" && (
                     <input
                       type="text"
-                      placeholder="New Story"
+                      placeholder="New Story Name"
                       name="partName"
                       value={otherPartName}
                       onChange={handlePartNamecChange}
@@ -660,3 +660,4 @@ const AddPost = () => {
 };
 
 export default AddPost;
+
