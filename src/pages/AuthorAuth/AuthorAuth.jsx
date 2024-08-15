@@ -183,7 +183,7 @@ function LogIn({ setIsLogin, errorMessage, setErrorMessage }) {
         </div>
         <div style={{ display: 'grid', justifyContent: 'center' }}>
           <span style={{ fontSize: '12px' }}>
-            forgot Password :
+            Forgot Password :
             <span
               onClick={(e) => {
                 e.preventDefault()

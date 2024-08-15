@@ -97,6 +97,7 @@
 .linkText {
   cursor: pointer;
   font-weight: 600;
+  padding-left: 3px;
 }
 .linkText:hover {
   color: rgb(20, 20, 78) !important;

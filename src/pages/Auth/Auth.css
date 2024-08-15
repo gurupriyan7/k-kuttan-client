@@ -146,6 +146,7 @@
   .linkText{
     cursor: pointer;
     font-weight: 600;
+    color: #ff8300;
   }
   .linkText:hover{
     color: rgb(20, 20, 78)!important;
