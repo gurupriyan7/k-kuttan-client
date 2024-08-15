@@ -8,7 +8,15 @@
     background: var(--cardColor);
     min-width: 16rem;
 }
-
+.view-profile{
+  color: #ffa500a3;
+  position: absolute;
+  z-index: 9;
+  top: 7px;
+  text-decoration: underline;
+  font-size: 12px;
+  font-weight: 600;
+}
 .ProfileImages{
     position: relative;
     display: flex;

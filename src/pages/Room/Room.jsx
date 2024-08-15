@@ -39,7 +39,7 @@ const Room = () => {
   )
   const chatDatas = useSelector((state) => state.chatReducer.chats)
 
-  const chatDatasLoading = useSelector((state) => state.chatReducer.isLoading)
+  // const chatDatasLoading = useSelector((state) => state.chatReducer.isLoading)
 
   // console.log(roomDatas, "DATA#")
 
@@ -85,8 +85,8 @@ const Room = () => {
     if (
       authDataLoading ||
       roomDatasLoading ||
-      userRoomDatasLoading ||
-      chatDatasLoading
+      userRoomDatasLoading 
+      // chatDatasLoading
     ) {
       setIsLoading(true)
     } else {
@@ -96,7 +96,6 @@ const Room = () => {
     authDataLoading,
     roomDatasLoading,
     userRoomDatasLoading,
-    chatDatasLoading,
   ])
   const handleJoin = async () => {
     const userId = authData?.data?._id
@@ -132,15 +131,15 @@ const Room = () => {
     setJoinedList(userRoomDatas)
   }, [userRoomDatas])
 
-  const getRooms = async () => {
-    try {
-      await dispatch(findAllRooms())
-      // const response = await getUserRooms()
-      setRooms(roomDatas)
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  // const getRooms = async () => {
+  //   try {
+  //     await dispatch(findAllRooms())
+  //     // const response = await getUserRooms()
+  //     setRooms(roomDatas)
+  //   } catch (error) {
+  //     console.error(error)
+  //   }
+  // }
 
   const getChats = async () => {
     try {
@@ -155,9 +154,9 @@ const Room = () => {
     getChats()
   }, [authData?.data])
 
-  useEffect(() => {
-    dispatch(findAllRooms({}))
-    getRooms()
+  useEffect(async() => {
+  await  dispatch(findAllRooms({}))
+    setRooms(roomDatas)
 
     // joinRoom()
   }, [authData])
@@ -183,7 +182,7 @@ const Room = () => {
             <option value="" disabled selected>
               Select a room
             </option>
-            {rooms?.map((room) => (
+            {roomDatas?.map((room) => (
               <option key={room._id} value={room._id}>
                 {room.name}
               </option>
@@ -233,18 +232,22 @@ const Room = () => {
               <Link to="../">
                 {' '}
                 <img src={Home} style={{ width: '1.5rem' }} alt="" />
+                <p className='text-xs font-medium sm:text-sm'>Home</p>
               </Link>
 
               <Link to="../explore">
                 {' '}
                 <WhatshotIcon />
+                <p className='text-xs font-medium sm:text-sm'>Explore</p>
               </Link>
 
               <Link to="../chat">
                 <img src={Comment} alt="" />
+                <p className='text-xs font-medium sm:text-sm'>Chat</p>
               </Link>
               <Link to="../room">
                 <MeetingRoomIcon />
+                <p className='text-xs font-medium sm:text-sm'>Room</p>
               </Link>
             </div>
           </div>

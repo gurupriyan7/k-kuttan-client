@@ -75,7 +75,7 @@ const Home = () => {
       {isLoading && <Preloader />}
       <div
         ref={containerRef}
-        className="Home relative overflow-y-auto max-h-screen"
+        className="Home relative overflow-y-scroll max-h-screen"
         style={{ backgroundImage: `URL(${back})` }}
       >
         <ProfileSide isHome={true} />

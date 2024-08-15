@@ -62,7 +62,7 @@ const RightSide = () => {
         </div>
       </div>
 
-      <div className='mt-[1rem] lg:mt-0'>
+      <div style={{display:"flex",justifyContent:"center"}} className='mt-[1rem] lg:mt-0'>
         <TrendCard />
       </div>
 

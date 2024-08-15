@@ -108,7 +108,7 @@ const Chat = () => {
             <h2>Chats</h2>
             <div className="Chat-list">
               {chats?.map((chat) => (
-                <div onClick={() => setCurrentChat(chat)}>
+                <div key={`chat-name-${chat?._id}`} onClick={() => setCurrentChat(chat)}>
                   <Conversations
                     data={chat}
                     currentUserId={authData?.data?._id}
@@ -128,21 +128,25 @@ const Chat = () => {
             className=" fixed md:static bottom-10  mx-auto md:mx-0 left-0 right-0 md:pr-2"
           >
             <div className="navIcons ">
-              <Link to="../">
+            <Link to="../">
                 {' '}
                 <img src={Home} style={{ width: '1.5rem' }} alt="" />
+                <p className='text-xs font-medium sm:text-sm'>Home</p>
               </Link>
 
               <Link to="../explore">
                 {' '}
                 <WhatshotIcon />
+                <p className='text-xs font-medium sm:text-sm'>Explore</p>
               </Link>
 
               <Link to="../chat">
                 <img src={Comment} alt="" />
+                <p className='text-xs font-medium sm:text-sm'>Chat</p>
               </Link>
               <Link to="../room">
                 <MeetingRoomIcon />
+                <p className='text-xs font-medium sm:text-sm'>Room</p>
               </Link>
             </div>
           </div>

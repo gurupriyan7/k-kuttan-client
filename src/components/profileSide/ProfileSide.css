@@ -3,6 +3,6 @@
     flex-direction: column;
     gap: 1rem;
     align-items: center;
-    overflow: auto;
+    /* overflow: auto; */
     min-width: 20rem;   
 }

@@ -14,7 +14,7 @@ import { path } from "../../paths/paths";
 import CommentModel from "../CommentModal/CommentModel";
 import { PaymentStatusEnum } from "../../constants/paymentEnum";
 import PostShareModal from "../PostShareModal/PostshareModal";
-import postImage from "../../img/authback.png";
+import postImage from "../../img/post-default-new.jpeg";
 import { PostApprovalStatus } from "../../constants/PostEnum";
 import { useSnackbar } from "notistack";
 
@@ -248,12 +248,12 @@ const Post = ({ data }) => {
 
             </div>
           ))}
-          <span
+          {data?.comments?.length>3&&<span
             onClick={handleCommentClick}
             className="flex justify-end text-[14px] font-[800]"
           >
             Read more
-          </span>
+          </span>}
         </div>
 
         <CommentModel

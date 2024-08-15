@@ -11,6 +11,7 @@
   column-gap: 60px;
   padding: 1rem;
   justify-content: center;
+  overflow-x: inherit;
 }
 
 @media screen and (width<=980px) {

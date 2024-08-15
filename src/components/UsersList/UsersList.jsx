@@ -85,7 +85,7 @@ export default function UsersList({ label, isFollower, close }) {
                 src={`${appConfig?.awsBucketUrl}/${user?.profileImage}`}
               />
 
-              <div className="text-black font-medium space-y-1">
+              <div className="text-black font-medium space-y-1" style={{paddingLeft:"7px"}}>
                 <p className="text-sm sm:text-base">
                   {user?.firstName} {user?.lastName}
                 </p>

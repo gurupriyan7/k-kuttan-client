@@ -188,7 +188,7 @@ function CommentModel({ modalOpened, setModalOpened, comments = [], postId }) {
             {commentData?.slice(0, visibleItems)?.map((comment, index) => {
               return (
                 <div key={comment?.userId?.username} className="comment-section">
-                  <div className="comment">
+                  <div style={{padding:"10px 0 9px 9px",borderRadius:"9px",backgroundColor:"#e8e8e8"}} className="comment">
                     <ProfileImage
                       src={`${appConfig?.awsBucketUrl}/${comment?.userId?.profileImage}`}
                     />
@@ -204,6 +204,7 @@ function CommentModel({ modalOpened, setModalOpened, comments = [], postId }) {
                       <p className="comment-text">{comment?.comment}</p>
                     </div>
                   </div>
+                  <div style={{width:"100%",display:"flex",justifyContent:"end"}}>
                   <button
                     type="button"
                     onClick={() => {
@@ -214,6 +215,7 @@ function CommentModel({ modalOpened, setModalOpened, comments = [], postId }) {
                   >
                     {replyComment && comment?._id === replyComment?.id ? "Cancel" : "Reply"}
                   </button>
+                  </div>
 
                   {comment?.replyIds && comment?.replyIds.length > 0 ?
                     <div className="mt-6">

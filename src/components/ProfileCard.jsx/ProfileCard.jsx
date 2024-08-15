@@ -55,6 +55,7 @@ const ProfileCard = ({ isProfile = false, authorData, isAuthorProfile = false })
       }}
     >
       <div className="ProfileImages">
+        <p className='view-profile'>View Profile</p>
         <CoverImage
           src={`${appConfig?.awsBucketUrl}/${userData?.coverImage}`}
         />
