@@ -99,7 +99,7 @@ const ProfileCard = ({ isProfile = false, authorData, isAuthorProfile = false })
       </div>
       {ProfilePage ? '' : <span>My Profile</span>}
 
-      {list && <UsersList isFollower={list.isFollower} label={list.label} close={() => setList(null)} />}
+      {list &&!isAuthorProfile&& <UsersList isProfile={isProfile} isFollower={list.isFollower} label={list.label} close={() => setList(null)} />}
     </div>
   )
 }
