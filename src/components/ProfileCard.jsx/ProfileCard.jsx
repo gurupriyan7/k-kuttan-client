@@ -75,12 +75,12 @@ const ProfileCard = ({ isProfile = false, authorData, isAuthorProfile = false })
       <div className="followStatus">
         <hr />
         <div>
-          <button onClick={() => setList({ label: 'Followings', data: userData?.followings })} className="follow">
+          <button onClick={() => setList({ label: 'Followings', isFollower:false })} className="follow">
             <span>{userData?.followings?.length ?? 0}</span>
             <span>Followings</span>
           </button>
           <div className="vl"></div>
-          <button onClick={() => setList({ label: "Followers", data: userData?.followers })} className="follow">
+          <button onClick={() => setList({ label: "Followers", isFollower:true })} className="follow">
             <span>{userData?.followers?.length ?? 0}</span>
             <span>Followers</span>
           </button>
@@ -99,7 +99,7 @@ const ProfileCard = ({ isProfile = false, authorData, isAuthorProfile = false })
       </div>
       {ProfilePage ? '' : <span>My Profile</span>}
 
-      {list && <UsersList list={list.data} label={list.label} close={() => setList(null)} />}
+      {list && <UsersList isFollower={list.isFollower} label={list.label} close={() => setList(null)} />}
     </div>
   )
 }
